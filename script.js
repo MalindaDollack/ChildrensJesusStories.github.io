@@ -1,16 +1,16 @@
 const books = [
-  {name:"Sarah", title:"Sarah the Baby Sheep: Jesus’s Birth, the Christmas Story", ref:"Luke 2:1–20 NIV", img:"assets/sarah-new.png"},
-  {name:"Joy", title:"Joy the Fish: Relocates to a New Pond, Heaven Our New Pond", ref:"John 14:1–3 NIV", img:"assets/joy-new.png"},
-  {name:"Wally", title:"Wally the Whale: Obeys God and Swallows a Human", ref:"Jonah 1:1–17 NIV", img:"assets/wally-new.png"},
-  {name:"Levi", title:"Levi the Lion: Listens to God and Laughs with Daniel", ref:"Daniel 6:1–28 NIV", img:"assets/levi-new.png"},
+  {name:"Sarah", title:"Sarah the Baby Sheep: Jesus’s Birth, the Christmas Story", ref:"Luke 2:1–20 NIV", img:"sarah-new.png"},
+  {name:"Joy", title:"Joy the Fish: Relocates to a New Pond, Heaven Our New Pond", ref:"John 14:1–3 NIV", img:"joy-new.png"},
+  {name:"Wally", title:"Wally the Whale: Obeys God and Swallows a Human", ref:"Jonah 1:1–17 NIV", img:"wally-new.png"},
+  {name:"Levi", title:"Levi the Lion: Listens to God and Laughs with Daniel", ref:"Daniel 6:1–28 NIV", img:"levi-new.png"},
   {name:"Freddy", title:"Freddy the Ferret: Finds Fun in the Fiery Furnace", ref:"Daniel 3 NIV", img:null},
-  {name:"Patsy", title:"Patsy the Plain Peacock: Gives Queen Esther Fashion Advice", ref:"Esther 4:13–17 NIV", img:"assets/patsy-new.png"},
-  {name:"Davy", title:"Davy the Donkey: Speaks Out Loud, the Bullying by Balaam", ref:"Numbers 22:21–39 NIV", img:"assets/davy-new.png"},
-  {name:"Larry", title:"Larry the Lizard: Leaps with the Leper! Only One Leper Thanks Jesus", ref:"Luke 17:11–19 NIV", img:"assets/larry-new.png"},
-  {name:"Francesco", title:"Francesco’s Frog Fiesta in Egypt: The Second Plague", ref:"Exodus 8:1–15 NIV", img:"assets/francesco-new.png"},
-  {name:"Sweet-Pea", title:"Sweet-Pea the Sparrow: Is Cared for by God", ref:"Matthew 10:29–31 NIV", img:"assets/sweetpea-new.png"},
-  {name:"Willy", title:"Willy the Water Strider Bug: Walks on Water with Jesus", ref:"Matthew 14:22–33 NIV", img:"assets/willy-new.png"},
-  {name:"Barry", title:"Barry the Blind Mole: Receives His Sight Along with the Blind Man Jesus Healed", ref:"John 9:25 NIV", img:"assets/barry-new.png"}
+  {name:"Patsy", title:"Patsy the Plain Peacock: Gives Queen Esther Fashion Advice", ref:"Esther 4:13–17 NIV", img:"patsy-new.png"},
+  {name:"Davy", title:"Davy the Donkey: Speaks Out Loud, the Bullying by Balaam", ref:"Numbers 22:21–39 NIV", img:"davy-new.png"},
+  {name:"Larry", title:"Larry the Lizard: Leaps with the Leper! Only One Leper Thanks Jesus", ref:"Luke 17:11–19 NIV", img:"larry-new.png"},
+  {name:"Francesco", title:"Francesco’s Frog Fiesta in Egypt: The Second Plague", ref:"Exodus 8:1–15 NIV", img:"francesco-new.png"},
+  {name:"Sweet-Pea", title:"Sweet-Pea the Sparrow: Is Cared for by God", ref:"Matthew 10:29–31 NIV", img:"sweetpea-new.png"},
+  {name:"Willy", title:"Willy the Water Strider Bug: Walks on Water with Jesus", ref:"Matthew 14:22–33 NIV", img:"willy-new.png"},
+  {name:"Barry", title:"Barry the Blind Mole: Receives His Sight Along with the Blind Man Jesus Healed", ref:"John 9:25 NIV", img:"barry-new.png"}
 ];
 const grid=document.getElementById('bookGrid');
 books.forEach((b,i)=>{const card=document.createElement('article');card.className='book-card';const media=b.img?`<img src="${b.img}" alt="${b.title} book cover">`:`<div class="placeholder"><span>🔥</span><b>Freddy the Ferret</b><small>Cover artwork coming soon</small></div>`;card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${b.title}</h3><p class="reference">${b.ref}</p><div class="prices"><span>E-book <b>C$7.00</b></span><span>Softcover <b>C$17.77</b></span></div><button class="soon">COMING SOON</button>`;const cover=card.querySelector('.cover-button');if(b.img){cover.addEventListener('click',()=>openImage(b.img,b.title))}else{cover.addEventListener('click',()=>showModal('comingSoonModal',b.title))}card.querySelector('.soon').addEventListener('click',()=>showModal('comingSoonModal',b.title));grid.appendChild(card)});
