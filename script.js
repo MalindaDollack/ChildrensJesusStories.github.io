@@ -1,5 +1,5 @@
 const books = [
-  {name:"Sarah", title:"Sarah the Baby Sheep: Jesus’s Birth, the Christmas Story", ref:"Luke 2:1–20 NIV", img:"sarah-new.png"},
+  {name:"Sarah", title:"Sarah the Baby Sheep: Jesus’s Birth, the Christmas Story", ref:"Luke 2:1–20 NIV", img:"sarah-new(2).png"},
   {name:"Joy", title:"Joy the Fish: Relocates to a New Pond, Heaven Our New Pond", ref:"John 14:1–3 NIV", img:"joy-new.png"},
   {name:"Wally", title:"Wally the Whale: Obeys God and Swallows a Human", ref:"Jonah 1:1–17 NIV", img:"wally-new.png"},
   {name:"Levi", title:"Levi the Lion: Listens to God and Laughs with Daniel", ref:"Daniel 6:1–28 NIV", img:"levi-new.png"},
