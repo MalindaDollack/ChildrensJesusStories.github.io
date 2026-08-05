@@ -77,16 +77,14 @@
         <p class="eyebrow">💜 About the Author</p>
         <h2>Hello! My name is Malinda Dollack.</h2>
         <p>Hello! My name is Malinda Dollack.
-
  I am a retired piano teacher and registered nurse and currently a Christian Childrens Book author.  I am married and have been blessed to share 37 wonderful years with my husband.
   My world has always revolved around children. Before meeting my husband, God gave me the precious gift of Jennifer. My beautiful daughter, who had special needs, lived to the age of two and a half before God called her home to Heaven. I look forward to the glorious day when I will be reunited with my precious daughter.
   My husband and I were unable to have more biological children. Then, over ten years ago, God performed another miracle. Through Facebook, my husband's daughter from a previous relationship, who had been placed for adoption as a baby, found us. Since then, God has blessed us with a wonderful family that includes our daughter, two grandsons, and four great-grandchildren. God truly works in amazing ways.
-  I also was adopted as a baby, or as my parents lovingly told me, I was “chosen.” As early as I can remember my adopted parents told me I was "chosen" at an orphanage in Edmonton, Alberta from thousands od babies, because I was the cutest baby of them all. Today I know I have been chosen by God—not because of cuteness or anything I have done, but entirely by His grace. He has chosen me to be His servant, and yes I am cute.  
+  I also was adopted as a baby, or as my parents lovingly told me, I was “chosen.” As early as I can remember my adopted parents told me I was "chosen" at an orphanage in Edmonton, Alberta from thousands od babies, because I was the cutest baby of them all. Today I know I have been chosen by God—not because of cuteness or anything I have done, but entirely by His grace. He has chosen me to be His servant, and yes I am cute.
   Most importantly, I am a born-again, Spirit-filled follower of Jesus Christ. For many years, I believed my husband was the evangelist while I supported him through prayer at home. Recently, God reminded me that I am also an evangelist—as are all His followers. We simply have different audiences.
   I have always believed that we can make a lasting difference in the lives of children, whether they are biologically ours or not. As a piano teacher, I had the privilege of teaching children as young as three years old. Over the years God has placed numerous children in my life although God did not give me more biological children, He gave me many other children to love, teach, and share the Gospel of Jesus Christ with.
-  I prayerfully sought the Holy Spirit's guidance as I wrote these stories. 
-  Thank you for your interest in these wonderful books. 
-
+  I prayerfully sought the Holy Spirit's guidance as I wrote these stories.
+  Thank you for your interest in these wonderful books.
 
 “Let the little children come to me...” — Matthew 19:14 (NIV)
 With love in Christ,
@@ -133,13 +131,13 @@ Malinda Dollack</p>
       </form>
     </section>
 
-    <section class="payment" id="payment"><h2>Ordering & Payment</h2><p>E-book: <strong>C$7.00</strong> · Softcover: <strong>C$17.77</strong></p><p>Ordering will open soon. Interac e-Transfer will be the accepted payment method.</p></section>
+    <section class="payment" id="payment"><h2>Ordering & Payment</h2><p>E-book: <strong>C$7.00</strong> · Softcover: <strong>Coming Soon</strong></p><p>Ordering will open soon. Interac e-Transfer will be the accepted payment method.</p></section>
   </main>
 
   <footer><strong>Thank you for visiting Malinda’s Story Garden!</strong><span>© <span id="year"></span> Malinda Dollack. All rights reserved.</span><a href="mailto:dollackj316@gmail.com">dollackj316@gmail.com</a></footer>
 
   <div id="overlay"></div>
-  <div id="comingSoonModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="close-modal" aria-label="Close">×</button><div class="modal-icon">📖</div><h2 id="modalTitle">Coming Soon!</h2><p id="modalBook"></p><p>This book is not available to order yet. Please check back soon.</p><div class="modal-prices"><span>E-book <b>C$7.00</b></span><span>Softcover <b>C$17.77</b></span></div></div>
+  <div id="comingSoonModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="close-modal" aria-label="Close">×</button><div class="modal-icon">📖</div><h2 id="modalTitle">Coming Soon!</h2><p id="modalBook"></p><p>This book is not available to order yet. Please check back soon.</p><div class="modal-prices"><span>E-book <b>C$7.00</b></span><span>Softcover <b>Coming Soon</b></span></div></div>
 
   <div id="reviewModal" class="modal form-modal" role="dialog" aria-modal="true"><button class="close-modal" aria-label="Close">×</button><h2>⭐ Leave a Review</h2><form id="reviewForm"><label>Your Name<input name="name" required></label><label>Book<select name="book" id="reviewBook"></select></label><fieldset><legend>Rating</legend><div class="stars"><label><input type="radio" name="rating" value="5" checked>★★★★★</label><label><input type="radio" name="rating" value="4">★★★★</label><label><input type="radio" name="rating" value="3">★★★</label><label><input type="radio" name="rating" value="2">★★</label><label><input type="radio" name="rating" value="1">★</label></div></fieldset><label>Your Review<textarea name="review" rows="5" required></textarea></label><button type="submit">Save Review</button><p class="form-note">Reviews are saved only in this browser until a website database is connected.</p></form></div>
 
@@ -149,6 +147,90 @@ Malinda Dollack</p>
 
   <div id="artModal" class="modal form-modal" role="dialog" aria-modal="true"><button class="close-modal" aria-label="Close">×</button><h2>🎨 Share Children’s Artwork</h2><p>Choose artwork to preview it, then email it to Malinda for approval.</p><label class="file-picker">Choose Artwork<input id="artInput" type="file" accept="image/*"></label><img id="artPreview" class="upload-preview" alt="Selected artwork preview"><a class="email-upload" href="mailto:dollackj316@gmail.com?subject=Story%20Garden%20Artwork%20Submission">Email the Artwork to Malinda</a></div>
 
-  <script src="script.js"></script>
+  <script>
+const books = [
+  {name:"Sarah", title:"Sarah the Baby Sheep: My Shepherd, Jesus’s Birth, The Christmas Story", ref:"Luke 2:1–20 NIV", img:"sarah.png", bookmark:"sarah-new.png"},
+  {name:"Joy", title:"Joy the Fish: Relocates to a New Pond, Heaven Our New Pond", ref:"John 14:1–3 NIV", img:"joy-new.png"},
+  {name:"Wally", title:"Wally the Whale: Obeys God and Swallows a Human", ref:"Jonah 1:1–17 NIV", img:"wally-new.png"},
+  {name:"Levi", title:"Levi the Lion: Listens to God and Laughs with Daniel", ref:"Daniel 6:1–28 NIV", img:"levi-new.png"},
+  {name:"Freddy", title:"Freddy the Ferret: Finds Fun in the Fiery Furnace", ref:"Daniel 3 NIV", img:"freddy-new.png"},
+  {name:"Patsy", title:"Patsy the Plain Peacock: Gives Queen Esther Fashion Advice", ref:"Esther 4:13–17 NIV", img:"patsy-new.png"},
+  {name:"Davy", title:"Davy the Donkey: Speaks Out Loud, the Bullying by Balaam", ref:"Numbers 22:21–39 NIV", img:"davy-new.png"},
+  {name:"Larry", title:"Larry the Lizard: Leaps with the Leper! Only One Leper Thanks Jesus", ref:"Luke 17:11–19 NIV", img:"larry-new.png"},
+  {name:"Francesco", title:"Francesco’s Frog Fiesta in Egypt: The Second Plague", ref:"Exodus 8:1–15 NIV", img:"francesco-new.png"},
+  {name:"Sweet-Pea", title:"Sweet-Pea the Sparrow: Is Cared for by God", ref:"Matthew 10:29–31 NIV", img:"sweetpea-new.png"},
+  {name:"Willy", title:"Willy the Water Strider Bug: Walks on Water with Jesus", ref:"Matthew 14:22–33 NIV", img:"willy-new.png"},
+  {name:"Barry", title:"Barry the Blind Mole: Receives His Sight Along with the Blind Man Jesus Healed", ref:"John 9:25 NIV", img:"barry-new.png"}
+];
+
+const grid=document.getElementById('bookGrid');
+books.forEach((b,i)=>{
+  const card=document.createElement('article');
+  card.className='book-card';
+  const media=b.img
+    ? `<img src="${b.img}" alt="${b.title} book cover">`
+    : `<div class="placeholder"><span>🔥</span><b>Freddy the Ferret</b><small>Cover artwork coming soon</small></div>`;
+
+  const availability=i===0
+    ? `<div class="book-actions">
+         <button class="soon order-ebook" type="button">E-BOOK C$7.00</button>
+         <button class="soon softcover-coming" type="button" disabled>SOFTCOVER COMING SOON</button>
+       </div>`
+    : `<div class="book-actions"><button class="soon coming-soon-book" type="button">COMING SOON</button></div>`;
+
+  card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${b.title}</h3><p class="reference">${b.ref}</p>${availability}`;
+
+  const cover=card.querySelector('.cover-button');
+  if(b.img){cover.addEventListener('click',()=>openImage(b.img,b.title))}
+  else{cover.addEventListener('click',()=>showModal('comingSoonModal',b.title))}
+
+  if(i===0){
+    card.querySelector('.order-ebook').addEventListener('click',()=>{
+      window.location.href='mailto:dollackj316@gmail.com?subject=Sarah%20E-book%20Order%20Request';
+    });
+  }else{
+    card.querySelector('.coming-soon-book').addEventListener('click',()=>showModal('comingSoonModal',b.title));
+  }
+
+  grid.appendChild(card);
+});
+
+const overlay=document.getElementById('overlay');
+function showModal(id,title=''){const m=document.getElementById(id);if(title)document.getElementById('modalBook').textContent=title;m.classList.add('open');overlay.classList.add('open')}
+function closeModals(){document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));overlay.classList.remove('open')}
+document.querySelectorAll('.close-modal').forEach(b=>b.addEventListener('click',closeModals));overlay.addEventListener('click',closeModals);document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModals()});document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>showModal(b.dataset.open)));
+
+const menu=document.querySelector('.menu');menu.addEventListener('click',()=>{const nav=document.querySelector('nav');nav.classList.toggle('open');menu.setAttribute('aria-expanded',nav.classList.contains('open'))});document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>document.querySelector('nav').classList.remove('open')));document.getElementById('year').textContent=new Date().getFullYear();
+
+const bookmarkOptions=document.getElementById('bookmarkOptions');
+bookmarkOptions.innerHTML='<a class="bookmark-download" href="sarah-new.png" download><img src="sarah-new.png" alt="Sarah Jesus Loves You bookmark"><span>Download Sarah Bookmark</span></a>';
+const bookmarkForm=document.getElementById('bookmarkForm'),bookmarkStatus=document.getElementById('bookmarkStatus');bookmarkForm.addEventListener('submit',e=>{e.preventDefault();bookmarkOptions.classList.add('unlocked');bookmarkStatus.textContent='Your Sarah bookmark is ready below!'});
+const characterGrid=document.getElementById('characterGrid');const votes=JSON.parse(localStorage.getItem('storyGardenVotes')||'{}');books.forEach(b=>{const card=document.createElement('button');card.className='character-card';card.type='button';card.innerHTML=b.img?`<img src="${b.img}" alt="${b.name}"><strong>${b.name}</strong><span>${votes[b.name]||0} vote(s)</span>`:`<div class="placeholder"><span>🔥</span></div><strong>${b.name}</strong><span>${votes[b.name]||0} vote(s)</span>`;card.addEventListener('click',()=>{votes[b.name]=(votes[b.name]||0)+1;localStorage.setItem('storyGardenVotes',JSON.stringify(votes));card.querySelector('span').textContent=`${votes[b.name]} vote(s)`;document.getElementById('voteStatus').textContent=`Thank you! You voted for ${b.name}.`});characterGrid.appendChild(card)});
+
+const reviewBook=document.getElementById('reviewBook');books.forEach(b=>reviewBook.insertAdjacentHTML('beforeend',`<option>${b.name}</option>`));const reviewList=document.getElementById('reviewList');function renderReviews(){const reviews=JSON.parse(localStorage.getItem('storyGardenReviews')||'[]');if(!reviews.length){reviewList.innerHTML='<p class="empty">Be the first visitor to leave a review on this device.</p>';return}reviewList.innerHTML=reviews.map(r=>`<article class="review-item"><div class="stars-display">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><strong>${escapeHtml(r.book)}</strong><p>“${escapeHtml(r.review)}”</p><small>— ${escapeHtml(r.name)}</small></article>`).join('')}
+function escapeHtml(text){return String(text).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]))}
+document.getElementById('reviewForm').addEventListener('submit',e=>{e.preventDefault();const data=new FormData(e.currentTarget);const reviews=JSON.parse(localStorage.getItem('storyGardenReviews')||'[]');reviews.unshift({name:data.get('name'),book:data.get('book'),rating:Number(data.get('rating')),review:data.get('review')});localStorage.setItem('storyGardenReviews',JSON.stringify(reviews.slice(0,20)));e.currentTarget.reset();renderReviews();closeModals();document.getElementById('community').scrollIntoView({behavior:'smooth'})});renderReviews();
+
+function openMail(subject,name,email,message){const body=`Name: ${name}\nEmail: ${email}\n\n${message}`;window.location.href=`mailto:dollackj316@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`}
+document.getElementById('messageForm').addEventListener('submit',e=>{e.preventDefault();const d=new FormData(e.currentTarget);openMail(d.get('subject'),d.get('name'),d.get('email'),d.get('message'))});document.querySelectorAll('.email-form').forEach(form=>form.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(form);openMail(form.dataset.subject,d.get('name'),d.get('email'),d.get('message'))}));
+
+function preview(inputId,previewId){document.getElementById(inputId).addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const img=document.getElementById(previewId);img.src=URL.createObjectURL(file);img.classList.add('show')})}preview('photoInput','photoPreview');preview('artInput','artPreview');
+
+// Large picture viewer. Clicking any website picture opens it at a larger size.
+const imageViewer=document.createElement('div');
+imageViewer.id='imageViewer';
+imageViewer.className='image-viewer';
+imageViewer.setAttribute('role','dialog');
+imageViewer.setAttribute('aria-modal','true');
+imageViewer.setAttribute('aria-label','Large picture view');
+imageViewer.innerHTML='<button class="image-viewer-close" type="button" aria-label="Close large picture">×</button><img alt=""><p></p>';
+document.body.appendChild(imageViewer);
+function openImage(src,alt='Picture'){const img=imageViewer.querySelector('img');img.src=src;img.alt=alt;imageViewer.querySelector('p').textContent=alt;imageViewer.classList.add('open');document.body.classList.add('viewer-open')}
+function closeImage(){imageViewer.classList.remove('open');document.body.classList.remove('viewer-open')}
+imageViewer.addEventListener('click',e=>{if(e.target===imageViewer||e.target.closest('.image-viewer-close'))closeImage()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeImage()});
+document.addEventListener('click',e=>{const img=e.target.closest('img');if(!img||img.closest('#imageViewer')||img.classList.contains('upload-preview')||img.closest('.cover-button'))return;e.preventDefault();e.stopPropagation();openImage(img.currentSrc||img.src,img.alt||'Picture')},true);
+
+</script>
 </body>
 </html>
