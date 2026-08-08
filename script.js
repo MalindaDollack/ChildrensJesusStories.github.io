@@ -24,8 +24,11 @@ document.querySelectorAll('.close-modal').forEach(b=>b.addEventListener('click',
 const menu=document.querySelector('.menu');menu.addEventListener('click',()=>{const nav=document.querySelector('nav');nav.classList.toggle('open');menu.setAttribute('aria-expanded',nav.classList.contains('open'))});document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>document.querySelector('nav').classList.remove('open')));document.getElementById('year').textContent=new Date().getFullYear();
 
 const bookmarkOptions=document.getElementById('bookmarkOptions');
-bookmarkOptions.innerHTML='<a class="bookmark-download" href="sarah-new.png" download><img src="sarah-new.png" alt="Sarah Jesus Loves You bookmark"><span>Download Sarah Bookmark</span></a>';
-const bookmarkForm=document.getElementById('bookmarkForm'),bookmarkStatus=document.getElementById('bookmarkStatus');bookmarkForm.addEventListener('submit',e=>{e.preventDefault();bookmarkOptions.classList.add('unlocked');bookmarkStatus.textContent='Your Sarah bookmark is ready below!'});
+bookmarkOptions.innerHTML=
+'<div class="bookmark-download">' +
+'<img src="sarah-new.png" alt="Sarah Jesus Loves You bookmark">' +
+'<span>Sarah</span>' +
+'</div>';
 const characterGrid=document.getElementById('characterGrid');const votes=JSON.parse(localStorage.getItem('storyGardenVotes')||'{}');books.forEach(b=>{const card=document.createElement('button');card.className='character-card';card.type='button';card.innerHTML=b.img?`<img src="${b.img}" alt="${b.name}"><strong>${b.name}</strong><span>${votes[b.name]||0} vote(s)</span>`:`<div class="placeholder"><span>🔥</span></div><strong>${b.name}</strong><span>${votes[b.name]||0} vote(s)</span>`;card.addEventListener('click',()=>{votes[b.name]=(votes[b.name]||0)+1;localStorage.setItem('storyGardenVotes',JSON.stringify(votes));card.querySelector('span').textContent=`${votes[b.name]} vote(s)`;document.getElementById('voteStatus').textContent=`Thank you! You voted for ${b.name}.`});characterGrid.appendChild(card)});
 
 const reviewBook=document.getElementById('reviewBook');books.forEach(b=>reviewBook.insertAdjacentHTML('beforeend',`<option>${b.name}</option>`));const reviewList=document.getElementById('reviewList');function renderReviews(){const reviews=JSON.parse(localStorage.getItem('storyGardenReviews')||'[]');if(!reviews.length){reviewList.innerHTML='<p class="empty">Be the first visitor to leave a review on this device.</p>';return}reviewList.innerHTML=reviews.map(r=>`<article class="review-item"><div class="stars-display">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><strong>${escapeHtml(r.book)}</strong><p>“${escapeHtml(r.review)}”</p><small>— ${escapeHtml(r.name)}</small></article>`).join('')}
