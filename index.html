@@ -309,8 +309,8 @@ It uses the same animal image files already in the website folder. -->
       card.innerHTML = `
         <span class="story-match-face story-match-front" aria-hidden="true">💜</span>
         <span class="story-match-face story-match-back">
-          <img src="${animal.image}" alt="${animal.name}">
-        </span>
+          
+        </span><img src="./${animal.image}" alt="${animal.name}">
       `;
 
       card.addEventListener("click", () => revealCard(card, animal.name));
