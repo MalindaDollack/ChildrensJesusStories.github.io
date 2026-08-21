@@ -606,9 +606,10 @@ books.forEach((b,i)=>{
        </div>`
     : `<div class="book-actions"><button class="soon coming-soon-book" type="button">COMING SOON</button></div>`;
 
-  card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${b.title}</h3><p class="reference">${b.ref}</p>${availability}`;
+  const seoDescription=i===0 ? `<p class="book-description">A joyful Christmas Bible story for kids about the birth of Jesus, the Nativity, and Luke 2, told through the eyes of Sarah the Baby Sheep.</p>` : ``;
 
-  const cover=card.querySelector('.cover-button');
+  concard.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${b.title}</h3><p class="reference">${b.ref}</p>${seoDescription}${availability}`;
+st cover=card.querySelector('.cover-button');
   if(i===0){cover.addEventListener('click',openSarahPreview)}
   else if(b.img){cover.addEventListener('click',()=>openImage(b.img,b.title))}
   else{cover.addEventListener('click',()=>showModal('comingSoonModal',b.title))}
