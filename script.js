@@ -1,56 +1,177 @@
-const books = [
-  {name:"Sarah", title:"Sarah the Baby Sheep: My Shepherd, Jesus’s Birth, The Christmas Story", ref:"Luke 2:1–20 NIV", img:"sarah.png", bookmark:"sarah-new.png"},
-  {name:"Joy", title:"Papa Finnigan the Fish: Sings Over the Eggs. Jesus Sings Over All Of Us", ref:"Zepheniah 3:17 NIV", img:"joy-new.png"},
-  {name:"Wally", title:"Wally the Whale: Obeys God and Swallows a Human", ref:"Jonah 1:1–17 NIV", img:"wally-new.png"},
-  {name:"Levi", title:"Levi the Lion: Listens to God and Laughs with Daniel", ref:"Daniel 6:1–28 NIV", img:"levi-new.png"},
-  {name:"Freddy", title:"Freddy the Ferret: Finds Fun in the Firey Furnace with Friends. Freddy Trusted God to Deliver him from the Flames", ref:"Daniel 3: 1-30 NIV", img:"freddy-new.png"},
-  {name:"Patsy", title:"Patsy the Plain Peacock: Gives Queen Esther Fashion Advice", ref:"Esther 4:13–17 NIV", img:"patsy-new.png"},
-  {name:"Davy", title:"Davy the Donkey: Speaks Out Loud, the Bullying by Balaam", ref:"Numbers 22:21–39 NIV", img:"davy-new.png"},
-  {name:"Larry", title:"Larry the Lizard: Leaps with the Leper! Only One Leper Thanks Jesus", ref:"Luke 17:11–19 NIV", img:"larry-new.png"},
-  {name:"Francesco", title:"Francesco’s Frog Fiesta in Egypt: The Second Plague", ref:"Exodus 8:1–15 NIV", img:"francesco-new.png"},
-  {name:"Sweet-Pea", title:"Sweet-Pea the Sparrow: Is Cared for by God", ref:"Matthew 10:29–31 NIV", img:"sweetpea-new.png"},
-  {name:"Willy", title:"Willy the Water Strider Bug: Walks on Water with Jesus", ref:"Matthew 14:22–33 NIV", img:"willy-new.png"},
-  {name:"Barry", title:"Barry the Blind Mole: Receives His Sight Along with the Blind Man Jesus Healed", ref:"John 9:25 NIV", img:"barry-new.png"}
-];
+// Malinda's Story Garden store catalogue updater.
+// Existing products stay in the store. Matching products are updated and new products are added.
+// Subscription products are intentionally not added.
 
-const grid=document.getElementById('bookGrid');
-books.forEach((b,i)=>{const card=document.createElement('article');card.className='book-card';const media=b.img?`<img src="${b.img}" alt="${b.title} book cover">`:`<div class="placeholder"><span>🔥</span><b>Freddy the Ferret</b><small>Cover artwork coming soon</small></div>`;card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${b.title}</h3><p class="reference">${b.ref}</p><div class="prices"><span>E-book <b>C$7.00</b></span><span>Softcover <b>C$17.77</b></span></div><button class="soon">COMING SOON</button>`;const cover=card.querySelector('.cover-button');if(b.img){cover.addEventListener('click',()=>openImage(b.img,b.title))}else{cover.addEventListener('click',()=>showModal('comingSoonModal',b.title))}card.querySelector('.soon').addEventListener('click',()=>showModal('comingSoonModal',b.title));grid.appendChild(card)});
+document.addEventListener('DOMContentLoaded', () => {
+  const storeGrid = document.querySelector('#store .store-grid');
+  if (!storeGrid) return;
 
-const overlay=document.getElementById('overlay');
-function showModal(id,title=''){const m=document.getElementById(id);if(title)document.getElementById('modalBook').textContent=title;m.classList.add('open');overlay.classList.add('open')}
-function closeModals(){document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));overlay.classList.remove('open')}
-document.querySelectorAll('.close-modal').forEach(b=>b.addEventListener('click',closeModals));overlay.addEventListener('click',closeModals);document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModals()});document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>showModal(b.dataset.open)));
+  const email = 'dollackj316@gmail.com';
 
-const menu=document.querySelector('.menu');menu.addEventListener('click',()=>{const nav=document.querySelector('nav');nav.classList.toggle('open');menu.setAttribute('aria-expanded',nav.classList.contains('open'))});document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>document.querySelector('nav').classList.remove('open')));document.getElementById('year').textContent=new Date().getFullYear();
-const bookmarkOptions=document.getElementById('bookmarkOptions');
+  const products = [
+    {
+      match: ['pdf download book mark', 'pdf download bookmark'],
+      title: 'PDF Download Book Mark',
+      price: 'FREE',
+      details: 'Dimensions: 8 inches tall × 2 inches wide. Immediately e-mailed to the recipient after Malinda receives the recipient’s e-mail address.',
+      physical: false
+    },
+    {
+      match: ['one hand-made laminated jesus loves you', 'individual laminated bookmark'],
+      title: 'One Hand-made Laminated Jesus Loves You! Book Mark',
+      price: 'C$6.14',
+      details: 'Size: 8 inches tall × 2 inches wide. Allow 24 hours processing time. Shipped to the buyer by Malinda using Canada Post after the e-Transfer is received and processing is complete. E-mail dollackj316@gmail.com for exact shipping costs to your location.',
+      physical: true
+    },
+    {
+      match: ['four hand-made laminated jesus loves you', '4 individual laminated bookmarks', 'four laminated bookmarks'],
+      title: 'Four Hand-made Laminated Jesus Loves You! Book Marks',
+      price: 'C$8.05',
+      details: 'Each Book Mark is 8 inches tall × 2 inches wide. Allow 24 hours processing time. Shipped to the buyer by Malinda using Canada Post after the e-Transfer is received and processing is complete. E-mail dollackj316@gmail.com for exact shipping costs to your location.',
+      physical: true
+    },
+    {
+      match: ['pdf download jesus loves you! stickers', 'pdf download jesus loves you stickers'],
+      title: 'PDF Download Jesus Loves You! Stickers',
+      price: 'C$4.50 / C$5.00 / C$7.00',
+      details: 'Choose 1 page for C$4.50: 1 Large sticker, 9 inches tall × 6.5 inches wide; 4 Medium stickers, each 5.75 inches tall × 4 inches wide; or 20 Small stickers, each 2 inches tall × 2 inches wide. Choose any 2 pages for C$5.00 or all 3 pages for C$7.00. Immediately e-mailed to the buyer after the e-Transfer is received.',
+      physical: false
+    },
+    {
+      match: ['hand-made jesus loves you! stickers', 'hand-made jesus loves you stickers'],
+      title: 'Hand-made Jesus Loves You! Stickers',
+      price: 'C$6.58 / C$10.00 / C$15.00',
+      details: 'Choose 1 page for C$6.58: 1 Large sticker, 9 inches tall × 6.5 inches wide; 4 Medium stickers, each 5.75 inches tall × 4 inches wide; or 20 Small stickers, each 2 inches tall × 2 inches wide. Choose any 2 pages for C$10.00 or all 3 pages for C$15.00. Allow 24 hours processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. E-mail dollackj316@gmail.com for exact shipping costs to your location.',
+      physical: true
+    },
+    {
+      match: ['pdf download standard e-book edition', 'standard e-book edition'],
+      title: 'PDF Download Standard E-Book Edition',
+      price: 'C$7.00',
+      details: 'Immediately e-mailed to the buyer after the e-Transfer is received.',
+      physical: false
+    },
+    {
+      match: ['pdf download flip book e-book edition', 'flip book e-book edition'],
+      title: 'PDF Download Flip Book E-Book Edition',
+      price: 'C$10.00',
+      details: 'Immediately e-mailed to the buyer after the e-Transfer is received.',
+      physical: false
+    },
+    {
+      match: ['pdf download standard e-book coloring book', 'e-book coloring book edition'],
+      title: 'PDF Download Standard E-Book Coloring Book Edition',
+      price: 'C$7.00',
+      details: 'Immediately e-mailed to the buyer after the e-Transfer is received.',
+      physical: false
+    },
+    {
+      match: ['staple produced soft cover', 'staples-produced soft cover', 'soft cover edition photobook'],
+      title: 'Staples Produced Soft Cover Edition PhotoBook',
+      price: 'C$22.27',
+      details: 'Size: 7 inches tall × 9 inches wide. Allow 10–14 days processing time. Pick-up is available at the buyer’s local Staples Canada location, or the book can be shipped to the buyer after processing by Staples Canada and receipt in Olds, Alberta. The e-Transfer must be received before the book is ordered from Staples. Shipping to the buyer is extra; there is no shipping cost when picked up at the buyer’s own local Staples Canada location. E-mail dollackj316@gmail.com for exact shipping costs to your location.',
+      physical: true
+    },
+    {
+      match: ['hand made perfect binding soft cover', 'hand-made perfect binding soft cover', 'perfect binding soft cover edition'],
+      title: 'Hand Made Perfect Binding Soft Cover Edition',
+      price: 'C$27.88',
+      details: 'Size: 11 inches tall × 8.5 inches wide. Allow 3 days processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. Shipping is extra. E-mail dollackj316@gmail.com for exact shipping costs to your location.',
+      physical: true
+    },
+    {
+      match: ['hand made perfect binding hard cover', 'hand-made perfect binding hard cover', 'perfect binding hard cover edition'],
+      title: 'Hand Made Perfect Binding Hard Cover Edition',
+      price: 'C$29.88',
+      details: 'Size: 11 inches tall × 8.5 inches wide. Allow 3 days processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. Shipping is extra. E-mail dollackj316@gmail.com for exact shipping costs to your location.',
+      physical: true
+    },
+    {
+      match: ['hand made upcycled decoupage art pad', 'hand-made upcycled decoupage art pad', 'upcycled decoupage art pad edition'],
+      title: 'Hand Made Upcycled Decoupage Art Pad Edition',
+      price: 'C$16.32',
+      details: 'Size: 10 inches tall × 8 inches wide. Allow 3 days processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. Shipping is extra. E-mail dollackj316@gmail.com for exact shipping costs to your location.',
+      physical: true
+    },
+    {
+      match: ['hand made card stock coloring book', 'hand-made card stock coloring book', 'card stock coloring book edition'],
+      title: 'Hand Made Card Stock Coloring Book Edition',
+      price: 'C$18.20',
+      details: 'Size: 11 inches tall × 8.5 inches wide. Allow 3 days processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. Shipping is extra. E-mail dollackj316@gmail.com for exact shipping costs to your location.',
+      physical: true
+    }
+  ];
 
-bookmarkOptions.innerHTML=
-'<div style="width:100%; display:flex; justify-content:center; align-items:center; margin-top:20px;">' +
-'<img src="sarah-new.png" alt="Sarah bookmark" style="display:block; margin:0 auto; max-width:250px; height:auto;">' +
-'</div>';
+  function normalize(text) {
+    return (text || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  }
 
-const characterGrid=document.getElementById('characterGrid');const votes=JSON.parse(localStorage.getItem('storyGardenVotes')||'{}');books.forEach(b=>{const card=document.createElement('button');card.className='character-card';card.type='button';card.innerHTML=b.img?`<img src="${b.img}" alt="${b.name}"><strong>${b.name}</strong><span>${votes[b.name]||0} vote(s)</span>`:`<div class="placeholder"><span>🔥</span></div><strong>${b.name}</strong><span>${votes[b.name]||0} vote(s)</span>`;card.addEventListener('click',()=>{votes[b.name]=(votes[b.name]||0)+1;localStorage.setItem('storyGardenVotes',JSON.stringify(votes));card.querySelector('span').textContent=`${votes[b.name]} vote(s)`;document.getElementById('voteStatus').textContent=`Thank you! You voted for ${b.name}.`});characterGrid.appendChild(card)});
+  function orderLink(product) {
+    const subject = `Order inquiry: ${product.title}`;
+    const body = product.physical
+      ? `Hello Malinda,\n\nI would like to order: ${product.title}\n\nMy name:\nMy mailing address:\n\nPlease tell me the exact shipping cost and e-Transfer instructions.`
+      : `Hello Malinda,\n\nI would like: ${product.title}\n\nMy name:\nMy e-mail address:\n\nPlease send me the ordering/e-Transfer instructions.`;
+    return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
 
-const reviewBook=document.getElementById('reviewBook');books.forEach(b=>reviewBook.insertAdjacentHTML('beforeend',`<option>${b.name}</option>`));const reviewList=document.getElementById('reviewList');function renderReviews(){const reviews=JSON.parse(localStorage.getItem('storyGardenReviews')||'[]');if(!reviews.length){reviewList.innerHTML='<p class="empty">Be the first visitor to leave a review on this device.</p>';return}reviewList.innerHTML=reviews.map(r=>`<article class="review-item"><div class="stars-display">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><strong>${escapeHtml(r.book)}</strong><p>“${escapeHtml(r.review)}”</p><small>— ${escapeHtml(r.name)}</small></article>`).join('')}
-function escapeHtml(text){return String(text).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]))}
-document.getElementById('reviewForm').addEventListener('submit',e=>{e.preventDefault();const data=new FormData(e.currentTarget);const reviews=JSON.parse(localStorage.getItem('storyGardenReviews')||'[]');reviews.unshift({name:data.get('name'),book:data.get('book'),rating:Number(data.get('rating')),review:data.get('review')});localStorage.setItem('storyGardenReviews',JSON.stringify(reviews.slice(0,20)));e.currentTarget.reset();renderReviews();closeModals();document.getElementById('community').scrollIntoView({behavior:'smooth'})});renderReviews();
+  function setCard(card, product) {
+    const heading = card.querySelector('h3');
+    if (heading) heading.textContent = product.title;
 
-function openMail(subject,name,email,message){const body=`Name: ${name}\nEmail: ${email}\n\n${message}`;window.location.href=`mailto:dollackj316@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`}
-document.getElementById('messageForm').addEventListener('submit',e=>{e.preventDefault();const d=new FormData(e.currentTarget);openMail(d.get('subject'),d.get('name'),d.get('email'),d.get('message'))});document.querySelectorAll('.email-form').forEach(form=>form.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(form);openMail(form.dataset.subject,d.get('name'),d.get('email'),d.get('message'))}));
+    let price = card.querySelector('.price, .store-price');
+    if (!price) {
+      price = document.createElement('p');
+      price.className = 'price';
+      if (heading) heading.insertAdjacentElement('afterend', price);
+      else card.appendChild(price);
+    }
+    price.textContent = product.price;
 
-function preview(inputId,previewId){document.getElementById(inputId).addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const img=document.getElementById(previewId);img.src=URL.createObjectURL(file);img.classList.add('show')})}preview('photoInput','photoPreview');preview('artInput','artPreview');
+    let description = card.querySelector('.catalog-details');
+    if (!description) {
+      description = document.createElement('p');
+      description.className = 'catalog-details';
+      price.insertAdjacentElement('afterend', description);
+    }
+    description.textContent = product.details;
 
-// Large picture viewer. Clicking any website picture opens it at a larger size.
-const imageViewer=document.createElement('div');
-imageViewer.id='imageViewer';
-imageViewer.className='image-viewer';
-imageViewer.setAttribute('role','dialog');
-imageViewer.setAttribute('aria-modal','true');
-imageViewer.setAttribute('aria-label','Large picture view');
-imageViewer.innerHTML='<button class="image-viewer-close" type="button" aria-label="Close large picture">×</button><img alt=""><p></p>';
-document.body.appendChild(imageViewer);
-function openImage(src,alt='Picture'){const img=imageViewer.querySelector('img');img.src=src;img.alt=alt;imageViewer.querySelector('p').textContent=alt;imageViewer.classList.add('open');document.body.classList.add('viewer-open')}
-function closeImage(){imageViewer.classList.remove('open');document.body.classList.remove('viewer-open')}
-imageViewer.addEventListener('click',e=>{if(e.target===imageViewer||e.target.closest('.image-viewer-close'))closeImage()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeImage()});
-document.addEventListener('click',e=>{const img=e.target.closest('img');if(!img||img.closest('#imageViewer')||img.classList.contains('upload-preview')||img.closest('.cover-button'))return;e.preventDefault();e.stopPropagation();openImage(img.currentSrc||img.src,img.alt||'Picture')},true);
+    let order = card.querySelector('.store-order');
+    if (!order) {
+      order = document.createElement('div');
+      order.className = 'store-order';
+      card.appendChild(order);
+    }
+    order.innerHTML = '';
+    const link = document.createElement('a');
+    link.href = orderLink(product);
+    link.textContent = product.physical ? 'E-mail Malinda Your Home Address' : 'E-mail Malinda to Order';
+    link.style.cssText = 'display:block;width:100%;box-sizing:border-box;border-radius:999px;background:#5b197d;color:#fff;text-decoration:none;text-align:center;font-weight:900;font-size:1rem;padding:13px 12px;box-shadow:0 5px 12px rgba(75,20,111,.22)';
+    order.appendChild(link);
+  }
+
+  function newCard(product) {
+    const card = document.createElement('article');
+    card.className = 'store-card';
+    const image = document.createElement('img');
+    image.src = 'sarah.png';
+    image.alt = product.title;
+    card.appendChild(image);
+    const heading = document.createElement('h3');
+    card.appendChild(heading);
+    setCard(card, product);
+    return card;
+  }
+
+  products.forEach(product => {
+    const cards = [...storeGrid.querySelectorAll('.store-card')];
+    const existing = cards.find(card => {
+      const text = normalize(card.textContent);
+      return product.match.some(term => text.includes(normalize(term)));
+    });
+    if (existing) setCard(existing, product);
+    else storeGrid.appendChild(newCard(product));
+  });
+
+  // Keep every other existing product exactly where it is: T-shirts, calendar,
+  // matching game, cards, and any other current store products remain available.
+});
