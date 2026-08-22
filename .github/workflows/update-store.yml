@@ -1,0 +1,29 @@
+name: Update Store Catalog
+
+on:
+  push:
+    paths:
+      - 'update_catalog.py'
+      - '.github/workflows/update-store.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-store:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply catalog update
+        run: python update_catalog.py
+      - name: Commit updated website
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No website changes needed."
+          else
+            git commit -m "Update store prices and product details"
+            git push
+          fi
