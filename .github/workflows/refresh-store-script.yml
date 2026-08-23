@@ -1,0 +1,36 @@
+name: Refresh store script
+
+on:
+  push:
+    paths:
+      - '.github/workflows/refresh-store-script.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Add cache-busting version to store script
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('<script src="script.js"></script>','<script src="script.js?v=3"></script>')
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit change
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Refresh store script so shipping form appears'
+          git push origin main
