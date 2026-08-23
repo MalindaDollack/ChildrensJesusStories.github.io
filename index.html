@@ -681,5 +681,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeImage()});
 document.addEventListener('click',e=>{const img=e.target.closest('img');if(!img||img.closest('#imageViewer')||img.classList.contains('upload-preview')||img.closest('.cover-button'))return;e.preventDefault();e.stopPropagation();openImage(img.currentSrc||img.src,img.alt||'Picture')},true);
 
 </script>
+<script src="script.js"></script>
 </body>
 </html>
