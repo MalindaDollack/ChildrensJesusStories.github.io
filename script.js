@@ -155,6 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const image = document.createElement('img');
     image.src = 'sarah.png';
     image.alt = product.title;
+    image.loading = 'lazy';
+    image.decoding = 'async';
     card.appendChild(image);
     const heading = document.createElement('h3');
     card.appendChild(heading);
@@ -174,4 +176,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Keep every other existing product exactly where it is: T-shirts, calendar,
   // matching game, cards, and any other current store products remain available.
+});
+
+// Performance boost: load only the main hero image immediately.
+// All other page images are decoded asynchronously and deferred until needed.
+document.addEventListener('DOMContentLoaded', () => {
+  const hero = document.querySelector('.hero-book');
+  document.querySelectorAll('img').forEach((img) => {
+    img.decoding = 'async';
+    if (img === hero) {
+      img.loading = 'eager';
+      img.fetchPriority = 'high';
+    } else {
+      img.loading = 'lazy';
+      img.fetchPriority = 'low';
+    }
+  });
+
+  // Apply the same policy to images added later by the catalogue or other scripts.
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (!(node instanceof Element)) return;
+        const images = node.matches('img') ? [node] : [...node.querySelectorAll('img')];
+        images.forEach((img) => {
+          img.decoding = 'async';
+          img.loading = 'lazy';
+          img.fetchPriority = 'low';
+        });
+      });
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
 });
