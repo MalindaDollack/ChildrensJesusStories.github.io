@@ -87,8 +87,6 @@ jobs:
 // Canadian French product availability notices and language metadata.
 document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.lang = 'en-CA';
-
-  // Mark all Canadian French translation lines with the correct language code.
   document.querySelectorAll('.fr-ca, .fr-ca-inline').forEach(el => el.setAttribute('lang','fr-CA'));
 
   const addFrenchComingSoon = card => {
@@ -105,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.store-card, .book-card').forEach(addFrenchComingSoon);
 
-  // Catch any product cards created after page load.
   const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => mutation.addedNodes.forEach(node => {
       if (!(node instanceof Element)) return;
@@ -131,3 +128,5 @@ document.addEventListener('DOMContentLoaded', () => {
           git add index.html script.js
           git commit -m 'Add Canadian bilingual SEO and French versions coming soon notices [skip ci]'
           git push origin main
+
+# Triggered after creation so the website patch runs on main.
