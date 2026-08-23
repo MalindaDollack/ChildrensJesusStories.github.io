@@ -3,10 +3,22 @@ name: Optimize website images
 on:
   push:
     branches: [main]
+    paths:
+      - '**/*.png'
+      - '**/*.PNG'
+      - '**/*.jpg'
+      - '**/*.JPG'
+      - '**/*.jpeg'
+      - '**/*.JPEG'
+      - '.github/workflows/optimize-images.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: optimize-website-images
+  cancel-in-progress: true
 
 jobs:
   optimize-images:
@@ -54,4 +66,8 @@ jobs:
           fi
 
           git commit -m 'Optimize website images for faster loading [skip ci]'
+
+          # If another website update landed while this job was running,
+          # rebase the optimization commit onto the newest main branch first.
+          git pull --rebase origin main
           git push origin main
