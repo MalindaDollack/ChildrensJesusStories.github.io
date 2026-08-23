@@ -3,6 +3,8 @@ name: Optimize website images
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -12,8 +14,10 @@ jobs:
   optimize-images:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out website
+      - name: Check out website branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Install lossless image optimizers
         run: |
@@ -38,4 +42,4 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- '*.png' '*.PNG' '*.jpg' '*.jpeg' '*.JPG' '*.JPEG'
           git commit -m 'Optimize website images for faster loading [skip ci]'
-          git push
+          git push origin HEAD:${{ github.head_ref || github.ref_name }}
