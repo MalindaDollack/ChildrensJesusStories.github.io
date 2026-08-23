@@ -65,6 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const order = staplesCard.querySelector('.store-order');
       (order || staplesCard).insertAdjacentElement(order ? 'beforebegin' : 'beforeend', note);
     }
+
+    // The Staples purchase button should simply say Buy Now!
+    const staplesOrderButton = staplesCard.querySelector('.store-order a, .store-order button');
+    if (staplesOrderButton) staplesOrderButton.textContent = 'Buy Now !';
   }
 
   // Sarah softcover is available now, not coming soon.
