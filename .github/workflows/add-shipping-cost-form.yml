@@ -1,0 +1,99 @@
+name: Add shipping cost request form
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-shipping-cost-form.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Add shipping cost link and form
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('script.js')
+          s = p.read_text(encoding='utf-8')
+          marker = '// Shipping-cost request link and form.'
+          block = r'''
+
+// Shipping-cost request link and form.
+document.addEventListener('DOMContentLoaded', () => {
+  const storeIntro = document.querySelector('#store .store-intro');
+  if (!storeIntro || document.getElementById('shipping-cost-modal')) return;
+
+  const paragraphs = [...storeIntro.querySelectorAll('p')];
+  const shippingParagraph = paragraphs.find(p => p.textContent.includes('e-mail Malinda for exact shipping costs before sending payment.'));
+  if (shippingParagraph) {
+    shippingParagraph.innerHTML = shippingParagraph.innerHTML.replace(
+      'e-mail Malinda for exact shipping costs before sending payment.',
+      '<a href="#" id="shipping-cost-link" style="color:#6b218a;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;font-weight:900">e-mail Malinda for exact shipping costs before sending payment.</a>'
+    );
+  }
+
+  const modal = document.createElement('div');
+  modal.id = 'shipping-cost-modal';
+  modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:2000;background:rgba(35,10,45,.72);padding:20px;overflow:auto;box-sizing:border-box';
+  modal.innerHTML = `
+    <div style="width:min(620px,96vw);margin:6vh auto;background:#fff;border:5px solid #6b218a;border-radius:22px;padding:22px;box-sizing:border-box;box-shadow:0 18px 60px rgba(0,0,0,.35)">
+      <button type="button" id="shipping-cost-close" aria-label="Close" style="float:right;width:42px;height:42px;border:0;border-radius:50%;background:#6b218a;color:#fff;font-size:26px;cursor:pointer">×</button>
+      <h2 style="color:#4b146f;margin:0 52px 8px 0">Request Shipping Cost</h2>
+      <p style="font-weight:800;color:#33243a">Please send me the shipping costs for this item.</p>
+      <form id="shipping-cost-form">
+        <label style="display:block;font-weight:800;color:#4b146f;margin:14px 0 6px">Item name
+          <input name="item" required style="display:block;width:100%;box-sizing:border-box;padding:12px;border:2px solid #d8b7e7;border-radius:10px;font:inherit;margin-top:5px" placeholder="Enter the item name">
+        </label>
+        <label style="display:block;font-weight:800;color:#4b146f;margin:14px 0 6px">Your physical / mailing address
+          <textarea name="address" rows="5" required style="display:block;width:100%;box-sizing:border-box;padding:12px;border:2px solid #d8b7e7;border-radius:10px;font:inherit;margin-top:5px" placeholder="Street address, town/city, province/state, postal/ZIP code, country"></textarea>
+        </label>
+        <button type="submit" style="width:100%;margin-top:16px;border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:900;font-size:1.05rem;padding:13px;cursor:pointer">Open E-mail to Malinda</button>
+      </form>
+    </div>`;
+  document.body.appendChild(modal);
+
+  const link = document.getElementById('shipping-cost-link');
+  const close = document.getElementById('shipping-cost-close');
+  const form = document.getElementById('shipping-cost-form');
+  const openModal = () => { modal.style.display = 'block'; const input = form.querySelector('input[name="item"]'); if (input) input.focus(); };
+  const closeModal = () => { modal.style.display = 'none'; };
+
+  if (link) link.addEventListener('click', e => { e.preventDefault(); openModal(); });
+  close.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.style.display === 'block') closeModal(); });
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const item = String(data.get('item') || '').trim();
+    const address = String(data.get('address') || '').trim();
+    if (!item || !address) return;
+    const subject = `Shipping cost request: ${item}`;
+    const body = `Hello Malinda,\n\nPlease send me the shipping costs for this item.\n\nItem name: ${item}\n\nMy physical / mailing address:\n${address}\n`;
+    window.location.href = `mailto:dollackj316@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+});
+'''
+          if marker not in s:
+              p.write_text(s.rstrip() + block + '\n', encoding='utf-8')
+          PY
+
+      - name: Commit website change
+        shell: bash
+        run: |
+          if git diff --quiet -- script.js; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add script.js
+          git commit -m 'Add clickable shipping cost request form'
+          git push origin main
