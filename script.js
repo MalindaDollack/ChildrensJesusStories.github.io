@@ -1,9 +1,10 @@
-// Wrapper: preserve the existing website script, then add Canadian bilingual SEO and product notices.
+// Load the existing website enhancements, then keep the live site English-only.
 document.write('<script src="script-bilingual-legacy.js?v=1"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
+  // English-only page and Google SEO settings.
   document.documentElement.lang = 'en-CA';
-  document.title = "English & Canadian French Children's Bible Stories | Malinda's Story Garden Canada";
+  document.title = "Children's Bible Stories & Christian Books for Kids | Malinda's Story Garden";
 
   let description = document.querySelector('meta[name="description"]');
   if (!description) {
@@ -11,9 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
     description.name = 'description';
     document.head.appendChild(description);
   }
-  description.content = "Canadian children's Bible stories, Christian books and Bible activities from Malinda's Story Garden. English products are available now; Canadian French versions are coming soon. Site content is presented in English and Canadian French.";
+  description.content = "Discover children's Bible stories, Christian books and Bible activities for kids at Malinda's Story Garden, featuring Sarah the Baby Sheep and the Christmas story of Jesus's birth.";
 
-  const ensureMeta = (property, content) => {
+  // Remove French alternate-locale SEO left by the previous bilingual setup.
+  document.querySelectorAll('meta[property="og:locale:alternate"]').forEach(el => el.remove());
+
+  const setOg = (property, content) => {
     let el = document.querySelector(`meta[property="${property}"]`);
     if (!el) {
       el = document.createElement('meta');
@@ -22,13 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     el.content = content;
   };
-  ensureMeta('og:locale','en_CA');
-  ensureMeta('og:locale:alternate','fr_CA');
-  ensureMeta('og:type','website');
-  ensureMeta('og:site_name',"Malinda's Story Garden");
-  ensureMeta('og:title',"English & Canadian French Children's Bible Stories | Malinda's Story Garden Canada");
-  ensureMeta('og:description',"Canadian children's Bible stories and Christian products. English versions are available now; Canadian French product versions are coming soon.");
-  ensureMeta('og:url','https://bigblueeyeschildrensbiblestories.com/');
+  setOg('og:locale', 'en_CA');
+  setOg('og:type', 'website');
+  setOg('og:site_name', "Malinda's Story Garden");
+  setOg('og:title', "Children's Bible Stories & Christian Books for Kids | Malinda's Story Garden");
+  setOg('og:description', "Children's Bible stories, Christian books and Bible activities for kids from Malinda's Story Garden.");
+  setOg('og:url', 'https://bigblueeyeschildrensbiblestories.com/');
 
   let canonical = document.querySelector('link[rel="canonical"]');
   if (!canonical) {
@@ -38,56 +41,50 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   canonical.href = 'https://bigblueeyeschildrensbiblestories.com/';
 
-  if (!document.getElementById('bilingual-canada-schema')) {
+  // Remove bilingual schema from the old setup and replace it with English-only schema.
+  document.getElementById('bilingual-canada-schema')?.remove();
+  if (!document.getElementById('english-site-schema')) {
     const schema = document.createElement('script');
     schema.type = 'application/ld+json';
-    schema.id = 'bilingual-canada-schema';
+    schema.id = 'english-site-schema';
     schema.textContent = JSON.stringify({
-      '@context':'https://schema.org',
-      '@graph':[
+      '@context': 'https://schema.org',
+      '@graph': [
         {
-          '@type':'WebSite',
-          '@id':'https://bigblueeyeschildrensbiblestories.com/#website',
-          url:'https://bigblueeyeschildrensbiblestories.com/',
-          name:"Malinda's Story Garden",
-          description:"Canadian children's Bible stories and Christian products in English, with Canadian French versions coming soon.",
-          inLanguage:['en-CA','fr-CA']
+          '@type': 'WebSite',
+          '@id': 'https://bigblueeyeschildrensbiblestories.com/#website',
+          url: 'https://bigblueeyeschildrensbiblestories.com/',
+          name: "Malinda's Story Garden",
+          description: "Children's Bible stories, Christian books and Bible activities for kids.",
+          inLanguage: 'en-CA'
         },
         {
-          '@type':'Organization',
-          '@id':'https://bigblueeyeschildrensbiblestories.com/#organization',
-          name:"Malinda's Story Garden",
-          url:'https://bigblueeyeschildrensbiblestories.com/',
-          areaServed:{'@type':'Country',name:'Canada'}
+          '@type': 'Organization',
+          '@id': 'https://bigblueeyeschildrensbiblestories.com/#organization',
+          name: "Malinda's Story Garden",
+          url: 'https://bigblueeyeschildrensbiblestories.com/',
+          areaServed: {'@type':'Country', name:'Canada'}
         }
       ]
     });
     document.head.appendChild(schema);
   }
 
-  document.querySelectorAll('.fr-ca, .fr-ca-inline').forEach(el => el.setAttribute('lang','fr-CA'));
-
-  const addFrenchComingSoon = card => {
-    if (!card || card.querySelector('.fr-version-coming-soon')) return;
-    const note = document.createElement('div');
-    note.className = 'fr-version-coming-soon';
-    note.setAttribute('role','note');
-    note.style.cssText = 'margin:10px 0 8px;padding:9px 10px;border-radius:11px;background:#f8efff;border:2px solid #d9b3ee;color:#4b146f;text-align:center;font-weight:900;line-height:1.3';
-    note.innerHTML = '<span>Canadian French Versions Coming Soon !</span><span lang="fr-CA" class="fr-ca" style="margin-top:4px">Versions canadiennes-françaises à venir !</span>';
-    const order = card.querySelector('.store-order, .book-actions');
-    if (order) order.insertAdjacentElement('beforebegin', note);
-    else card.appendChild(note);
+  // Remove every French translation and every French-coming-soon notice from the live page.
+  const removeFrench = root => {
+    if (!(root instanceof Element || root instanceof Document)) return;
+    root.querySelectorAll?.('.fr-ca, .fr-ca-inline, .fr-version-coming-soon, #fr-ca-style').forEach(el => el.remove());
   };
+  removeFrench(document);
 
-  document.querySelectorAll('.store-card, .book-card').forEach(addFrenchComingSoon);
-
-  const observer = new MutationObserver(mutations => {
+  // The old enhancement file can add translated text when cards are created later,
+  // so immediately remove any such additions before they remain on the page.
+  const englishOnlyObserver = new MutationObserver(mutations => {
     mutations.forEach(mutation => mutation.addedNodes.forEach(node => {
       if (!(node instanceof Element)) return;
-      if (node.matches('.store-card, .book-card')) addFrenchComingSoon(node);
-      node.querySelectorAll?.('.store-card, .book-card').forEach(addFrenchComingSoon);
-      node.querySelectorAll?.('.fr-ca, .fr-ca-inline').forEach(el => el.setAttribute('lang','fr-CA'));
+      if (node.matches('.fr-ca, .fr-ca-inline, .fr-version-coming-soon, #fr-ca-style')) node.remove();
+      else removeFrench(node);
     }));
   });
-  observer.observe(document.body, {childList:true, subtree:true});
+  englishOnlyObserver.observe(document.body, {childList:true, subtree:true});
 });
