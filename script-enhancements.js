@@ -83,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
     sarahShelfCover.alt = 'Sarah the Baby Sheep Standard E-Book Edition cover';
   }
 
-  // Sarah shelf: keep Standard E-Book and Photo Book buttons, and add a Flip Book preview button.
   const sarahShelfCard = document.querySelector('#bookGrid .book-card:first-child');
   if (sarahShelfCard) {
     const actions = sarahShelfCard.querySelector('.book-actions');
@@ -145,6 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const flipEbookCard = storeGrid ? [...storeGrid.querySelectorAll('.store-card')].find(card => /PDF Download Flip Book E-Book Edition/i.test(card.textContent)) : null;
   markDigitalAvailable(flipEbookCard);
   if (flipEbookCard) {
+    const deliveryText = [...flipEbookCard.querySelectorAll('p')].find(p => /Flip Book E-Book is e-mailed to the buyer after the e-Transfer is received/i.test(p.textContent));
+    if (deliveryText) deliveryText.textContent = 'A Link to the Flip Book E-Book is e-mailed to the buyer after the e-Transfer is received.';
+
     const flipOrder = flipEbookCard.querySelector('.store-order a');
     if (flipOrder) {
       flipOrder.href = 'mailto:dollackj316@gmail.com?subject=Order%20inquiry%3A%20Flip%20Book%20E-Book%20Edition%20Link&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20-%20The%20Link%20to%20the%20Flip%20Book%20E-Book%20Edition%0A%0AMy%20name%3A%0AMy%20e-mail%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A';
