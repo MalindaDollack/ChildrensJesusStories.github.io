@@ -94,6 +94,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Standard and Flip Book E-Books are available now. Match the green availability style used for Staples and change the purple order buttons to Buy Now !
+  function markDigitalAvailable(card) {
+    if (!card) return;
+    const price = card.querySelector('.price, .store-price');
+    const heading = card.querySelector('h3');
+    if (!card.querySelector('.digital-availability')) {
+      const available = document.createElement('p');
+      available.className = 'digital-availability';
+      available.textContent = '✓ AVAILABLE NOW';
+      available.style.cssText = 'display:inline-block;align-self:flex-start;margin:7px 0 5px;padding:7px 12px;border-radius:999px;background:#e8f7e8;color:#176b27;font-weight:900;border:2px solid #73b97d';
+      (price || heading).insertAdjacentElement('afterend', available);
+    }
+    const orderButton = card.querySelector('.store-order a, .store-order button');
+    if (orderButton) orderButton.textContent = 'Buy Now !';
+  }
+
+  markDigitalAvailable(standardEbookCard);
+
+  const flipEbookCard = storeGrid ? [...storeGrid.querySelectorAll('.store-card')].find(card => /PDF Download Flip Book E-Book Edition/i.test(card.textContent)) : null;
+  markDigitalAvailable(flipEbookCard);
+  if (flipEbookCard) {
+    const flipOrder = flipEbookCard.querySelector('.store-order a');
+    if (flipOrder) {
+      flipOrder.href = 'mailto:dollackj316@gmail.com?subject=Order%20inquiry%3A%20Flip%20Book%20E-Book%20Edition%20Link&body=Hello%20Malinda%2C%0A%0AI%20would%20like%3A%20Flip%20Book%20E-Book%20Edition%20Link%0A%0AMy%20name%3A%0AMy%20e-mail%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions%20if%20payment%20is%20required.%0A';
+    }
+  }
+
   // Replace the old image-by-image Sarah preview with the new approved 5-page Standard E-Book PDF preview.
   const sarahPreview = document.getElementById('sarahPreviewModal');
   if (sarahPreview) {
@@ -113,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (buy) {
       const purchase = buy.querySelector('a');
-      if (purchase) purchase.textContent = 'PURCHASE STANDARD PDF E-BOOK — C$7.00';
+      if (purchase) purchase.textContent = 'Buy Now !';
     }
   }
 
