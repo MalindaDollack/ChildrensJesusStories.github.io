@@ -47,9 +47,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const staplesOrderButton = staplesCard.querySelector('.store-order a, .store-order button'); if (staplesOrderButton) staplesOrderButton.textContent = 'Buy Now !';
   }
 
+  function goToPhotoBook() {
+    const previewModal = document.getElementById('sarahPreviewModal');
+    if (previewModal) previewModal.classList.remove('open');
+    document.body.classList.remove('preview-open');
+    const target = document.getElementById('staples-book-card');
+    if (target) {
+      history.replaceState(null, '', '#staples-book-card');
+      target.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }
+
   function makePhotoBookAvailable(button) {
-    if (!button) return; button.disabled = false; button.classList.remove('disabled'); button.textContent = 'Photo Book Edition Available Now !'; button.style.background = '#176b27'; button.style.cursor = 'pointer';
-    button.onclick = () => { const target = document.getElementById('staples-book-card'); if (target) target.scrollIntoView({behavior:'smooth', block:'center'}); };
+    if (!button) return;
+    button.disabled = false;
+    button.classList.remove('disabled');
+    button.textContent = 'Photo Book Edition Available Now !';
+    button.style.background = '#176b27';
+    button.style.cursor = 'pointer';
+    button.onclick = goToPhotoBook;
+
+    if (button.parentElement && !button.parentElement.querySelector('.photo-book-buy-link')) {
+      const buyLink = document.createElement('a');
+      buyLink.className = 'photo-book-buy-link';
+      buyLink.href = '#staples-book-card';
+      buyLink.textContent = 'Buy Now !';
+      buyLink.style.cssText = 'display:inline-block;margin-left:10px;color:#5b197d;text-decoration:underline;font-weight:900;font-size:17px;background:transparent;padding:4px 2px';
+      buyLink.onclick = (e) => { e.preventDefault(); goToPhotoBook(); };
+      button.insertAdjacentElement('afterend', buyLink);
+    }
   }
   makePhotoBookAvailable(document.querySelector('.softcover-coming'));
   makePhotoBookAvailable(document.querySelector('#sarahPreviewModal .preview-buy button'));
