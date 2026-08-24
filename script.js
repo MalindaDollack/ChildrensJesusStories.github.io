@@ -60,6 +60,39 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.head.appendChild(schema);
 
+  // Heading/content SEO: preserve the visible design while keeping one clear H1 and descriptive section headings.
+  const h1s = [...document.querySelectorAll('h1')];
+  h1s.slice(1).forEach(h => {
+    const replacement = document.createElement('h2');
+    replacement.innerHTML = h.innerHTML;
+    replacement.className = h.className;
+    replacement.id = h.id;
+    replacement.style.cssText = h.style.cssText;
+    h.replaceWith(replacement);
+  });
+
+  const setHeading = (selector, text) => {
+    const el = document.querySelector(selector);
+    if (el && el.textContent.trim() !== text) el.textContent = text;
+  };
+  setHeading('#books .section-title h2', "Children's Bible Stories & Christian Books for Kids");
+  setHeading('#store .store-intro h2', "Malinda's Story Garden Christian Books, Bible Activities & Gifts");
+
+  // Add concise crawlable context to major sections only when it is not already present.
+  const addSeoIntro = (sectionSelector, id, text, afterSelector) => {
+    const section = document.querySelector(sectionSelector);
+    if (!section || document.getElementById(id)) return;
+    const p = document.createElement('p');
+    p.id = id;
+    p.textContent = text;
+    p.style.cssText = 'max-width:850px;margin:8px auto 20px;text-align:center;line-height:1.55;font-weight:700;color:#4b146f;padding:0 14px';
+    const anchor = afterSelector ? section.querySelector(afterSelector) : null;
+    if (anchor) anchor.insertAdjacentElement('afterend', p);
+    else section.insertAdjacentElement('afterbegin', p);
+  };
+  addSeoIntro('#books', 'books-seo-intro', "Explore faith-filled children's Bible stories and Christian books for kids featuring Sarah the Baby Sheep and adorable animal friends who help young readers discover Bible adventures, kindness, courage, hope and the love of Jesus.", '.section-title');
+  addSeoIntro('#store', 'store-seo-intro', "Shop children's Christian books, Bible story activities, bookmarks and gifts from Malinda's Story Garden, created to make Bible learning joyful and memorable for children and families.", '.store-intro');
+
   // Image SEO: give important images descriptive, natural alt text without changing the artwork or layout.
   const improveImageAlt = (img) => {
     if (!img || img.dataset.seoAltDone === '1') return;
