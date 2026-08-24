@@ -78,6 +78,22 @@ document.addEventListener('DOMContentLoaded', () => {
   makeAvailable(document.querySelector('.softcover-coming'));
   makeAvailable(document.querySelector('#sarahPreviewModal .preview-buy button'));
 
+  // Use the newly approved Standard E-Book Edition cover wherever the Sarah Standard E-Book is presented.
+  const standardCoverFile = '1 Standard e-book edition cover.png';
+  const sarahShelfCover = document.querySelector('#bookGrid .book-card:first-child .cover-button img');
+  if (sarahShelfCover) {
+    sarahShelfCover.src = standardCoverFile;
+    sarahShelfCover.alt = 'Sarah the Baby Sheep Standard E-Book Edition cover';
+  }
+  const standardEbookCard = storeGrid ? [...storeGrid.querySelectorAll('.store-card')].find(card => /PDF Download Standard E-Book Edition/i.test(card.textContent)) : null;
+  if (standardEbookCard) {
+    const img = standardEbookCard.querySelector('img');
+    if (img) {
+      img.src = standardCoverFile;
+      img.alt = 'Sarah the Baby Sheep Standard PDF E-Book Edition cover';
+    }
+  }
+
   // Replace the old image-by-image Sarah preview with the new approved 5-page Standard E-Book PDF preview.
   const sarahPreview = document.getElementById('sarahPreviewModal');
   if (sarahPreview) {
