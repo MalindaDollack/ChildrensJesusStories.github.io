@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let flipButton = actions.querySelector('.shelf-flip-preview');
       if (!flipButton) { flipButton = document.createElement('button'); flipButton.type = 'button'; flipButton.className = 'soon shelf-flip-preview'; actions.appendChild(flipButton); }
       flipButton.textContent = 'FLIP BOOK C$7.00'; flipButton.style.background = '#5b197d'; flipButton.style.color = '#fff'; flipButton.style.cursor = 'pointer';
-      flipButton.onclick = () => window.open('flip-book-preview.html', '_blank', 'noopener');
+      flipButton.onclick = () => window.open('flip-book-preview-clean.html', '_blank', 'noopener');
     }
   }
 
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (deliveryText) deliveryText.textContent = 'A Link to the Flip Book E-Book is e-mailed to the buyer after the e-Transfer is received.';
     const flipOrder = flipEbookCard.querySelector('.store-order a');
     if (flipOrder) flipOrder.href = 'mailto:dollackj316@gmail.com?subject=Order%20inquiry%3A%20Flip%20Book%20E-Book%20Edition%20Link&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20-%20The%20Link%20to%20the%20Flip%20Book%20E-Book%20Edition%0A%0AMy%20name%3A%0AMy%20e-mail%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A';
-    if (!flipEbookCard.querySelector('.flip-preview-link')) { const preview = document.createElement('a'); preview.className = 'flip-preview-link'; preview.href = 'flip-book-preview.html'; preview.target = '_blank'; preview.rel = 'noopener'; preview.textContent = 'View 5-Page Flip Book Preview'; preview.style.cssText = 'display:block;margin:12px 0 4px;padding:12px 14px;border-radius:999px;background:#176b27;color:#fff;text-decoration:none;text-align:center;font-weight:900;box-shadow:0 5px 12px rgba(23,107,39,.18)'; const order = flipEbookCard.querySelector('.store-order'); if (order) order.insertAdjacentElement('beforebegin', preview); else flipEbookCard.appendChild(preview); }
+    if (!flipEbookCard.querySelector('.flip-preview-link')) { const preview = document.createElement('a'); preview.className = 'flip-preview-link'; preview.href = 'flip-book-preview-clean.html'; preview.target = '_blank'; preview.rel = 'noopener'; preview.textContent = 'View 5-Page Flip Book Preview'; preview.style.cssText = 'display:block;margin:12px 0 4px;padding:12px 14px;border-radius:999px;background:#176b27;color:#fff;text-decoration:none;text-align:center;font-weight:900;box-shadow:0 5px 12px rgba(23,107,39,.18)'; const order = flipEbookCard.querySelector('.store-order'); if (order) order.insertAdjacentElement('beforebegin', preview); else flipEbookCard.appendChild(preview); }
   }
 
   const sarahPreview = document.getElementById('sarahPreviewModal');
