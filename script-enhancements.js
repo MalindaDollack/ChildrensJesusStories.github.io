@@ -77,4 +77,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   makeAvailable(document.querySelector('.softcover-coming'));
   makeAvailable(document.querySelector('#sarahPreviewModal .preview-buy button'));
+
+  // Final audit cleanup: remove duplicate author sign-off and replace stale ordering text.
+  const about = document.querySelector('#about');
+  if (about) {
+    const signoffs = [...about.querySelectorAll('p,div,span')].filter(el => el.children.length === 0 && /with love in christ\s*,?\s*malinda dollack/i.test(el.textContent || ''));
+    signoffs.slice(1).forEach(el => el.remove());
+  }
+
+  const orderingHeading = [...document.querySelectorAll('h2,h3')].find(el => /ordering\s*&\s*payment/i.test(el.textContent || ''));
+  if (orderingHeading) {
+    let next = orderingHeading.nextElementSibling;
+    while (next && !/^H[1-3]$/.test(next.tagName)) {
+      if (/softcover:\s*coming soon|ordering will open soon/i.test(next.textContent || '')) {
+        next.textContent = 'E-book: C$7.00 · Softcover: C$22.27. Interac e-Transfer is accepted for paid products. For physical products, e-mail Malinda for exact shipping costs before sending payment.';
+        break;
+      }
+      next = next.nextElementSibling;
+    }
+  }
 });
