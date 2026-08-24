@@ -86,15 +86,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const sarahShelfCard = document.querySelector('#bookGrid .book-card:first-child');
   if (sarahShelfCard) {
     const actions = sarahShelfCard.querySelector('.book-actions');
-    if (actions && !actions.querySelector('.shelf-flip-preview')) {
-      const flipButton = document.createElement('button');
-      flipButton.type = 'button';
-      flipButton.className = 'soon shelf-flip-preview';
-      flipButton.textContent = 'FLIP BOOK E-BOOK — VIEW PREVIEW';
-      flipButton.style.background = '#176b27';
+    if (actions) {
+      let flipButton = actions.querySelector('.shelf-flip-preview');
+      if (!flipButton) {
+        flipButton = document.createElement('button');
+        flipButton.type = 'button';
+        flipButton.className = 'soon shelf-flip-preview';
+        actions.appendChild(flipButton);
+      }
+      flipButton.textContent = 'FLIP BOOK C$7.00';
+      flipButton.style.background = '#5b197d';
+      flipButton.style.color = '#fff';
       flipButton.style.cursor = 'pointer';
-      flipButton.addEventListener('click', () => window.open('flip-book-preview.html', '_blank', 'noopener'));
-      actions.appendChild(flipButton);
+      flipButton.onclick = () => window.open('flip-book-preview.html', '_blank', 'noopener');
     }
   }
 
