@@ -78,6 +78,29 @@ document.addEventListener('DOMContentLoaded', () => {
   makeAvailable(document.querySelector('.softcover-coming'));
   makeAvailable(document.querySelector('#sarahPreviewModal .preview-buy button'));
 
+  // Replace the old image-by-image Sarah preview with the new approved 5-page Standard E-Book PDF preview.
+  const sarahPreview = document.getElementById('sarahPreviewModal');
+  if (sarahPreview) {
+    const pdfFile = 'Sarah_the_Baby_Sheep_5_Page_Standard_Ebook_Preview.pdf';
+    const heading = sarahPreview.querySelector('#sarahPreviewTitle');
+    const note = sarahPreview.querySelector('.preview-note');
+    const pages = sarahPreview.querySelector('.preview-pages');
+    const buy = sarahPreview.querySelector('.preview-buy');
+
+    if (heading) heading.textContent = '5-Page Standard PDF Downloadable E-Book Preview';
+    if (note) note.textContent = 'Read the new approved five-page Standard E-Book preview below. Purchase the complete Standard PDF E-Book for C$7.00.';
+
+    if (pages) {
+      pages.style.display = 'block';
+      pages.innerHTML = `<iframe src="${pdfFile}#view=FitH" title="Sarah the Baby Sheep 5-page Standard E-Book PDF preview" style="width:100%;height:min(76vh,900px);border:3px solid #dcb8ee;border-radius:14px;background:#fff"></iframe><p style="text-align:center;margin:12px 0 0"><a href="${pdfFile}" target="_blank" rel="noopener" style="display:inline-block;padding:12px 18px;border-radius:999px;background:#6b218a;color:#fff;text-decoration:none;font-weight:900">OPEN 5-PAGE PDF PREVIEW</a></p>`;
+    }
+
+    if (buy) {
+      const purchase = buy.querySelector('a');
+      if (purchase) purchase.textContent = 'PURCHASE STANDARD PDF E-BOOK — C$7.00';
+    }
+  }
+
   // Final audit cleanup: remove duplicate author sign-off and replace stale ordering text.
   const about = document.querySelector('#about');
   if (about) {
