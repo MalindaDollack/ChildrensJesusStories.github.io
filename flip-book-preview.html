@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Sarah the Baby Sheep | 5-Page Flip Book E-Book Preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f6ecfb;font-family:Arial,sans-serif;color:#351344;text-align:center}.wrap{max-width:1100px;margin:auto;padding:18px}h1{color:#5a1678;font-size:clamp(22px,4vw,36px);margin:6px 0}.note{font-weight:700;margin:4px 0 14px}.book-area{display:flex;justify-content:center;align-items:center;min-height:65vh;overflow:hidden}.page{background:white;box-shadow:0 2px 8px #777;overflow:hidden}.page canvas{display:block;width:100%;height:100%;object-fit:contain}.controls{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin:16px 0}.controls button,.buy{border:0;border-radius:999px;padding:12px 20px;font-weight:900;font-size:16px;cursor:pointer}.controls button{background:#6b218a;color:white}.buy{display:inline-block;background:#176b27;color:white;text-decoration:none}.status{font-weight:900;color:#5a1678;min-width:100px}@media(max-width:600px){.wrap{padding:10px}.book-area{min-height:60vh}.controls button{padding:10px 14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>5-Page Flip Book E-Book Preview</h1>
+<p class="note">Click or swipe the pages to turn them like a book.</p>
+<div class="book-area"><div id="book"></div></div>
+<div class="controls"><button id="prev">◀ Previous</button><span class="status" id="status">Loading…</span><button id="next">Next ▶</button></div>
+<a class="buy" href="mailto:dollackj316@gmail.com?subject=Purchase%20Flip%20Book%20E-Book">PURCHASE FLIP BOOK E-BOOK — C$7.00</a>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const PDF='Sarah_the_Baby_Sheep_5_Page_Standard_Ebook_Preview.pdf';
+(async()=>{
+ const pdf=await pdfjsLib.getDocument(PDF).promise;
+ const book=document.getElementById('book');
+ const max=Math.min(5,pdf.numPages);
+ for(let n=1;n<=max;n++){
+   const p=await pdf.getPage(n), vp=p.getViewport({scale:1.35});
+   const div=document.createElement('div'); div.className='page';
+   const cv=document.createElement('canvas'),ctx=cv.getContext('2d');
+   cv.width=vp.width;cv.height=vp.height;div.appendChild(cv);book.appendChild(div);
+   await p.render({canvasContext:ctx,viewport:vp}).promise;
+ }
+ const first=await pdf.getPage(1),v=first.getViewport({scale:1});
+ const maxH=Math.min(window.innerHeight*.68,780), maxW=Math.min(window.innerWidth*.82,950);
+ let h=Math.min(maxH,maxW*(v.height/v.width)); let w=h*(v.width/v.height);
+ const flip=new St.PageFlip(book,{width:Math.round(w),height:Math.round(h),size:'stretch',minWidth:260,maxWidth:Math.round(w),minHeight:360,maxHeight:Math.round(h),showCover:true,mobileScrollSupport:false,usePortrait:true,flippingTime:750,drawShadow:true,maxShadowOpacity:.35});
+ flip.loadFromHTML(document.querySelectorAll('.page'));
+ const status=document.getElementById('status');
+ const show=()=>status.textContent='Page '+(flip.getCurrentPageIndex()+1)+' of '+max;
+ flip.on('flip',show);show();
+ document.getElementById('prev').onclick=()=>flip.flipPrev();document.getElementById('next').onclick=()=>flip.flipNext();
+})().catch(e=>{document.getElementById('status').textContent='Preview could not load';console.error(e)});
+</script>
+</body></html>
