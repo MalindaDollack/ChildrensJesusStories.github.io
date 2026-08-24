@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
   makeAvailable(document.querySelector('.softcover-coming'));
   makeAvailable(document.querySelector('#sarahPreviewModal .preview-buy button'));
 
-  // Use the newly approved Standard E-Book Edition cover wherever the Sarah Standard E-Book is presented.
   const standardCoverFile = '1 Standard e-book edition cover.png';
   const sarahShelfCover = document.querySelector('#bookGrid .book-card:first-child .cover-button img');
   if (sarahShelfCover) {
@@ -94,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Standard and Flip Book E-Books are available now. Match the green availability style used for Staples and change the purple order buttons to Buy Now !
   function markDigitalAvailable(card) {
     if (!card) return;
     const price = card.querySelector('.price, .store-price');
@@ -117,11 +115,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (flipEbookCard) {
     const flipOrder = flipEbookCard.querySelector('.store-order a');
     if (flipOrder) {
-      flipOrder.href = 'mailto:dollackj316@gmail.com?subject=Order%20inquiry%3A%20Flip%20Book%20E-Book%20Edition%20Link&body=Hello%20Malinda%2C%0A%0AI%20would%20like%3A%20Flip%20Book%20E-Book%20Edition%20Link%0A%0AMy%20name%3A%0AMy%20e-mail%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions%20if%20payment%20is%20required.%0A';
+      flipOrder.href = 'mailto:dollackj316@gmail.com?subject=Order%20inquiry%3A%20Flip%20Book%20E-Book%20Edition%20Link&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20-%20The%20Link%20to%20the%20Flip%20Book%20E-Book%20Edition%0A%0AMy%20name%3A%0AMy%20e-mail%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A';
     }
   }
 
-  // Replace the old image-by-image Sarah preview with the new approved 5-page Standard E-Book PDF preview.
   const sarahPreview = document.getElementById('sarahPreviewModal');
   if (sarahPreview) {
     const pdfFile = 'Sarah_the_Baby_Sheep_5_Page_Standard_Ebook_Preview.pdf';
@@ -144,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Final audit cleanup: remove duplicate author sign-off and replace stale ordering text.
   const about = document.querySelector('#about');
   if (about) {
     const signoffs = [...about.querySelectorAll('p,div,span')].filter(el => el.children.length === 0 && /with love in christ\s*,?\s*malinda dollack/i.test(el.textContent || ''));
