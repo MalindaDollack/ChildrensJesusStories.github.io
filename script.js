@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setHeading('#books .section-title h2', "Children's Bible Stories & Christian Books for Kids");
   setHeading('#store .store-intro h2', "Malinda's Story Garden Christian Books, Bible Activities & Gifts");
 
-  // Add concise crawlable context to major sections only when it is not already present.
   const addSeoIntro = (sectionSelector, id, text, afterSelector) => {
     const section = document.querySelector(sectionSelector);
     if (!section || document.getElementById(id)) return;
@@ -93,7 +92,28 @@ document.addEventListener('DOMContentLoaded', () => {
   addSeoIntro('#books', 'books-seo-intro', "Explore faith-filled children's Bible stories and Christian books for kids featuring Sarah the Baby Sheep and adorable animal friends who help young readers discover Bible adventures, kindness, courage, hope and the love of Jesus.", '.section-title');
   addSeoIntro('#store', 'store-seo-intro', "Shop children's Christian books, Bible story activities, bookmarks and gifts from Malinda's Story Garden, created to make Bible learning joyful and memorable for children and families.", '.store-intro');
 
-  // Image SEO: give important images descriptive, natural alt text without changing the artwork or layout.
+  // Internal-link SEO and accessibility: make same-page navigation descriptive and consistent.
+  const sectionNames = {home:'Home', books:"Children's Bible Story Books", store:'Christian Books and Gifts Store', bookmarks:'Bible Story Bookmarks', about:'About Christian Author Malinda Dollack', community:'Story Garden Community', contact:'Contact Malinda Dollack'};
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    if (!id || !document.getElementById(id)) return;
+    if (!a.getAttribute('aria-label') && sectionNames[id]) a.setAttribute('aria-label', sectionNames[id]);
+  });
+
+  // Add a small set of useful contextual links for visitors and search crawlers without changing the main layout.
+  if (!document.getElementById('seo-quick-links')) {
+    const target = document.querySelector('#books');
+    if (target) {
+      const nav = document.createElement('nav');
+      nav.id = 'seo-quick-links';
+      nav.setAttribute('aria-label', 'Explore Malinda’s Story Garden');
+      nav.style.cssText = 'max-width:900px;margin:0 auto 18px;text-align:center;padding:0 12px;line-height:1.8';
+      nav.innerHTML = '<a href="#books">Explore Children’s Bible Story Books</a> &nbsp;•&nbsp; <a href="#store">Shop Christian Books & Gifts</a> &nbsp;•&nbsp; <a href="#about">Meet Author Malinda Dollack</a> &nbsp;•&nbsp; <a href="#contact">Contact Malinda</a>';
+      target.insertAdjacentElement('afterbegin', nav);
+    }
+  }
+
+  // Image SEO and lightweight performance improvements.
   const improveImageAlt = (img) => {
     if (!img || img.dataset.seoAltDone === '1') return;
     const card = img.closest('.store-card, .book-card, .preview-page');
@@ -108,18 +128,23 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (!img.alt?.trim() && heading) img.alt = heading + " from Malinda's Story Garden";
 
     if (!img.classList.contains('hero-book') && !img.closest('.welcome-guide') && !img.hasAttribute('loading')) img.loading = 'lazy';
+    if (!img.classList.contains('hero-book') && !img.hasAttribute('decoding')) img.decoding = 'async';
     img.dataset.seoAltDone = '1';
   };
 
   const improveAllImages = (root = document) => root.querySelectorAll('img').forEach(improveImageAlt);
   improveAllImages();
 
-  // Some book cards and galleries are created after page load; optimize those images too.
+  // Defer non-critical iframe loading if any embeds are added now or later.
+  document.querySelectorAll('iframe:not([loading])').forEach(frame => frame.loading = 'lazy');
+
   const imageObserver = new MutationObserver(mutations => {
     mutations.forEach(m => m.addedNodes.forEach(node => {
       if (!(node instanceof Element)) return;
       if (node.matches('img')) improveImageAlt(node);
       improveAllImages(node);
+      if (node.matches('iframe') && !node.hasAttribute('loading')) node.loading = 'lazy';
+      node.querySelectorAll?.('iframe:not([loading])').forEach(frame => frame.loading = 'lazy');
     }));
   });
   imageObserver.observe(document.body, {childList:true, subtree:true});
