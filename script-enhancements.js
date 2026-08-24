@@ -82,6 +82,23 @@ document.addEventListener('DOMContentLoaded', () => {
     sarahShelfCover.src = standardCoverFile;
     sarahShelfCover.alt = 'Sarah the Baby Sheep Standard E-Book Edition cover';
   }
+
+  // Sarah shelf: keep Standard E-Book and Photo Book buttons, and add a Flip Book preview button.
+  const sarahShelfCard = document.querySelector('#bookGrid .book-card:first-child');
+  if (sarahShelfCard) {
+    const actions = sarahShelfCard.querySelector('.book-actions');
+    if (actions && !actions.querySelector('.shelf-flip-preview')) {
+      const flipButton = document.createElement('button');
+      flipButton.type = 'button';
+      flipButton.className = 'soon shelf-flip-preview';
+      flipButton.textContent = 'FLIP BOOK E-BOOK — VIEW PREVIEW';
+      flipButton.style.background = '#176b27';
+      flipButton.style.cursor = 'pointer';
+      flipButton.addEventListener('click', () => window.open('flip-book-preview.html', '_blank', 'noopener'));
+      actions.appendChild(flipButton);
+    }
+  }
+
   const standardEbookCard = storeGrid ? [...storeGrid.querySelectorAll('.store-card')].find(card => /PDF Download Standard E-Book Edition/i.test(card.textContent)) : null;
   if (standardEbookCard) {
     const img = standardEbookCard.querySelector('img');
@@ -110,6 +127,19 @@ document.addEventListener('DOMContentLoaded', () => {
   if (standardEbookCard) {
     const standardOrder = standardEbookCard.querySelector('.store-order a');
     if (standardOrder) standardOrder.href = 'mailto:dollackj316@gmail.com?subject=Order%20inquiry%3A%20PDF%20Download%20Standard%20E-Book%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20the%20PDF%20Download%20Standard%20E-Book%20Edition%0A%0AMy%20name%3A%0AMy%20e-mail%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A';
+
+    if (!standardEbookCard.querySelector('.standard-preview-link')) {
+      const preview = document.createElement('a');
+      preview.className = 'standard-preview-link';
+      preview.href = 'Sarah_the_Baby_Sheep_5_Page_Standard_Ebook_Preview.pdf';
+      preview.target = '_blank';
+      preview.rel = 'noopener';
+      preview.textContent = 'View 5-Page Standard E-Book Preview';
+      preview.style.cssText = 'display:block;margin:12px 0 4px;padding:12px 14px;border-radius:999px;background:#176b27;color:#fff;text-decoration:none;text-align:center;font-weight:900;box-shadow:0 5px 12px rgba(23,107,39,.18)';
+      const order = standardEbookCard.querySelector('.store-order');
+      if (order) order.insertAdjacentElement('beforebegin', preview);
+      else standardEbookCard.appendChild(preview);
+    }
   }
 
   const flipEbookCard = storeGrid ? [...storeGrid.querySelectorAll('.store-card')].find(card => /PDF Download Flip Book E-Book Edition/i.test(card.textContent)) : null;
