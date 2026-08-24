@@ -66,17 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
     button.style.background = '#176b27';
     button.style.cursor = 'pointer';
     button.onclick = goToPhotoBook;
-
-    if (button.parentElement && !button.parentElement.querySelector('.photo-book-buy-link')) {
-      const buyLink = document.createElement('a');
-      buyLink.className = 'photo-book-buy-link';
-      buyLink.href = '#staples-book-card';
-      buyLink.textContent = 'Buy Now !';
-      buyLink.style.cssText = 'display:inline-block;margin-left:10px;color:#5b197d;text-decoration:underline;font-weight:900;font-size:17px;background:transparent;padding:4px 2px';
-      buyLink.onclick = (e) => { e.preventDefault(); goToPhotoBook(); };
-      button.insertAdjacentElement('afterend', buyLink);
-    }
   }
+  document.querySelectorAll('.photo-book-buy-link').forEach(link => link.remove());
   makePhotoBookAvailable(document.querySelector('.softcover-coming'));
   makePhotoBookAvailable(document.querySelector('#sarahPreviewModal .preview-buy button'));
 
