@@ -60,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.head.appendChild(schema);
 
-  // Heading/content SEO: preserve the visible design while keeping one clear H1 and descriptive section headings.
   const h1s = [...document.querySelectorAll('h1')];
   h1s.slice(1).forEach(h => {
     const replacement = document.createElement('h2');
@@ -92,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
   addSeoIntro('#books', 'books-seo-intro', "Explore faith-filled children's Bible stories and Christian books for kids featuring Sarah the Baby Sheep and adorable animal friends who help young readers discover Bible adventures, kindness, courage, hope and the love of Jesus.", '.section-title');
   addSeoIntro('#store', 'store-seo-intro', "Shop children's Christian books, Bible story activities, bookmarks and gifts from Malinda's Story Garden, created to make Bible learning joyful and memorable for children and families.", '.store-intro');
 
-  // Internal-link SEO and accessibility: make same-page navigation descriptive and consistent.
   const sectionNames = {home:'Home', books:"Children's Bible Story Books", store:'Christian Books and Gifts Store', bookmarks:'Bible Story Bookmarks', about:'About Christian Author Malinda Dollack', community:'Story Garden Community', contact:'Contact Malinda Dollack'};
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     const id = a.getAttribute('href').slice(1);
@@ -100,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!a.getAttribute('aria-label') && sectionNames[id]) a.setAttribute('aria-label', sectionNames[id]);
   });
 
-  // Add a small set of useful contextual links for visitors and search crawlers without changing the main layout.
   if (!document.getElementById('seo-quick-links')) {
     const target = document.querySelector('#books');
     if (target) {
@@ -113,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Image SEO and lightweight performance improvements.
   const improveImageAlt = (img) => {
     if (!img || img.dataset.seoAltDone === '1') return;
     const card = img.closest('.store-card, .book-card, .preview-page');
@@ -135,8 +131,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const improveAllImages = (root = document) => root.querySelectorAll('img').forEach(improveImageAlt);
   improveAllImages();
 
-  // Defer non-critical iframe loading if any embeds are added now or later.
   document.querySelectorAll('iframe:not([loading])').forEach(frame => frame.loading = 'lazy');
+
+  // The green Photo Book buttons in Sarah's 12-book area and preview should take visitors to the separate Photo Book product listing, not open email directly.
+  const linkPhotoBookButton = (button) => {
+    if (!button) return;
+    button.onclick = () => {
+      const product = document.getElementById('staples-book-card');
+      if (product) product.scrollIntoView({behavior:'smooth', block:'start'});
+    };
+  };
+  linkPhotoBookButton(document.querySelector('#bookGrid .book-card:first-child .softcover-coming'));
+  linkPhotoBookButton(document.querySelector('#sarahPreviewModal .preview-buy button'));
 
   const imageObserver = new MutationObserver(mutations => {
     mutations.forEach(m => m.addedNodes.forEach(node => {
