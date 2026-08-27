@@ -1,7 +1,6 @@
 // Load English-only website enhancements.
 document.write('<script src="script-enhancements.js?v=1"><\/script>');
-document.write('<script src="game-win-celebration.js?v=1"><\/script>');
-document.write('<script src="interactive-activities.js?v=1"><\/script>');
+document.write('<script src="game-win-celebration.js?v=2"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
   const siteUrl = 'https://bigblueeyeschildrensbiblestories.com/';
@@ -135,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('iframe:not([loading])').forEach(frame => frame.loading = 'lazy');
 
-  // The green Photo Book buttons in Sarah's 12-book area and preview should take visitors to the separate Photo Book product listing, not open email directly.
   const linkPhotoBookButton = (button) => {
     if (!button) return;
     button.onclick = () => {
@@ -177,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const oneBookmark = byHeading('One Hand-made Laminated Jesus Loves You! Bookmark');
   if (oneBookmark) {
     const img = oneBookmark.querySelector('img');
-    if (img) { img.src = 'bookmark-1.jpg'; img.alt = 'One Hand-made Laminated Jesus Loves You! Bookmark'; }
+    if (img) { img.src = 'bookmark-1.jpg?v=2'; img.alt = 'One Hand-made Laminated Jesus Loves You! Bookmark'; }
     const price = oneBookmark.querySelector('.price');
     if (price) price.textContent = 'C$6.00';
     addAvailable(oneBookmark);
@@ -186,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const bookmarkPack = byHeading('Four Hand-made Laminated Jesus Loves You! Bookmarks') || byHeading('Three Hand-made Laminated Jesus Loves You! Bookmarks');
   if (bookmarkPack) {
     const img = bookmarkPack.querySelector('img');
-    if (img) { img.src = 'bookmarks-3.jpg'; img.alt = 'Three Hand-made Laminated Jesus Loves You! Bookmarks'; }
+    if (img) { img.src = 'bookmarks-3.jpg?v=2'; img.alt = 'Three Hand-made Laminated Jesus Loves You! Bookmarks'; }
     const heading = bookmarkPack.querySelector('h3');
     if (heading) heading.textContent = 'Three Hand-made Laminated Jesus Loves You! Bookmarks';
     const price = bookmarkPack.querySelector('.price');
@@ -220,8 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
       addAvailable(card);
       return card;
     };
-    const four = makeStickerCard(4, 'stickers-4.jpg');
-    const twenty = makeStickerCard(20, 'stickers-20.jpg');
+    const four = makeStickerCard(4, 'stickers-4.jpg?v=2');
+    const twenty = makeStickerCard(20, 'stickers-20.jpg?v=2');
     stickerCard.replaceWith(four, twenty);
   }
 });
