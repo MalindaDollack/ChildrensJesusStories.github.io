@@ -96,6 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <h3 style="text-align:center;color:#4b146f;margin:0 0 10px">Animal Sudoku</h3>
             <img src="Sarah Animal Suduko.png?v=1" alt="Sarah Animal Sudoku activity" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff">
           </article>
+          <article style="background:#fff;border:3px solid #d9b3ee;border-radius:20px;padding:14px;box-shadow:0 8px 22px rgba(75,20,111,.10)">
+            <h3 style="text-align:center;color:#4b146f;margin:0 0 10px">Heart Maze</h3>
+            <img src="Sarah Heart Maze.png?v=2" alt="Sarah Heart Maze activity" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff">
+          </article>
         </div>
       </div>`;
 
