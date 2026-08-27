@@ -1,5 +1,6 @@
 // Load English-only website enhancements.
 document.write('<script src="script-enhancements.js?v=1"><\/script>');
+document.write('<script src="game-win-celebration.js?v=1"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
   const siteUrl = 'https://bigblueeyeschildrensbiblestories.com/';
