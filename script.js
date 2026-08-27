@@ -155,3 +155,57 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   imageObserver.observe(document.body, {childList:true, subtree:true});
 });
+
+// August 27, 2026 store product picture and price updates.
+document.addEventListener('DOMContentLoaded', () => {
+  const cards = [...document.querySelectorAll('#store .store-card')];
+  const byHeading = text => cards.find(card => card.querySelector('h3')?.textContent.trim() === text);
+
+  const oneBookmark = byHeading('One Hand-made Laminated Jesus Loves You! Bookmark');
+  if (oneBookmark) {
+    const img = oneBookmark.querySelector('img');
+    if (img) { img.src = 'bookmark-1.jpg'; img.alt = 'One Hand-made Laminated Jesus Loves You! Bookmark'; }
+    const price = oneBookmark.querySelector('.price');
+    if (price) price.textContent = 'C$6.00';
+  }
+
+  const bookmarkPack = byHeading('Four Hand-made Laminated Jesus Loves You! Bookmarks') || byHeading('Three Hand-made Laminated Jesus Loves You! Bookmarks');
+  if (bookmarkPack) {
+    const img = bookmarkPack.querySelector('img');
+    if (img) { img.src = 'bookmarks-3.jpg'; img.alt = 'Three Hand-made Laminated Jesus Loves You! Bookmarks'; }
+    const heading = bookmarkPack.querySelector('h3');
+    if (heading) heading.textContent = 'Three Hand-made Laminated Jesus Loves You! Bookmarks';
+    const price = bookmarkPack.querySelector('.price');
+    if (price) price.textContent = 'C$8.00';
+    const orderLink = bookmarkPack.querySelector('.store-order a');
+    if (orderLink) {
+      orderLink.href = orderLink.href
+        .replaceAll('Four%20Hand-made%20Laminated%20Jesus%20Loves%20You%21%20Bookmarks','Three%20Hand-made%20Laminated%20Jesus%20Loves%20You%21%20Bookmarks')
+        .replaceAll('Four+Hand-made+Laminated+Jesus+Loves+You%21+Bookmarks','Three+Hand-made+Laminated+Jesus+Loves+You%21+Bookmarks');
+    }
+  }
+
+  const stickerCard = byHeading('Hand-made Jesus Loves You! Stickers');
+  if (stickerCard) {
+    const makeStickerCard = (quantity, image) => {
+      const card = stickerCard.cloneNode(true);
+      const img = card.querySelector('img');
+      const heading = card.querySelector('h3');
+      const price = card.querySelector('.price');
+      const desc = card.querySelectorAll('p:not(.price)')[0];
+      const orderLink = card.querySelector('.store-order a');
+      if (img) { img.src = image; img.alt = `${quantity} Hand-made Jesus Loves You! Stickers`; }
+      if (heading) heading.textContent = `${quantity} Hand-made Jesus Loves You! Stickers`;
+      if (price) price.textContent = 'C$7.00';
+      if (desc) desc.textContent = `${quantity} Jesus Loves You! stickers. Allow 24 hours processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. E-mail dollackj316@gmail.com for the exact shipping cost to your location.`;
+      if (orderLink) {
+        const product = `${quantity} Hand-made Jesus Loves You! Stickers`;
+        orderLink.href = `mailto:dollackj316@gmail.com?subject=${encodeURIComponent('Order inquiry: ' + product)}&body=${encodeURIComponent('Hello Malinda,\n\nI would like to order: ' + product + '\n\nMy name:\nMy mailing address:\n\nPlease tell me the exact shipping cost and e-Transfer instructions.\n')}`;
+      }
+      return card;
+    };
+    const four = makeStickerCard(4, 'stickers-4.jpg');
+    const twenty = makeStickerCard(20, 'stickers-20.jpg');
+    stickerCard.replaceWith(four, twenty);
+  }
+});
