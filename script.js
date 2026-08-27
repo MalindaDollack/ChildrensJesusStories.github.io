@@ -161,12 +161,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const cards = [...document.querySelectorAll('#store .store-card')];
   const byHeading = text => cards.find(card => card.querySelector('h3')?.textContent.trim() === text);
 
+  const addAvailable = card => {
+    if (!card || card.querySelector('.product-available')) return;
+    const badge = document.createElement('p');
+    badge.className = 'product-available';
+    badge.textContent = 'AVAILABLE';
+    badge.style.cssText = 'display:inline-block;align-self:flex-start;margin:4px 0 8px;padding:5px 10px;border-radius:999px;background:#e8f7e8;color:#176b2c;font-weight:900;font-size:.92rem;border:2px solid #67b878';
+    const price = card.querySelector('.price');
+    if (price) price.insertAdjacentElement('afterend', badge);
+    else card.querySelector('h3')?.insertAdjacentElement('afterend', badge);
+  };
+
   const oneBookmark = byHeading('One Hand-made Laminated Jesus Loves You! Bookmark');
   if (oneBookmark) {
     const img = oneBookmark.querySelector('img');
     if (img) { img.src = 'bookmark-1.jpg'; img.alt = 'One Hand-made Laminated Jesus Loves You! Bookmark'; }
     const price = oneBookmark.querySelector('.price');
     if (price) price.textContent = 'C$6.00';
+    addAvailable(oneBookmark);
   }
 
   const bookmarkPack = byHeading('Four Hand-made Laminated Jesus Loves You! Bookmarks') || byHeading('Three Hand-made Laminated Jesus Loves You! Bookmarks');
@@ -183,6 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .replaceAll('Four%20Hand-made%20Laminated%20Jesus%20Loves%20You%21%20Bookmarks','Three%20Hand-made%20Laminated%20Jesus%20Loves%20You%21%20Bookmarks')
         .replaceAll('Four+Hand-made+Laminated+Jesus+Loves+You%21+Bookmarks','Three+Hand-made+Laminated+Jesus+Loves+You%21+Bookmarks');
     }
+    addAvailable(bookmarkPack);
   }
 
   const stickerCard = byHeading('Hand-made Jesus Loves You! Stickers');
@@ -202,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const product = `${quantity} Hand-made Jesus Loves You! Stickers`;
         orderLink.href = `mailto:dollackj316@gmail.com?subject=${encodeURIComponent('Order inquiry: ' + product)}&body=${encodeURIComponent('Hello Malinda,\n\nI would like to order: ' + product + '\n\nMy name:\nMy mailing address:\n\nPlease tell me the exact shipping cost and e-Transfer instructions.\n')}`;
       }
+      addAvailable(card);
       return card;
     };
     const four = makeStickerCard(4, 'stickers-4.jpg');
