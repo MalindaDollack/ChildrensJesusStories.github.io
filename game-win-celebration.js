@@ -16,18 +16,18 @@ document.addEventListener('DOMContentLoaded', () => {
       z-index: 20;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       border-radius: 14px;
       background: #fff;
       opacity: 1;
       pointer-events: none;
     }
     .story-match-win-picture.flash {
-      animation: storyMatchWinFlash .65s ease-in-out 3;
+      animation: storyMatchWinFlash .55s ease-in-out 4;
     }
     @keyframes storyMatchWinFlash {
       0%, 100% { opacity: 1; }
-      50% { opacity: .18; }
+      50% { opacity: .12; }
     }
     @media (prefers-reduced-motion: reduce) {
       .story-match-win-picture.flash { animation: none; }
@@ -41,14 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const winner = document.createElement('img');
     winner.className = 'story-match-win-picture flash';
-    winner.src = 'masterpage11.png';
+    winner.src = 'masterpage11.png?v=2';
     winner.alt = 'Sarah the Baby Sheep — Jesus Loves You!';
     board.appendChild(winner);
 
     message.textContent = 'Wonderful! You matched all 12 animal friends! Jesus Loves You!';
 
     const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const displayTime = reducedMotion ? 2200 : 2600;
+    const displayTime = reducedMotion ? 2400 : 3000;
 
     celebrationTimer = window.setTimeout(() => {
       winner.remove();
@@ -57,11 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }, displayTime);
   }
 
+  const isComplete = () => {
+    const matched = board.querySelectorAll('.story-match-card.matched').length;
+    return matched >= 24 || message.textContent.includes('matched all 12 animal friends');
+  };
+
   const observer = new MutationObserver(() => {
-    if (message.textContent.includes('matched all 12 animal friends')) {
-      showWinCelebration();
-    }
+    if (isComplete()) showWinCelebration();
   });
+  observer.observe(board, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
   observer.observe(message, { childList: true, characterData: true, subtree: true });
 
   reset.addEventListener('click', () => {
