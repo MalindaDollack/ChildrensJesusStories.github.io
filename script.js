@@ -1,6 +1,6 @@
 // Stable website enhancements loader - August 27, 2026.
 document.write('<script src="script-enhancements.js?v=2"><\/script>');
-document.write('<script src="game-win-celebration.js?v=5"><\/script>');
+document.write('<script src="game-win-celebration.js?v=6"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
   // Keep below-the-fold pictures from slowing initial page load.
