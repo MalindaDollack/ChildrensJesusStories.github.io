@@ -107,4 +107,70 @@ document.addEventListener('DOMContentLoaded', () => {
     if (about) about.insertAdjacentElement('beforebegin', section);
     else document.querySelector('main')?.appendChild(section);
   }
+
+  // Reliable physical bookmark and sticker product correction.
+  const store = document.getElementById('store');
+  if (store) {
+    const cards = [...store.querySelectorAll('.store-card')];
+    const findCard = matcher => cards.find(card => matcher.test(card.querySelector('h3')?.textContent.trim() || ''));
+    const setAvailable = card => {
+      if (!card || card.querySelector('.product-available')) return;
+      const badge = document.createElement('p');
+      badge.className = 'product-available';
+      badge.textContent = 'AVAILABLE';
+      badge.style.cssText = 'display:inline-block;align-self:flex-start;margin:4px 0 8px;padding:5px 10px;border-radius:999px;background:#e8f7e8;color:#176b2c;font-weight:900;font-size:.92rem;border:2px solid #67b878';
+      const price = card.querySelector('.price');
+      (price || card.querySelector('h3'))?.insertAdjacentElement('afterend', badge);
+    };
+    const setOrderLink = (card, product) => {
+      const link = card?.querySelector('.store-order a');
+      if (!link) return;
+      link.href = `mailto:dollackj316@gmail.com?subject=${encodeURIComponent('Order inquiry: ' + product)}&body=${encodeURIComponent('Hello Malinda,\n\nI would like to order: ' + product + '\n\nMy name:\nMy mailing address:\n\nPlease tell me the exact shipping cost and e-Transfer instructions.\n')}`;
+    };
+
+    const one = findCard(/^One Hand-made Laminated Jesus Loves You! Bookmark$/i);
+    if (one) {
+      const img = one.querySelector('img');
+      if (img) { img.src = 'bookmark-1.jpg?v=4'; img.alt = 'One Hand-made Laminated Jesus Loves You! Bookmark'; }
+      const price = one.querySelector('.price');
+      if (price) price.textContent = 'C$6.00';
+      setOrderLink(one, 'One Hand-made Laminated Jesus Loves You! Bookmark');
+      setAvailable(one);
+    }
+
+    const three = findCard(/^(Four|Three) Hand-made Laminated Jesus Loves You! Bookmarks$/i);
+    if (three) {
+      const heading = three.querySelector('h3');
+      const img = three.querySelector('img');
+      const price = three.querySelector('.price');
+      if (heading) heading.textContent = 'Three Hand-made Laminated Jesus Loves You! Bookmarks';
+      if (img) { img.src = 'bookmarks-3.jpg?v=4'; img.alt = 'Three Hand-made Laminated Jesus Loves You! Bookmarks'; }
+      if (price) price.textContent = 'C$8.00';
+      setOrderLink(three, 'Three Hand-made Laminated Jesus Loves You! Bookmarks');
+      setAvailable(three);
+    }
+
+    const genericStickers = findCard(/^Hand-made Jesus Loves You! Stickers$/i);
+    if (genericStickers) {
+      const makeStickerCard = (quantity, image) => {
+        const card = genericStickers.cloneNode(true);
+        const heading = card.querySelector('h3');
+        const img = card.querySelector('img');
+        const price = card.querySelector('.price');
+        const body = [...card.querySelectorAll('p')].find(p => !p.classList.contains('price'));
+        const product = `${quantity} Hand-made Jesus Loves You! Stickers`;
+        if (heading) heading.textContent = product;
+        if (img) { img.src = `${image}?v=4`; img.alt = product; }
+        if (price) price.textContent = 'C$7.00';
+        if (body) body.textContent = `${quantity} Jesus Loves You! stickers. Allow 24 hours processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. E-mail dollackj316@gmail.com for the exact shipping cost to your location.`;
+        setOrderLink(card, product);
+        setAvailable(card);
+        return card;
+      };
+      genericStickers.replaceWith(
+        makeStickerCard(4, 'stickers-4.jpg'),
+        makeStickerCard(20, 'stickers-20.jpg')
+      );
+    }
+  }
 });
