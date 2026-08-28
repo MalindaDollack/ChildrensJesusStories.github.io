@@ -69,16 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;align-items:start">
           <article style="background:#fff;border:3px solid #d9b3ee;border-radius:20px;padding:14px;box-shadow:0 8px 22px rgba(75,20,111,.10)">
             <h3 style="text-align:center;color:#4b146f;margin:0 0 10px">Find-A-Word</h3>
-            <img src="Sarah Find-A-Word.png?v=2" alt="Sarah Find-A-Word activity" loading="lazy" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff">
-            <img src="sarah-find-a-word-instructions.png?v=2" alt="Sarah Find-A-Word instructions" loading="lazy" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff;margin-top:14px">
+            <img src="Sarah Find-A-Word.png?v=3" alt="Sarah Find-A-Word activity" loading="eager" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff">
+            <img src="sarah-find-a-word-instructions.png?v=3" alt="Sarah Find-A-Word instructions" loading="eager" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff;margin-top:14px">
           </article>
           <article style="background:#fff;border:3px solid #d9b3ee;border-radius:20px;padding:14px;box-shadow:0 8px 22px rgba(75,20,111,.10)">
             <h3 style="text-align:center;color:#4b146f;margin:0 0 10px">Animal Sudoku</h3>
-            <img src="Sarah Animal Suduko.png?v=2" alt="Sarah Animal Sudoku activity" loading="lazy" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff">
+            <img src="Sarah Animal Suduko.png?v=3" alt="Sarah Animal Sudoku activity" loading="eager" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff">
           </article>
           <article style="background:#fff;border:3px solid #d9b3ee;border-radius:20px;padding:14px;box-shadow:0 8px 22px rgba(75,20,111,.10)">
             <h3 style="text-align:center;color:#4b146f;margin:0 0 10px">Heart Maze</h3>
-            <img src="Sarah Heart Maze.png?v=3" alt="Sarah Heart Maze activity" loading="lazy" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff">
+            <img src="Sarah Heart Maze.png?v=4" alt="Sarah Heart Maze activity" loading="eager" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff">
           </article>
         </div>
       </div>`;
