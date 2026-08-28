@@ -57,33 +57,4 @@ document.addEventListener('DOMContentLoaded', () => {
       celebrating = false;
     });
   }
-
-  if (!document.getElementById('sarah-exact-activities')) {
-    const section = document.createElement('section');
-    section.id = 'sarah-exact-activities';
-    section.style.cssText = 'padding:42px 18px;background:#fffafc;border-top:4px solid #ead5f5;border-bottom:4px solid #ead5f5';
-    section.innerHTML = `
-      <div style="max-width:1100px;margin:0 auto">
-        <h2 style="text-align:center;color:#4b146f;font-family:'Baloo 2',sans-serif;font-size:clamp(2rem,5vw,3rem);margin:0 0 8px">Sarah's Bible Activities</h2>
-        <p style="text-align:center;max-width:760px;margin:0 auto 24px;font-weight:800;color:#5b197d">These are Malinda's exact activity pages from the book. The artwork has not been redrawn or changed.</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;align-items:start">
-          <article style="background:#fff;border:3px solid #d9b3ee;border-radius:20px;padding:14px;box-shadow:0 8px 22px rgba(75,20,111,.10)">
-            <h3 style="text-align:center;color:#4b146f;margin:0 0 10px">Find-A-Word</h3>
-            <img src="Sarah Find-A-Word.png?v=3" alt="Sarah Find-A-Word activity" loading="eager" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff">
-            <img src="sarah-find-a-word-instructions.png?v=3" alt="Sarah Find-A-Word instructions" loading="eager" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff;margin-top:14px">
-          </article>
-          <article style="background:#fff;border:3px solid #d9b3ee;border-radius:20px;padding:14px;box-shadow:0 8px 22px rgba(75,20,111,.10)">
-            <h3 style="text-align:center;color:#4b146f;margin:0 0 10px">Animal Sudoku</h3>
-            <img src="Sarah Animal Suduko.png?v=3" alt="Sarah Animal Sudoku activity" loading="eager" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff">
-          </article>
-          <article style="background:#fff;border:3px solid #d9b3ee;border-radius:20px;padding:14px;box-shadow:0 8px 22px rgba(75,20,111,.10)">
-            <h3 style="text-align:center;color:#4b146f;margin:0 0 10px">Heart Maze</h3>
-            <img src="Sarah Heart Maze.png?v=4" alt="Sarah Heart Maze activity" loading="eager" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px;background:#fff">
-          </article>
-        </div>
-      </div>`;
-    const about = document.getElementById('about');
-    if (about) about.insertAdjacentElement('beforebegin', section);
-    else document.querySelector('main')?.appendChild(section);
-  }
 });
