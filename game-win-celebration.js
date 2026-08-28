@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       celebrating = true;
       const winner = document.createElement('img');
       winner.className = 'story-match-win-picture flash';
-      winner.src = 'masterpage11.png?v=2';
+      winner.src = 'game-win-jesus-loves-you.png?v=1';
       winner.alt = 'Sarah the Baby Sheep — Jesus Loves You!';
       board.appendChild(winner);
       message.textContent = 'Wonderful! You matched all 12 animal friends! Jesus Loves You!';
