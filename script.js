@@ -84,18 +84,21 @@ document.addEventListener('DOMContentLoaded', () => {
     configureSticker(alreadyTwenty, 20, 'stickers-20.jpg');
   }
 
-  // Restore the visible Flip Book preview link directly on the product card.
+  // Keep the visible Flip Book preview link pointed at the working preview.
   const flipCard = findCard(/^PDF Download Flip Book E-Book Edition$/i);
-  if (flipCard && !flipCard.querySelector('.flip-preview-link')) {
-    const preview = document.createElement('a');
-    preview.className = 'flip-preview-link';
-    preview.href = 'flip-book-preview-clean.html?v=3';
-    preview.target = '_blank';
-    preview.rel = 'noopener';
-    preview.textContent = 'View 5-Page Flip Book Preview';
-    preview.style.cssText = buttonStyle + ';margin:12px 0 4px;background:#176b27';
-    const order = flipCard.querySelector('.store-order');
-    if (order) order.insertAdjacentElement('beforebegin', preview);
-    else flipCard.appendChild(preview);
+  if (flipCard) {
+    let preview = flipCard.querySelector('.flip-preview-link');
+    if (!preview) {
+      preview = document.createElement('a');
+      preview.className = 'flip-preview-link';
+      preview.target = '_blank';
+      preview.rel = 'noopener';
+      preview.textContent = 'View 5-Page Flip Book Preview';
+      preview.style.cssText = buttonStyle + ';margin:12px 0 4px;background:#176b27';
+      const order = flipCard.querySelector('.store-order');
+      if (order) order.insertAdjacentElement('beforebegin', preview);
+      else flipCard.appendChild(preview);
+    }
+    preview.href = 'flip-book-preview-clean.html';
   }
 });
