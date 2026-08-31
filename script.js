@@ -1,5 +1,5 @@
-// Stable website enhancements loader - August 27, 2026.
-document.write('<script src="script-enhancements.js?v=2"><\/script>');
+// Stable website enhancements loader - August 31, 2026.
+document.write('<script src="script-enhancements.js?v=3"><\/script>');
 document.write('<script src="game-win-celebration.js?v=6"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const cards = [...store.querySelectorAll('.store-card')];
   const findCard = pattern => cards.find(card => pattern.test(card.querySelector('h3')?.textContent.trim() || ''));
-  const buttonStyle = 'display:block;width:100%;box-sizing:border-box;border-radius:999px;background:#5b197d;color:#fff;text-decoration:none;text-align:center;font-weight:900;font-size:1rem;padding:13px 12px;box-shadow:0 5px 12px rgba(75,20,111,.22)';
 
   function addAvailable(card) {
     if (!card || card.querySelector('.product-available')) return;
@@ -84,56 +83,33 @@ document.addEventListener('DOMContentLoaded', () => {
     configureSticker(alreadyTwenty, 20, 'stickers-20.jpg');
   }
 
-  // Standard e-book: use a normal scrolling reader, not the flip-book reader.
-  const standardCard = findCard(/^PDF (?:Download|Link) Standard E-Book Edition$/i);
+  // Purchased e-books are delivered as private links. Never expose the full Standard E-Book link in the public store.
+  const standardCard = findCard(/Standard E-Book Edition/i);
   if (standardCard) {
+    standardCard.querySelectorAll('.standard-ebook-link').forEach(link => link.remove());
     const heading = standardCard.querySelector('h3');
     const img = standardCard.querySelector('img');
     const description = [...standardCard.querySelectorAll('p')].find(p => !p.classList.contains('price') && !p.classList.contains('product-available'));
-    if (heading) heading.textContent = 'PDF Link Standard E-Book Edition';
-    if (img) img.alt = 'PDF Link Standard E-Book Edition';
-    if (description) description.textContent = 'The Standard E-Book is provided to the buyer as a private reading link after the e-Transfer is received.';
-
-    let standardLink = standardCard.querySelector('.standard-ebook-link');
-    if (!standardLink) {
-      standardLink = document.createElement('a');
-      standardLink.className = 'standard-ebook-link flip-preview-link';
-      standardLink.target = '_blank';
-      standardLink.rel = 'noopener';
-      standardLink.style.cssText = buttonStyle + ';margin:12px 0 4px;background:#176b27';
-      const order = standardCard.querySelector('.store-order');
-      if (order) order.insertAdjacentElement('beforebegin', standardLink);
-      else standardCard.appendChild(standardLink);
-    }
-    standardLink.href = 'sarah-standard-ebook.html';
-    standardLink.textContent = 'Open Standard E-Book Link';
-
-    const orderLink = standardCard.querySelector('.store-order a');
-    if (orderLink) {
-      const product = 'PDF Link Standard E-Book Edition';
-      orderLink.href = `mailto:dollackj316@gmail.com?subject=${encodeURIComponent('Order inquiry: ' + product)}&body=${encodeURIComponent('Hello Malinda,\n\nI would like: ' + product + '\n\nMy name:\nMy e-mail address:\n\nPlease send me the e-Transfer instructions if payment is required.\n')}`;
-    }
+    if (heading && /Download/i.test(heading.textContent)) heading.textContent = heading.textContent.replace(/Download/gi, 'Link');
+    if (img && /Download/i.test(img.alt || '')) img.alt = img.alt.replace(/Download/gi, 'Link');
+    if (description) description.textContent = 'The private Standard E-Book link is e-mailed to the buyer after the e-Transfer is received.';
   }
 
-  // Keep the visible Flip Book preview link pointed at the working preview.
-  const flipCard = findCard(/^PDF (?:Download|Link) Flip Book E-Book Edition$/i);
+  const flipCard = findCard(/Flip Book E-Book Edition/i);
   if (flipCard) {
+    const description = [...flipCard.querySelectorAll('p')].find(p => !p.classList.contains('price') && !p.classList.contains('product-available'));
+    if (description) description.textContent = 'The private Flip Book E-Book link is e-mailed to the buyer after the e-Transfer is received.';
     let preview = flipCard.querySelector('.flip-preview-link');
-    if (!preview) {
-      preview = document.createElement('a');
-      preview.className = 'flip-preview-link';
-      preview.target = '_blank';
-      preview.rel = 'noopener';
-      preview.textContent = 'View 5-Page Flip Book Preview';
-      preview.style.cssText = buttonStyle + ';margin:12px 0 4px;background:#176b27';
-      const order = flipCard.querySelector('.store-order');
-      if (order) order.insertAdjacentElement('beforebegin', preview);
-      else flipCard.appendChild(preview);
-    }
-    preview.href = 'flip-book-preview-clean.html';
+    if (preview) preview.href = 'flip-book-preview-clean.html';
   }
 
-  // Replace website wording "Download" with "Link" for e-book products.
+  const coloringCard = findCard(/Standard E-Book Coloring Book Edition/i);
+  if (coloringCard) {
+    const description = [...coloringCard.querySelectorAll('p')].find(p => !p.classList.contains('price') && !p.classList.contains('product-available'));
+    if (description) description.textContent = 'The private Standard E-Book Coloring Book link is e-mailed to the buyer after the e-Transfer is received.';
+  }
+
+  // Replace all public e-book wording "Download" with "Link", including order e-mails.
   store.querySelectorAll('h3, img, a').forEach(el => {
     if (el.tagName === 'H3' && /Download/i.test(el.textContent)) {
       el.textContent = el.textContent.replace(/Download/gi, 'Link');
