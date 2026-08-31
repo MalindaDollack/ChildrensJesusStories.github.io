@@ -34,10 +34,28 @@ document.addEventListener('DOMContentLoaded', () => {
   if (sarahShelfCard) {
     const actions = sarahShelfCard.querySelector('.book-actions');
     if (actions) {
-      let previewButton = actions.querySelector('.shelf-flip-preview');
-      if (!previewButton) { previewButton=document.createElement('button'); previewButton.className='soon shelf-flip-preview'; actions.appendChild(previewButton); }
-      previewButton.textContent='STANDARD E-BOOK C$7.00'; previewButton.style.cursor='pointer';
-      previewButton.onclick=()=>window.open('sarah-5-page-preview.html?v=31','_blank','noopener');
+      // Keep two separate Book #1 buttons: Standard preview and Flip Book preview.
+      let standardButton = actions.querySelector('.shelf-standard-preview');
+      if (!standardButton) {
+        standardButton = document.createElement('button');
+        standardButton.type = 'button';
+        standardButton.className = 'soon shelf-standard-preview';
+        actions.appendChild(standardButton);
+      }
+      standardButton.textContent = 'STANDARD E-BOOK C$7.00';
+      standardButton.style.cursor = 'pointer';
+      standardButton.onclick = () => window.open('sarah-5-page-preview.html?v=31', '_blank', 'noopener');
+
+      let flipButton = actions.querySelector('.shelf-flip-preview');
+      if (!flipButton) {
+        flipButton = document.createElement('button');
+        flipButton.type = 'button';
+        flipButton.className = 'soon shelf-flip-preview';
+        actions.appendChild(flipButton);
+      }
+      flipButton.textContent = 'FLIP BOOK E-BOOK C$10.00';
+      flipButton.style.cursor = 'pointer';
+      flipButton.onclick = () => window.open('flip-book-preview-clean.html?v=31', '_blank', 'noopener');
     }
   }
 });
