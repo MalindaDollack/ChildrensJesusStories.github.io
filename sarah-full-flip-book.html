@@ -14,7 +14,7 @@
 <div class="wrap">
 <h1>Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story</h1>
 <p class="note">Full 24-Page Flip Book E-Book — use Next, Previous, or a page number.</p>
-<div class="book"><img id="pageImage" src="https://raw.githubusercontent.com/MalindaDollack/ChildrensJesusStories.github.io/main/fb1.png" alt="Full flip book page 1"></div>
+<div class="book"><img id="pageImage" src="fb1.png?v=24" alt="Full flip book page 1"></div>
 <div class="controls"><button id="prev" type="button">◀ Previous</button><span class="status" id="status">Page 1 of 24</span><button id="next" type="button">Next ▶</button></div>
 <div class="pages" id="pages"></div>
 </div>
@@ -26,7 +26,7 @@ var statusText=document.getElementById('status');
 var prev=document.getElementById('prev');
 var next=document.getElementById('next');
 var pages=document.getElementById('pages');
-function imageUrl(n){return 'https://raw.githubusercontent.com/MalindaDollack/ChildrensJesusStories.github.io/main/fb'+n+'.png';}
+function imageUrl(n){return 'fb'+n+'.png?v=24';}
 function goToPage(n){
  if(n<1||n>totalPages){return;}
  currentPage=n;
