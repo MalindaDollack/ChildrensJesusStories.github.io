@@ -7,50 +7,47 @@
 <meta name="robots" content="index,follow">
 <title>Sarah the Baby Sheep | 5-Page Flip Book Preview</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f6ecfb;font-family:Arial,sans-serif;color:#351344;text-align:center}.wrap{max-width:980px;margin:auto;padding:18px}h1{color:#5a1678;font-size:clamp(22px,4vw,36px);margin:6px 0}.note{font-weight:700}.book{width:min(88vw,560px);aspect-ratio:6.5/9;margin:18px auto;perspective:1800px;position:relative}.page{position:absolute;inset:0;background:#fff;border-radius:10px;box-shadow:0 12px 28px rgba(0,0,0,.28);overflow:hidden;transform-origin:left center;transition:transform .45s ease,opacity .25s ease;opacity:0;pointer-events:none;transform:rotateY(-8deg)}.page.active{opacity:1;pointer-events:auto;transform:rotateY(0)}.page img{width:100%;height:100%;object-fit:contain;display:block}.controls{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin:16px 0}.controls button,.buy,.photo{border:0;border-radius:999px;padding:12px 20px;font-weight:900;font-size:16px;cursor:pointer}.controls button,.buy{background:#6b218a;color:#fff}.controls button:disabled{background:#a98ab5;cursor:default}.buy{text-decoration:none;display:inline-block}.photo{background:#176b27;color:#fff;display:inline-block;margin-left:10px;text-decoration:none}.status{font-weight:900;color:#5a1678;min-width:110px}@media(max-width:600px){.wrap{padding:10px}.controls button{padding:10px 14px}.photo{display:block;margin:10px auto 0;width:max-content}}
+*{box-sizing:border-box}body{margin:0;background:#f6ecfb;font-family:Arial,sans-serif;color:#351344;text-align:center}.wrap{max-width:980px;margin:auto;padding:18px}h1{color:#5a1678;font-size:clamp(22px,4vw,36px);margin:6px 0}.note{font-weight:700}.book{width:min(88vw,560px);aspect-ratio:6.5/9;margin:18px auto;background:#fff;border-radius:10px;box-shadow:0 12px 28px rgba(0,0,0,.28);overflow:hidden}.book img{width:100%;height:100%;object-fit:contain;display:block}.controls{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin:16px 0}.controls button,.buy,.photo{border:0;border-radius:999px;padding:12px 20px;font-weight:900;font-size:16px;cursor:pointer}.controls button,.buy{background:#6b218a;color:#fff}.controls button:disabled{background:#a98ab5;cursor:default}.buy{text-decoration:none;display:inline-block}.photo{background:#176b27;color:#fff;display:inline-block;margin-left:10px;text-decoration:none}.status{font-weight:900;color:#5a1678;min-width:110px}.pagebuttons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}.pagebuttons button{border:2px solid #6b218a;background:#fff;color:#6b218a;border-radius:50%;width:38px;height:38px;font-weight:900;cursor:pointer}.pagebuttons button.active{background:#6b218a;color:#fff}@media(max-width:600px){.wrap{padding:10px}.controls button{padding:10px 14px}.photo{display:block;margin:10px auto 0;width:max-content}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <h1>Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story</h1>
-<p class="note">5-Page Flip Book E-Book Preview — click Next or swipe left to turn the pages.</p>
-<div class="book" id="book">
-<div class="page active"><img src="fb1.png?v=12" alt="Preview page 1"></div>
-<div class="page"><img src="fb2.png?v=12" alt="Preview page 2"></div>
-<div class="page"><img src="fb3.png?v=12" alt="Preview page 3"></div>
-<div class="page"><img src="fb4.png?v=12" alt="Preview page 4"></div>
-<div class="page"><img src="fb5.png?v=12" alt="Preview page 5"></div>
+<p class="note">5-Page Flip Book E-Book Preview — click Next to turn the pages.</p>
+<div class="book" id="book"><img id="pageImage" src="fb1.png?v=13" alt="Preview page 1"></div>
+<div class="controls"><button id="prev" type="button">◀ Previous</button><span class="status" id="status">Page 1 of 5</span><button id="next" type="button">Next ▶</button></div>
+<div class="pagebuttons">
+<button type="button" id="p1" onclick="goToPage(1)">1</button>
+<button type="button" id="p2" onclick="goToPage(2)">2</button>
+<button type="button" id="p3" onclick="goToPage(3)">3</button>
+<button type="button" id="p4" onclick="goToPage(4)">4</button>
+<button type="button" id="p5" onclick="goToPage(5)">5</button>
 </div>
-<div class="controls"><button id="prev" disabled>◀ Previous</button><span class="status" id="status">Page 1 of 5</span><button id="next">Next ▶</button></div>
 <a class="buy" href="mailto:dollackj316@gmail.com?subject=Order%20inquiry%3A%20Flip%20Book%20E-Book%20Edition%20Link&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20the%20Flip%20Book%20E-Book%20Edition.%0A%0AMy%20name%3A%0AMy%20e-mail%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">Buy Now !</a>
 <a class="photo" href="index.html#staples-book-card">Photo Book Edition Available Now !</a>
 </div>
 <script>
-(function(){
-var pages=document.querySelectorAll('.page');
-var current=0;
-var status=document.getElementById('status');
-var prevBtn=document.getElementById('prev');
-var nextBtn=document.getElementById('next');
-var book=document.getElementById('book');
-function showPage(n){
- if(n<0||n>=pages.length)return;
- for(var i=0;i<pages.length;i++){pages[i].className='page'+(i===n?' active':'');}
- current=n;
- status.innerHTML='Page '+(current+1)+' of '+pages.length;
- prevBtn.disabled=(current===0);
- nextBtn.disabled=(current===pages.length-1);
+var currentPage=1;
+var pageImage=document.getElementById('pageImage');
+var statusText=document.getElementById('status');
+var prevButton=document.getElementById('prev');
+var nextButton=document.getElementById('next');
+function goToPage(n){
+ if(n<1||n>5)return;
+ currentPage=n;
+ pageImage.src='fb'+n+'.png?v=13';
+ pageImage.alt='Preview page '+n;
+ statusText.innerHTML='Page '+n+' of 5';
+ prevButton.disabled=(n===1);
+ nextButton.disabled=(n===5);
+ for(var i=1;i<=5;i++){document.getElementById('p'+i).className=(i===n?'active':'');}
 }
-function nextPage(){showPage(current+1)}
-function prevPage(){showPage(current-1)}
-nextBtn.onclick=nextPage;
-prevBtn.onclick=prevPage;
+prevButton.onclick=function(){goToPage(currentPage-1)};
+nextButton.onclick=function(){goToPage(currentPage+1)};
 var startX=0;
-book.ontouchstart=function(e){startX=e.changedTouches[0].clientX};
-book.ontouchend=function(e){var d=e.changedTouches[0].clientX-startX;if(d<-40)nextPage();else if(d>40)prevPage()};
-book.onclick=function(e){var r=book.getBoundingClientRect();if(e.clientX>r.left+r.width/2)nextPage();else prevPage()};
-showPage(0);
-})();
+document.getElementById('book').ontouchstart=function(e){startX=e.changedTouches[0].clientX};
+document.getElementById('book').ontouchend=function(e){var d=e.changedTouches[0].clientX-startX;if(d<-40)goToPage(currentPage+1);else if(d>40)goToPage(currentPage-1)};
+goToPage(1);
 </script>
 </body>
 </html>
