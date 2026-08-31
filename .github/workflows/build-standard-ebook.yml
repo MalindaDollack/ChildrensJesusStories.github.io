@@ -1,0 +1,48 @@
+name: Build Standard E-Book PDF
+on:
+  push:
+    paths:
+      - 'stb1.png'
+      - 'sb2.png'
+      - 'fb*.png'
+      - '.github/workflows/build-standard-ebook.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pillow reportlab
+      - name: Build 24-page PDF
+        run: |
+          cat > /tmp/build.py <<'PY'
+          from reportlab.pdfgen import canvas
+          from reportlab.lib.utils import ImageReader
+          from PIL import Image
+          import os
+          files=['stb1.png','sb2.png']+[f'fb{i}.png' for i in range(3,25)]
+          out='Sarah_the_Baby_Sheep_My_Shepherd_Jesus_Birth_The_Christmas_Story_Standard_Ebook.pdf'
+          c=None
+          for n,f in enumerate(files):
+              im=Image.open(f)
+              w,h=im.size
+              if c is None: c=canvas.Canvas(out,pagesize=(w,h),pageCompression=1)
+              else: c.setPageSize((w,h))
+              c.drawImage(ImageReader(im),0,0,width=w,height=h,preserveAspectRatio=True,mask='auto')
+              c.showPage()
+          c.save()
+          print(out)
+          PY
+          python /tmp/build.py
+      - name: Commit PDF
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Sarah_the_Baby_Sheep_My_Shepherd_Jesus_Birth_The_Christmas_Story_Standard_Ebook.pdf
+          git diff --cached --quiet || git commit -m 'Update 24-page Standard E-Book PDF'
+          git push
