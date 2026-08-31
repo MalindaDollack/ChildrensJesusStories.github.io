@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Purchased e-books are delivered as private links. Never expose the full Standard E-Book link in the public store.
-  const standardCard = findCard(/Standard E-Book Edition/i);
+  const standardCard = cards.find(card => /Standard E-Book Edition/i.test(card.querySelector('h3')?.textContent || '') && !/Coloring Book/i.test(card.querySelector('h3')?.textContent || ''));
   if (standardCard) {
     standardCard.querySelectorAll('.standard-ebook-link').forEach(link => link.remove());
     const heading = standardCard.querySelector('h3');
@@ -93,6 +93,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heading && /Download/i.test(heading.textContent)) heading.textContent = heading.textContent.replace(/Download/gi, 'Link');
     if (img && /Download/i.test(img.alt || '')) img.alt = img.alt.replace(/Download/gi, 'Link');
     if (description) description.textContent = 'The private Standard E-Book link is e-mailed to the buyer after the e-Transfer is received.';
+
+    let preview = standardCard.querySelector('.standard-preview-link');
+    if (!preview) {
+      preview = document.createElement('a');
+      preview.className = 'standard-preview-link flip-preview-link';
+      const order = standardCard.querySelector('.store-order');
+      if (order) order.insertAdjacentElement('beforebegin', preview);
+      else standardCard.appendChild(preview);
+    }
+    preview.href = 'sarah-5-page-preview.html?v=32';
+    preview.target = '_blank';
+    preview.rel = 'noopener';
+    preview.textContent = 'View 5-Page Standard E-Book Preview';
   }
 
   const flipCard = findCard(/Flip Book E-Book Edition/i);
