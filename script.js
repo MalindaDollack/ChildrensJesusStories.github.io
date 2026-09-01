@@ -3,6 +3,20 @@ document.write('<script src="script-enhancements.js?v=3"><\/script>');
 document.write('<script src="game-win-celebration.js?v=6"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
+  const WEBSITE_EMAIL = 'berachahdirector@gmail.com';
+  const OLD_EMAIL = 'dollackj316@gmail.com';
+
+  // Change every visible old email address and every mailto link across the website.
+  document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+    link.href = link.href.replace(/dollackj316@gmail\.com/gi, WEBSITE_EMAIL);
+  });
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const emailTextNodes = [];
+  while (walker.nextNode()) {
+    if (walker.currentNode.nodeValue && walker.currentNode.nodeValue.toLowerCase().includes(OLD_EMAIL)) emailTextNodes.push(walker.currentNode);
+  }
+  emailTextNodes.forEach(node => { node.nodeValue = node.nodeValue.replace(/dollackj316@gmail\.com/gi, WEBSITE_EMAIL); });
+
   // Keep below-the-fold pictures from slowing initial page load.
   document.querySelectorAll('img:not(.hero-book):not(.welcome-guide img)').forEach(img => {
     if (!img.hasAttribute('loading')) img.loading = 'lazy';
@@ -61,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function setOrder(card, product) {
     const link = card?.querySelector('.store-order a');
     if (!link) return;
-    link.href = `mailto:dollackj316@gmail.com?subject=${encodeURIComponent('Order inquiry: ' + product)}&body=${encodeURIComponent('Hello Malinda,\n\nI would like to order: ' + product + '\n\nMy name:\nMy mailing address:\n\nPlease tell me the exact shipping cost and e-Transfer instructions.\n')}`;
+    link.href = `mailto:${WEBSITE_EMAIL}?subject=${encodeURIComponent('Order inquiry: ' + product)}&body=${encodeURIComponent('Hello Malinda,\n\nI would like to order: ' + product + '\n\nMy name:\nMy mailing address:\n\nPlease tell me the exact shipping cost and e-Transfer instructions.\n')}`;
   }
 
   const one = findCard(/^One Hand-made Laminated Jesus Loves You! Bookmark$/i);
@@ -100,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heading) heading.textContent = product;
     if (img) { img.src = `${image}?v=6`; img.alt = product; img.loading = 'lazy'; }
     if (price) price.textContent = 'C$7.00';
-    if (body) body.textContent = `${quantity} Jesus Loves You! stickers. Allow 24 hours processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. E-mail dollackj316@gmail.com for the exact shipping cost to your location.`;
+    if (body) body.textContent = `${quantity} Jesus Loves You! stickers. Allow 24 hours processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. E-mail ${WEBSITE_EMAIL} for the exact shipping cost to your location.`;
     setOrder(card, product);
     addAvailable(card);
   }
@@ -164,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
       el.alt = el.alt.replace(/Download/gi, 'Link');
     }
     if (el.tagName === 'A' && el.href && /^mailto:/i.test(el.href)) {
-      el.href = el.href.replace(/Download/gi, 'Link').replace(/%20Download%20/gi, '%20Link%20');
+      el.href = el.href.replace(/dollackj316@gmail\.com/gi, WEBSITE_EMAIL).replace(/Download/gi, 'Link').replace(/%20Download%20/gi, '%20Link%20');
     }
   });
 });
