@@ -69,6 +69,20 @@
     @media(max-width:560px){.store-card img{height:210px}.store-section{padding-left:10px;padding-right:10px}}
   </style>
 
+<style>
+  .subscription-overview{width:min(1220px,96vw);margin:16px auto 28px;text-align:center}
+  .subscription-main-picture{display:block;width:min(760px,94vw);margin:0 auto 14px;padding:0;border:0;background:transparent;cursor:pointer}
+  .subscription-main-picture img{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 8px 22px rgba(75,20,111,.16)}
+  .subscription-plan-details{margin:12px auto 24px}
+  .subscription-tier-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start;margin-top:22px}
+  .subscription-tier-choice{display:block;text-decoration:none;color:#4b146f;background:#fff;border:3px solid #d9b3ee;border-radius:18px;padding:10px;box-shadow:0 7px 18px rgba(75,20,111,.12)}
+  .subscription-tier-choice img{display:block;width:100%;height:auto;border-radius:12px;margin-bottom:10px}
+  .subscription-tier-choice h3{margin:6px 0;font-family:"Baloo 2",sans-serif;font-size:1.24rem;line-height:1.25;color:#4b146f}
+  .subscription-tier-choice h3 span{font-size:1rem}
+  .subscription-tier-choice h3 strong{font-size:1.05rem;color:#a00078}
+  @media(max-width:760px){.subscription-tier-row{grid-template-columns:1fr}.subscription-tier-choice{max-width:560px;margin:0 auto;width:100%;box-sizing:border-box}}
+</style>
+
 
 <style>
   /* Compact thumbnail pictures for subscription plans */
@@ -374,13 +388,33 @@
 </div></article></div>
 <!-- PHYSICAL-SUBSCRIPTIONS-START -->
 <h2 class="special-store-heading" id="physical-subscriptions">Physical Item Subscription Plans</h2>
-<div class="store-intro">
-<p><strong>Each Month a new set of 17 Physical Items will be Available.</strong></p>
-<p><strong>No Refunds on Subscription Plans</strong> but you may transfer the subscription to alternate addresses anytime.</p>
-<p>Example: If you have 12 grandchildren's birthdays and would like each one to receive a different book during the year, a different character book or item can be sent to a different address each month with your birthday message.</p>
+<div class="subscription-overview">
+  <button class="subscription-main-picture" type="button" aria-expanded="false" aria-controls="subscription-plan-details">
+    <img src="/purple.png?v=1" alt="Physical Item Subscriptions">
+  </button>
+  <div id="subscription-plan-details" class="store-intro subscription-plan-details" hidden>
+    <p><strong>Each Month a new set of 17 Physical Items will be Available.</strong></p>
+    <p><strong>No Refunds on Subscription Plans</strong> but you may transfer the subscription to alternate addresses anytime.</p>
+    <p>Example: If you have 12 grandchildren's birthdays and would like each one to receive a different book during the year, a different character book or item can be sent to a different address each month with your birthday message.</p>
+    <p><strong>Subscription PID references use the current Physical Item numbers:</strong> PID1 = 1 Bookmark, PID2 = 2 Bookmarks, PID3 = 3 Bookmarks, PID4 = 20 Small Stickers, PID5 = 4 Medium Stickers, PID6 = 1 Large Sticker, PID12 = Card Stock Coloring Book, PID13 = JESUS LOVES YOU ! Art Pad, PID15 = Matching Game Card Tile Set.</p>
+  </div>
+
+  <div class="subscription-tier-row">
+    <a class="subscription-tier-choice" href="#bronze-subscriptions">
+      <img src="/bronze.png?v=1" alt="Bronze Physical Item Subscriptions">
+      <h3>Bronze Subscriptions<br><span>1 Physical Book Sent Monthly</span><br><strong>10% Off</strong></h3>
+    </a>
+    <a class="subscription-tier-choice" href="#silver-subscriptions">
+      <img src="/silver.png?v=1" alt="Silver Physical Item Subscriptions">
+      <h3>Silver Subscriptions<br><span>1 Physical Book + 1 Companion Item Sent Monthly</span><br><strong>Both 10% Off</strong></h3>
+    </a>
+    <a class="subscription-tier-choice" href="#gold-subscriptions">
+      <img src="/gold.png?v=1" alt="Gold Physical Item Subscriptions">
+      <h3>Gold Subscriptions<br><span>Complete Monthly Package</span></h3>
+    </a>
+  </div>
 </div>
-<p class="store-intro"><strong>Subscription PID references use the current Physical Item numbers:</strong> PID1 = 1 Bookmark, PID2 = 2 Bookmarks, PID3 = 3 Bookmarks, PID4 = 20 Small Stickers, PID5 = 4 Medium Stickers, PID6 = 1 Large Sticker, PID12 = Card Stock Coloring Book, PID13 = JESUS LOVES YOU ! Art Pad, PID15 = Matching Game Card Tile Set.</p>
-<h2 class="special-store-heading">Bronze Subscriptions — 1 Physical Book Sent Monthly — 10% Off</h2>
+<h2 class="special-store-heading" id="bronze-subscriptions">Bronze Subscriptions</h2>
 <div class="store-grid"><article class="store-card subscription-card">
 <div class="product-gallery subscription-thumbnails collapsible-gallery"><img src="/website%20picture%20bbcon.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><div class="extra-product-pictures" hidden><img src="/website%20picture%20bbc.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="/website%20picture%20bbsp.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"></div></div>
 <h3 class="subscription-original-title" style="display:none">PIDBSCB1 — Bronze Subscription — One Hand Made Customizable Baby Book Sent Monthly</h3><span class="subscription-code">PIDBSCB1</span><span class="subscription-description">Bronze Subscription — One Hand Made Customizable Baby Book Sent Monthly</span>
@@ -452,7 +486,7 @@
 <p>Each month a new character edition is sent. No refunds on Subscription Plans, but the subscription may be transferred to alternate Canadian addresses at any time. Shipping included by Regular Canada Post with no tracking available unless otherwise stated. Only Available in Canada. The Bronze subscription price shown already includes the 10% subscription discount.</p>
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PIDBSCB10%20%E2%80%94%20Bronze%20Subscription%20%E2%80%94%20One%20Hand%20Made%20Saddle%20Book%20Regular%20Paper%2020%20lbs%20Sent%20Monthly&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PIDBSCB10%20%E2%80%94%20Bronze%20Subscription%20%E2%80%94%20One%20Hand%20Made%20Saddle%20Book%20Regular%20Paper%2020%20lbs%20Sent%20Monthly%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article></div>
-<h2 class="special-store-heading">Silver Subscriptions — 1 Physical Book + 1 Companion Item Sent Monthly — Both 10% Off</h2>
+<h2 class="special-store-heading" id="silver-subscriptions">Silver Subscriptions</h2>
 <div class="store-grid"><article class="store-card subscription-card">
 <div class="product-gallery subscription-thumbnails collapsible-gallery"><img src="/website%20picture%20bbcon.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><div class="extra-product-pictures" hidden><img src="/website%20picture%20bbc.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="/website%20picture%20bbsp.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="website picture bm1.png?v=13" alt="1 Hand-Made JESUS LOVES YOU ! Laminated Book Mark: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"></div></div>
 <h3 class="subscription-original-title" style="display:none">PIDSSCBA1-PID1 — Silver Subscription A — One Hand Made Customizable Baby Book + 1 Laminated Book Mark Sent Monthly</h3><span class="subscription-code">PIDSSCBA1-PID1</span><span class="subscription-description">Silver Subscription A — One Hand Made Customizable Baby Book + 1 Laminated Book Mark Sent Monthly</span>
@@ -1084,7 +1118,7 @@
 <p>Each month a new character edition is sent. No refunds on Subscription Plans, but the subscription may be transferred to alternate Canadian addresses at any time. Shipping included by Regular Canada Post with no tracking available unless otherwise stated. Only Available in Canada. The Bronze book portion is already discounted. The companion item is calculated for 12 months at 10% off, then the discounted yearly companion-item amount is rounded up to the next whole dollar before being added to the Bronze price.</p>
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PIDSSCBI10-PID15%20%E2%80%94%20Silver%20Subscription%20I%20%E2%80%94%20One%20Hand%20Made%20Saddle%20Book%20Regular%20Paper%2020%20lbs%20%2B%201%20Laminated%20Ribbon%20Tied%20Matching%20JESUS%20LOVES%20YOU%20!%20Game%20Card%20Tile%20Set%20Sent%20Monthly&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PIDSSCBI10-PID15%20%E2%80%94%20Silver%20Subscription%20I%20%E2%80%94%20One%20Hand%20Made%20Saddle%20Book%20Regular%20Paper%2020%20lbs%20%2B%201%20Laminated%20Ribbon%20Tied%20Matching%20JESUS%20LOVES%20YOU%20!%20Game%20Card%20Tile%20Set%20Sent%20Monthly%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article></div>
-<h2 class="special-store-heading">Gold Subscriptions — Complete Monthly Package</h2>
+<h2 class="special-store-heading" id="gold-subscriptions">Gold Subscriptions</h2>
 <div class="store-grid"><article class="store-card subscription-card">
 <div class="product-gallery subscription-thumbnails collapsible-gallery"><img src="/website%20picture%20bbcon.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><div class="extra-product-pictures" hidden><img src="website picture bm3.png?v=13" alt="3 Hand-Made JESUS LOVES YOU ! Laminated Book Marks: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="/website%20picture%20s20.png?v=20" alt="20 Hand Made Small Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="/website%20picture%20s4.png?v=20" alt="4 Hand Made Medium Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="/website%20picture%20s1.png?v=20" alt="1 Hand Made Large Jesus Loves You ! Sticker: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="sarah book cover for library.png" alt="Hand Made JESUS LOVES YOU ! Art Pad: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="/website%20picture%20mg.png?v=20" alt="Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Card Tiles: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"></div></div>
 <h3 class="subscription-original-title" style="display:none">PIDGSCB1-ALL — Gold Subscription — One Hand Made Customizable Baby Book + Complete Gold Companion Package</h3><span class="subscription-code">PIDGSCB1-ALL</span><span class="subscription-description">Gold Subscription — One Hand Made Customizable Baby Book + Complete Gold Companion Package</span>
@@ -1339,6 +1373,16 @@ Malinda Dollack</p>
   </div>
 
   <script>
+const subscriptionMainPicture=document.querySelector('.subscription-main-picture');
+if(subscriptionMainPicture){
+  subscriptionMainPicture.addEventListener('click',()=>{
+    const details=document.getElementById('subscription-plan-details');
+    const opening=details.hasAttribute('hidden');
+    if(opening){details.removeAttribute('hidden')}else{details.setAttribute('hidden','')}
+    subscriptionMainPicture.setAttribute('aria-expanded',opening?'true':'false');
+  });
+}
+
 const books = [
   {name:"Sweet-Pea", title:"Sweet-Pea the Baby Sparrow: Do Not Be Afraid ! God Cares ! Even the feathers on your head are numbered.", subtitle:"God's Message of Caring told through the Eyes of Sweet-Pea the Baby Sparrow !", ref:"Matthew 10:29–31 NIV", img:"sweet-pea book cover for library.png", release:"Coming November 1, 2026"},
   {name:"Sarah", title:"Sarah the Baby Sheep: My Shepherd, Jesus’s Birth, The Christmas Story", subtitle:"JESUS'S birth through the eyes of Sarah the baby sheep !", ref:"Luke 2:1–20 NIV", img:"sarah book cover for library.png", bookmark:"sarah-new.png", release:"Available Now! • December 1, 2026", available:true},
