@@ -137,6 +137,11 @@
     #physical-subscriptions ~ .store-grid .subscription-card .subscription-description{font-size:.78rem}
   }
 </style>
+
+<style>
+  /* Force hidden extra product pictures */
+  .extra-product-pictures[hidden]{display:none!important}
+</style>
 </head>
 <body>
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
@@ -1404,22 +1409,32 @@ imageViewer.addEventListener('click',e=>{if(e.target===imageViewer||e.target.clo
 
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
-  // Toggle extra product pictures from the main picture.
   document.querySelectorAll('.collapsible-gallery').forEach(gallery=>{
     const main=gallery.querySelector(':scope > img');
     const extra=gallery.querySelector(':scope > .extra-product-pictures');
     if(!main||!extra)return;
+    extra.hidden=true;
     main.style.cursor='pointer';
-    const toggle=()=>{
-      const opening=extra.hasAttribute('hidden');
-      if(opening) extra.removeAttribute('hidden'); else extra.setAttribute('hidden','');
-      main.setAttribute('aria-expanded',String(opening));
-    };
     main.setAttribute('role','button');
     main.setAttribute('tabindex','0');
     main.setAttribute('aria-expanded','false');
-    main.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggle();},true);
-    main.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+    const toggle=()=>{
+      const opening=extra.hidden;
+      extra.hidden=!opening;
+      main.setAttribute('aria-expanded',String(opening));
+    };
+    main.addEventListener('click',e=>{
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      toggle();
+    });
+    main.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){
+        e.preventDefault();
+        e.stopPropagation();
+        toggle();
+      }
+    });
   });
 });
 </script>
