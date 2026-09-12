@@ -32,42 +32,52 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Install lossless image optimizers
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y optipng jpegoptim
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
 
-      - name: Losslessly optimize PNG images
-        run: |
-          find . -type f \( -iname '*.png' -o -iname '*.PNG' \) \
-            -not -path './.git/*' -print0 \
-            | xargs -0 -r -n1 optipng -o2 -strip all -quiet
+      - name: Install Pillow
+        run: python -m pip install pillow
 
-      - name: Losslessly optimize JPEG images
+      - name: Create lightweight WebP website copies
         run: |
-          find . -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.JPG' -o -iname '*.JPEG' \) \
-            -not -path './.git/*' -print0 \
-            | xargs -0 -r jpegoptim --strip-all --preserve
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
 
-      - name: Commit optimized images only when needed
+          outdir = Path('web-images')
+          outdir.mkdir(exist_ok=True)
+
+          for p in Path('.').glob('*'):
+              if p.suffix.lower() not in {'.png','.jpg','.jpeg'}:
+                  continue
+              try:
+                  im = Image.open(p).convert('RGB')
+              except Exception:
+                  continue
+
+              max_width = 900
+              if im.width > max_width:
+                  new_h = round(im.height * max_width / im.width)
+                  im = im.resize((max_width, new_h), Image.Resampling.LANCZOS)
+
+              out = outdir / (p.stem + '.webp')
+              im.save(out, 'WEBP', quality=68, method=6)
+              print(f'{p.name} -> {out}')
+          PY
+
+      - name: Commit lightweight website copies
         run: |
-          if git diff --quiet; then
-            echo 'Images are already optimized. No changes to commit.'
-            exit 0
-          fi
-
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
+          git add web-images
 
           if git diff --cached --quiet; then
-            echo 'No image changes to commit.'
+            echo 'No web image changes to commit.'
             exit 0
           fi
 
-          git commit -m 'Optimize website images for faster loading [skip ci]'
-
-          # If another website update landed while this job was running,
-          # rebase the optimization commit onto the newest main branch first.
+          git commit -m 'Create lightweight web images for faster loading [skip ci]'
           git pull --rebase origin main
           git push origin main
