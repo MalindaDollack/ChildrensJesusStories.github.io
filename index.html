@@ -204,6 +204,13 @@
   contain-intrinsic-size:420px;
 }
 </style>
+<style>
+.subscription-info-toggle{border:0;margin:0;padding:0}
+.subscription-info-toggle>summary{list-style:none}
+.subscription-info-toggle>summary::-webkit-details-marker{display:none}
+.subscription-info-toggle:not([open]) .subscription-plan-details{display:none!important}
+.subscription-tier-container[hidden]{display:none!important}
+</style>
 </head>
 <body>
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
@@ -423,15 +430,17 @@
 <!-- PHYSICAL-SUBSCRIPTIONS-START -->
 <h2 class="special-store-heading" id="physical-subscriptions">Physical Item Subscription Plans</h2>
 <div class="subscription-overview">
-  <button class="subscription-main-picture" type="button" aria-expanded="false" aria-controls="subscription-plan-details">
-    <img loading="lazy" decoding="async" src="web-images/purple.webp?v=1" alt="Physical Item Subscriptions">
-  </button>
-  <div id="subscription-plan-details" class="store-intro subscription-plan-details" hidden>
-    <p><strong>Each Month a new set of 17 Physical Items will be Available.</strong></p>
-    <p><strong>No Refunds on Subscription Plans</strong> but you may transfer the subscription to alternate addresses anytime.</p>
-    <p>Example: If you have 12 grandchildren's birthdays and would like each one to receive a different book during the year, a different character book or item can be sent to a different address each month with your birthday message.</p>
-    <p><strong>Subscription PID references use the current Physical Item numbers:</strong> PID1 = 1 Bookmark, PID2 = 2 Bookmarks, PID3 = 3 Bookmarks, PID4 = 20 Small Stickers, PID5 = 4 Medium Stickers, PID6 = 1 Large Sticker, PID12 = Card Stock Coloring Book, PID13 = JESUS LOVES YOU ! Art Pad, PID15 = Matching Game Card Tile Set.</p>
-  </div>
+  <details class="subscription-info-toggle">
+    <summary class="subscription-main-picture">
+      <img loading="lazy" decoding="async" src="web-images/purple.webp?v=1" alt="Physical Item Subscriptions">
+    </summary>
+    <div id="subscription-plan-details" class="store-intro subscription-plan-details">
+      <p><strong>Each Month a new set of 17 Physical Items will be Available.</strong></p>
+      <p><strong>No Refunds on Subscription Plans</strong> but you may transfer the subscription to alternate addresses anytime.</p>
+      <p>Example: If you have 12 grandchildren's birthdays and would like each one to receive a different book during the year, a different character book or item can be sent to a different address each month with your birthday message.</p>
+      <p><strong>Subscription PID references use the current Physical Item numbers:</strong> PID1 = 1 Bookmark, PID2 = 2 Bookmarks, PID3 = 3 Bookmarks, PID4 = 20 Small Stickers, PID5 = 4 Medium Stickers, PID6 = 1 Large Sticker, PID12 = Card Stock Coloring Book, PID13 = JESUS LOVES YOU ! Art Pad, PID15 = Matching Game Card Tile Set.</p>
+    </div>
+  </details>
 
   <div class="subscription-tier-row">
     <a class="subscription-tier-choice" href="#bronze-subscriptions" role="button" aria-expanded="false">
@@ -449,9 +458,9 @@
   </div>
 </div>
 
-<section id="bronze-subscriptions" class="subscription-tier-container" hidden data-src="bronze-subscriptions.html"></section>
-<section id="silver-subscriptions" class="subscription-tier-container" hidden data-src="silver-subscriptions.html"></section>
-<section id="gold-subscriptions" class="subscription-tier-container" hidden data-src="gold-subscriptions.html"></section>
+<section id="bronze-subscriptions" class="subscription-tier-container" hidden data-src="bronze-subscriptions.html?v=11"></section>
+<section id="silver-subscriptions" class="subscription-tier-container" hidden data-src="silver-subscriptions.html?v=11"></section>
+<section id="gold-subscriptions" class="subscription-tier-container" hidden data-src="gold-subscriptions.html?v=11"></section>
 
 <!-- PHYSICAL-SUBSCRIPTIONS-END -->
 </section>
@@ -636,17 +645,6 @@ Malinda Dollack</p>
   </div>
 
   <script>
-const subscriptionMainPicture=document.querySelector('.subscription-main-picture');
-if(subscriptionMainPicture){
-  subscriptionMainPicture.addEventListener('click',()=>{
-    const details=document.getElementById('subscription-plan-details');
-    const opening=details.hasAttribute('hidden');
-    if(opening){details.removeAttribute('hidden')}else{details.setAttribute('hidden','')}
-    subscriptionMainPicture.setAttribute('aria-expanded',opening?'true':'false');
-  });
-}
-
-
 const subscriptionTierLinks=document.querySelectorAll('.subscription-tier-choice[href^="#"]');
 const subscriptionTierIds=['bronze-subscriptions','silver-subscriptions','gold-subscriptions'];
 
@@ -661,7 +659,7 @@ async function setSubscriptionTierOpen(id,open){
     container.innerHTML='<p class="store-intro"><strong>Loading subscriptions…</strong></p>';
     container.hidden=false;
     try{
-      const response=await fetch(container.dataset.src+'?v=20260912-6');
+      const response=await fetch(container.dataset.src);
       if(!response.ok) throw new Error('Could not load subscriptions');
       container.innerHTML=await response.text();
       container.dataset.loaded='true';
