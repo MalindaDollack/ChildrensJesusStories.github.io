@@ -285,6 +285,24 @@
   }
 }
 </style>
+<style id="subscription-full-width-row-fix">
+.subscription-tier-row{align-items:start}
+.subscription-simple-block[open]{grid-column:1/-1!important;width:100%!important}
+.subscription-simple-block[open]>.subscription-inline-content{width:100%!important}
+.subscription-inline-content .store-grid{width:100%!important;max-width:none!important}
+.subscription-inline-content .subscription-card{
+  width:100%!important;
+  box-sizing:border-box!important;
+  grid-template-columns:54px 110px 180px minmax(0,1fr)!important;
+}
+@media(max-width:760px){
+  .subscription-inline-content{overflow-x:auto!important}
+  .subscription-inline-content .store-grid{min-width:760px!important}
+  .subscription-inline-content .subscription-card{
+    grid-template-columns:46px 95px 150px minmax(420px,1fr)!important;
+  }
+}
+</style>
 </head>
 <body>
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
