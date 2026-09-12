@@ -107,7 +107,7 @@
   #physical-subscriptions ~ .store-grid .subscription-card .product-gallery>img{
     width:48px!important;height:48px!important;object-fit:contain;border:1px solid #ead5f5;border-radius:7px;
   }
-  #physical-subscriptions ~ .store-grid .subscription-card .extra-product-pictures{display:none!important}
+  #physical-subscriptions ~ .store-grid .subscription-card .extra-product-pictures{grid-area:desc;display:grid;grid-template-columns:repeat(auto-fit,minmax(54px,1fr));gap:6px;margin-top:6px}
   #physical-subscriptions ~ .store-grid .subscription-card .price{
     grid-area:price;margin:0;font-size:1.02rem;white-space:nowrap;
   }
@@ -1379,24 +1379,51 @@ document.getElementById('messageForm').addEventListener('submit',e=>{e.preventDe
 
 function preview(inputId,previewId){document.getElementById(inputId).addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const img=document.getElementById(previewId);img.src=URL.createObjectURL(file);img.classList.add('show')})}preview('photoInput','photoPreview');preview('artInput','artPreview');
 
-// Product details stay hidden until the customer clicks a product picture.
+// Product details and extra pictures stay hidden until the customer clicks the MAIN product picture.
 document.querySelectorAll('.store-card').forEach(card=>{
   const details=card.querySelector(':scope > .store-details');
-  if(!details)return;
-  card.querySelectorAll(':scope > img, :scope > .product-gallery img').forEach(img=>{
-    img.style.cursor='pointer';
-    img.setAttribute('role','button');
-    img.setAttribute('tabindex','0');
-    img.setAttribute('aria-expanded','false');
-    const toggleDetails=()=>{
-      const opening=details.hasAttribute('hidden');
-      if(opening){details.removeAttribute('hidden');}
-      else{details.setAttribute('hidden','');}
-      card.querySelectorAll(':scope > img, :scope > .product-gallery img').forEach(i=>i.setAttribute('aria-expanded',String(opening)));
-    };
-    img.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggleDetails();},true);
-    img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleDetails();}});
+  const gallery=card.querySelector(':scope > .collapsible-gallery, :scope > .product-gallery.collapsible-gallery');
+  const main=gallery ? gallery.querySelector(':scope > img') : card.querySelector(':scope > img');
+  const extra=gallery ? gallery.querySelector(':scope > .extra-product-pictures') : null;
+  if(!main)return;
+
+  if(details) details.hidden=true;
+  if(extra) extra.hidden=true;
+
+  main.style.cursor='pointer';
+  main.setAttribute('role','button');
+  main.setAttribute('tabindex','0');
+  main.setAttribute('aria-expanded','false');
+
+  const toggleProduct=()=>{
+    const opening = details ? details.hidden : (extra ? extra.hidden : false);
+    if(details) details.hidden=!opening;
+    if(extra) extra.hidden=!opening;
+    main.setAttribute('aria-expanded',String(opening));
+  };
+
+  main.addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    toggleProduct();
+  },true);
+
+  main.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      e.stopPropagation();
+      toggleProduct();
+    }
   });
+
+  // Extra pictures do not close the gallery when clicked.
+  if(extra){
+    extra.querySelectorAll('img').forEach(img=>{
+      img.style.cursor='default';
+      img.removeAttribute('role');
+      img.removeAttribute('tabindex');
+    });
+  }
 });
 
 const imageViewer=document.createElement('div');
@@ -1407,36 +1434,6 @@ imageViewer.addEventListener('click',e=>{if(e.target===imageViewer||e.target.clo
   </script>
 <script src="script.js?v=10"></script>
 
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-  document.querySelectorAll('.collapsible-gallery').forEach(gallery=>{
-    const main=gallery.querySelector(':scope > img');
-    const extra=gallery.querySelector(':scope > .extra-product-pictures');
-    if(!main||!extra)return;
-    extra.hidden=true;
-    main.style.cursor='pointer';
-    main.setAttribute('role','button');
-    main.setAttribute('tabindex','0');
-    main.setAttribute('aria-expanded','false');
-    const toggle=()=>{
-      const opening=extra.hidden;
-      extra.hidden=!opening;
-      main.setAttribute('aria-expanded',String(opening));
-    };
-    main.addEventListener('click',e=>{
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      toggle();
-    });
-    main.addEventListener('keydown',e=>{
-      if(e.key==='Enter'||e.key===' '){
-        e.preventDefault();
-        e.stopPropagation();
-        toggle();
-      }
-    });
-  });
-});
-</script>
+
 </body>
 </html>
