@@ -1281,7 +1281,7 @@ books.forEach((b,i)=>{
   const card=document.createElement('article');
   card.className='book-card';
   const media=b.img?`<img src="${b.img}" alt="${b.title} book cover">`:`<div class="placeholder"><span>📖</span><b>${b.name}</b><small>Cover artwork coming soon</small></div>`;
-  const availability=b.available?`<div class="book-actions"><button class="soon order-ebook" type="button">STANDARD E-BOOK C$7.00</button><a class="soon flipbook-option" href="#downloads">FLIP BOOK E-BOOK C$10.00</a><button class="soon softcover-coming" type="button" disabled>SOFTCOVER COMING SOON</button></div>`:`<div class="book-actions"><button class="soon coming-soon-book" type="button">COMING SOON</button></div>`;
+  const availability=b.available?`<div class="book-actions"><button class="soon order-ebook" type="button">STANDARD E-BOOK C$7.00</button><a class="soon flipbook-option" href="#downloads">FLIP BOOK E-BOOK C$10.00</a></div><p class="reference"><strong>Physical Items Available Now: PID1–PID8, PID11, PID14, PID15, PID16 and PID17</strong></p>`:`<div class="book-actions"><button class="soon coming-soon-book" type="button">COMING SOON</button></div>`;
   const seoDescription=b.available?`<p class="book-description">A joyful Christmas Bible story for kids about the birth of Jesus, the Nativity, and Luke 2, told through the eyes of Sarah the Baby Sheep.</p>`:``;
   card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${b.title}</h3><p class="reference">${b.ref}</p><p class="reference"><strong>${b.release}</strong></p>${seoDescription}${availability}`;
   const cover=card.querySelector('.cover-button');
