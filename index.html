@@ -303,6 +303,78 @@
   }
 }
 </style>
+<style id="subscription-layout-final-fix">
+/* Keep the three subscription picture choices across the top. */
+.subscription-tier-row{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:18px!important;
+}
+/* When one is opened, its picture stays in its own column but its list becomes
+   a full-width grid item on the next row. */
+.subscription-tier-row>.subscription-simple-block{
+  display:grid!important;
+  grid-template-columns:subgrid;
+}
+.subscription-tier-row>.subscription-simple-block[open]{
+  grid-column:auto!important;
+  width:auto!important;
+}
+.subscription-tier-row>.subscription-simple-block[open]>.subscription-inline-content{
+  position:relative!important;
+  width:calc(300% + 36px)!important;
+  max-width:none!important;
+}
+.subscription-tier-row>.subscription-simple-block:nth-child(2)[open]>.subscription-inline-content{
+  margin-left:calc(-100% - 18px)!important;
+}
+.subscription-tier-row>.subscription-simple-block:nth-child(3)[open]>.subscription-inline-content{
+  margin-left:calc(-200% - 36px)!important;
+}
+.subscription-inline-content .subscription-card{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  gap:12px!important;
+  width:100%!important;
+  min-height:52px!important;
+  padding:6px 10px!important;
+  box-sizing:border-box!important;
+  text-align:left!important;
+}
+.subscription-inline-content .subscription-card .product-gallery{
+  flex:0 0 44px!important;
+  width:44px!important;
+  height:44px!important;
+}
+.subscription-inline-content .subscription-card .product-gallery>img{
+  width:44px!important;
+  height:44px!important;
+  object-fit:contain!important;
+}
+.subscription-inline-content .subscription-card .price{
+  flex:0 0 105px!important;
+  order:2!important;
+  margin:0!important;
+}
+.subscription-inline-content .subscription-card .subscription-code{
+  flex:0 0 160px!important;
+  order:3!important;
+}
+.subscription-inline-content .subscription-card .subscription-description{
+  flex:1 1 auto!important;
+  order:4!important;
+  min-width:0!important;
+}
+.subscription-inline-content .subscription-card .product-gallery{order:1!important}
+@media(max-width:760px){
+  .subscription-tier-row{grid-template-columns:1fr!important}
+  .subscription-tier-row>.subscription-simple-block[open]>.subscription-inline-content{
+    width:100%!important;margin-left:0!important;overflow-x:auto!important;
+  }
+  .subscription-inline-content .subscription-card{min-width:720px!important}
+}
+</style>
 </head>
 <body>
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
