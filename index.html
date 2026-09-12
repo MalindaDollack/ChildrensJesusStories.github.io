@@ -190,6 +190,20 @@
 .subscription-tier-container[hidden]{display:none!important}
 .subscription-tier-container{width:min(1220px,96vw);margin:0 auto 24px}
 </style>
+<style id="performance-fix">
+#store .store-grid,
+.shelf-section,
+.welcome-guide,
+#community,
+#contact{
+  content-visibility:auto;
+  contain-intrinsic-size:800px;
+}
+.store-card{
+  content-visibility:auto;
+  contain-intrinsic-size:420px;
+}
+</style>
 </head>
 <body>
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
@@ -213,12 +227,12 @@
        <p>Joyful, colourful Christian children’s books and Bible stories for kids that help children discover courage, kindness, obedience, hope, and the love of Jesus.</p>
         <div class="hero-actions"><a class="big-button" href="#books">Explore the Storybook Shelf</a><a class="outline-button" href="#about">Meet Malinda</a></div>
       </div>
-      <img class="hero-book" src="sarah book cover for library.png" alt="Sarah the Baby Sheep book cover">
+      <img loading="eager" fetchpriority="high" class="hero-book" src="sarah book cover for library.png" alt="Sarah the Baby Sheep book cover">
       <span class="butterfly b1">🦋</span><span class="butterfly b2">🦋</span><span class="butterfly b3">🦋</span>
     </section>
 
     <section class="welcome-guide" aria-label="Sarah welcome guide">
-      <img src="sarah-character.png" alt="Sarah the Baby Sheep">
+      <img loading="lazy" src="sarah-character.png" alt="Sarah the Baby Sheep">
       <div><h2>Hello! I’m Sarah!</h2><p>Welcome to Malinda’s Story Garden, where children meet adorable animal friends through Christian stories and Bible adventures as we learn about Jesus together!</p><a href="#books">Yes! Show Me Around!</a></div>
     </section>
 
@@ -237,7 +251,7 @@
 <h2 class="special-store-heading">Digital Items — Downloads</h2>
 <p class="store-intro"><strong>No Refunds on Digital Items</strong></p>
 <div class="store-grid"><article class="store-card">
-<img src="website picture bm1.png?v=13" alt="JESUS LOVES YOU ! Book Mark: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="website picture bm1.png?v=13" alt="JESUS LOVES YOU ! Book Mark: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>DID1 — JESUS LOVES YOU ! Book Mark: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">FREE</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -245,7 +259,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20DID1%20JESUS%20LOVES%20YOU%20!%20Book%20Mark%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20DID1%20JESUS%20LOVES%20YOU%20!%20Book%20Mark%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card">
-<div class="product-gallery collapsible-gallery"><img src="/website%20picture%20s20.png?v=20" alt="Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><div class="extra-product-pictures" hidden><img src="/website%20picture%20s4.png?v=20" alt="Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="/website%20picture%20s1.png?v=20" alt="Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"></div></div>
+<div class="product-gallery collapsible-gallery"><img loading="lazy" src="/website%20picture%20s20.png?v=20" alt="Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><div class="extra-product-pictures" hidden><img loading="lazy" src="/website%20picture%20s4.png?v=20" alt="Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img loading="lazy" src="/website%20picture%20s1.png?v=20" alt="Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"></div></div>
 <h3>DID2 — Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$7.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -253,7 +267,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20DID2%20Jesus%20Loves%20You%20!%20Stickers%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20DID2%20Jesus%20Loves%20You%20!%20Stickers%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card">
-<img src="1 Standard e-book edition cover.png?v=13" alt="Standard E - Book: Sarah the Baby Sheep. My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="1 Standard e-book edition cover.png?v=13" alt="Standard E - Book: Sarah the Baby Sheep. My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>DID3 — Standard E - Book: Sarah the Baby Sheep. My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$7.00</p>
 <p class="product-available">AVAILABLE</p><a class="flip-preview-link" href="/sarah-5-page-preview.html">VIEW STANDARD E-BOOK PREVIEW</a><div class="store-details" hidden>
@@ -261,7 +275,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20DID3%20Standard%20E%20-%20Book%3A%20Sarah%20the%20Baby%20Sheep.%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20DID3%20Standard%20E%20-%20Book%3A%20Sarah%20the%20Baby%20Sheep.%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card">
-<img src="sarah book cover for library.png" alt="Flip Book E - Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="sarah book cover for library.png" alt="Flip Book E - Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>DID4 — Flip Book E - Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$10.00</p>
 <p class="product-available">AVAILABLE</p><a class="flip-preview-link" href="/flip-book-preview-clean.html">VIEW FLIP BOOK PREVIEW</a><div class="store-details" hidden>
@@ -271,7 +285,7 @@
 <h2 class="special-store-heading">Physical Items</h2>
 <p class="store-intro"><strong>Each Month a new set of 17 Physical Items will be Available.</strong><br>Full Refund on Physical Items purchased Individually - if not totally satisfied that book matches description provided. These are Hand Made Items and not Commercially produced so there may be minor imperfections but made with tons of LOVE ! If unsatisfied return to Malinda Dollack for a Full Refund within 30 Days.</p>
 <div class="store-grid"><article class="store-card" id="store-PID1">
-<img src="website picture bm1.png?v=13" alt="1 Hand-Made JESUS LOVES YOU ! Laminated Book Mark: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="website picture bm1.png?v=13" alt="1 Hand-Made JESUS LOVES YOU ! Laminated Book Mark: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>PID1 — 1 Hand-Made JESUS LOVES YOU ! Laminated Book Mark: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$7.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -279,7 +293,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID1%201%20Hand-Made%20JESUS%20LOVES%20YOU%20!%20Laminated%20Book%20Mark%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID1%201%20Hand-Made%20JESUS%20LOVES%20YOU%20!%20Laminated%20Book%20Mark%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card" id="store-PID2">
-<img src="website picture bm2.png?v=13" alt="2 Hand-Made JESUS LOVES YOU ! Laminated Book Marks: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="website picture bm2.png?v=13" alt="2 Hand-Made JESUS LOVES YOU ! Laminated Book Marks: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>PID2 — 2 Hand-Made JESUS LOVES YOU ! Laminated Book Marks: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$8.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -287,7 +301,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID2%202%20Hand-Made%20JESUS%20LOVES%20YOU%20!%20Laminated%20Book%20Marks%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID2%202%20Hand-Made%20JESUS%20LOVES%20YOU%20!%20Laminated%20Book%20Marks%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card" id="store-PID3">
-<img src="website picture bm3.png?v=13" alt="3 Hand-Made JESUS LOVES YOU ! Laminated Book Marks: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="website picture bm3.png?v=13" alt="3 Hand-Made JESUS LOVES YOU ! Laminated Book Marks: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>PID3 — 3 Hand-Made JESUS LOVES YOU ! Laminated Book Marks: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$9.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -295,7 +309,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID3%203%20Hand-Made%20JESUS%20LOVES%20YOU%20!%20Laminated%20Book%20Marks%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID3%203%20Hand-Made%20JESUS%20LOVES%20YOU%20!%20Laminated%20Book%20Marks%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card" id="store-PID4">
-<img src="/website%20picture%20s20.png?v=20" alt="20 Hand Made Small Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="/website%20picture%20s20.png?v=20" alt="20 Hand Made Small Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>PID4 — 20 Hand Made Small Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$8.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -303,7 +317,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID4%2020%20Hand%20Made%20Small%20Jesus%20Loves%20You%20!%20Stickers%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID4%2020%20Hand%20Made%20Small%20Jesus%20Loves%20You%20!%20Stickers%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card" id="store-PID5">
-<img src="/website%20picture%20s4.png?v=20" alt="4 Hand Made Medium Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="/website%20picture%20s4.png?v=20" alt="4 Hand Made Medium Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>PID5 — 4 Hand Made Medium Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$8.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -311,7 +325,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID5%204%20Hand%20Made%20Medium%20Jesus%20Loves%20You%20!%20Stickers%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID5%204%20Hand%20Made%20Medium%20Jesus%20Loves%20You%20!%20Stickers%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card" id="store-PID6">
-<img src="/website%20picture%20s1.png?v=20" alt="1 Hand Made Large Jesus Loves You ! Sticker: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="/website%20picture%20s1.png?v=20" alt="1 Hand Made Large Jesus Loves You ! Sticker: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>PID6 — 1 Hand Made Large Jesus Loves You ! Sticker: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$10.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -319,7 +333,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID6%201%20Hand%20Made%20Large%20Jesus%20Loves%20You%20!%20Sticker%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID6%201%20Hand%20Made%20Large%20Jesus%20Loves%20You%20!%20Sticker%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card portrait-product" id="store-PID7">
-<div class="product-gallery collapsible-gallery"><img src="/website%20picture%20bbcon.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><div class="extra-product-pictures" hidden><img src="/website%20picture%20bbc.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="/website%20picture%20bbsp.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"></div></div>
+<div class="product-gallery collapsible-gallery"><img loading="lazy" src="/website%20picture%20bbcon.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><div class="extra-product-pictures" hidden><img loading="lazy" src="/website%20picture%20bbc.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img loading="lazy" src="/website%20picture%20bbsp.png?v=20" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"></div></div>
 <h3>PID7 — 1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$40.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -327,7 +341,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID7%201%20Hand%20Made%20Customizable%20Hand%20Made%20Laminated%2C%20Ribbon%20Bound%2C%20Round%20Cornered%2C%20Baby%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID7%201%20Hand%20Made%20Customizable%20Hand%20Made%20Laminated%2C%20Ribbon%20Bound%2C%20Round%20Cornered%2C%20Baby%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card portrait-product" id="store-PID8">
-<img src="/website%20picture%20bbsp.png?v=20" alt="1 Hand Made Standard Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="/website%20picture%20bbsp.png?v=20" alt="1 Hand Made Standard Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>PID8 — 1 Hand Made Standard Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$37.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -335,7 +349,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID8%201%20Hand%20Made%20Standard%20Hand%20Made%20Laminated%2C%20Ribbon%20Bound%2C%20Round%20Cornered%2C%20Baby%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID8%201%20Hand%20Made%20Standard%20Hand%20Made%20Laminated%2C%20Ribbon%20Bound%2C%20Round%20Cornered%2C%20Baby%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card">
-<img src="sarah book cover for library.png" alt="1 Hand Made Perfect Binding Hard Cover Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="sarah book cover for library.png" alt="1 Hand Made Perfect Binding Hard Cover Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>PID9 — 1 Hand Made Perfect Binding Hard Cover Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$35.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -343,7 +357,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID9%201%20Hand%20Made%20Perfect%20Binding%20Hard%20Cover%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID9%201%20Hand%20Made%20Perfect%20Binding%20Hard%20Cover%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card">
-<img src="sarah book cover for library.png" alt="Hand Made Perfect Binding Soft Cover Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="sarah book cover for library.png" alt="Hand Made Perfect Binding Soft Cover Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>PID10 — Hand Made Perfect Binding Soft Cover Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$33.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -351,7 +365,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID10%20Hand%20Made%20Perfect%20Binding%20Soft%20Cover%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID10%20Hand%20Made%20Perfect%20Binding%20Soft%20Cover%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card staples-landscape" id="store-PID11">
-<div class="product-gallery collapsible-gallery"><img src="/website%20picture%20st1.png?v=20" alt="Staples Produced Soft Cover Photo Book"><div class="extra-product-pictures" hidden><img src="/website%20picture%20st2.png?v=20" alt="Staples Produced Soft Cover Photo Book"><img src="/website%20picture%20st3.png?v=20" alt="Staples Produced Soft Cover Photo Book"><img src="/website%20picture%20st4.png?v=20" alt="Staples Produced Soft Cover Photo Book"></div></div>
+<div class="product-gallery collapsible-gallery"><img loading="lazy" src="/website%20picture%20st1.png?v=20" alt="Staples Produced Soft Cover Photo Book"><div class="extra-product-pictures" hidden><img loading="lazy" src="/website%20picture%20st2.png?v=20" alt="Staples Produced Soft Cover Photo Book"><img loading="lazy" src="/website%20picture%20st3.png?v=20" alt="Staples Produced Soft Cover Photo Book"><img loading="lazy" src="/website%20picture%20st4.png?v=20" alt="Staples Produced Soft Cover Photo Book"></div></div>
 <h3>PID11 — 1 Staples Produced Soft Cover Photo Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$27.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -359,7 +373,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID11%201%20Staples%20Produced%20Soft%20Cover%20Photo%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID11%201%20Staples%20Produced%20Soft%20Cover%20Photo%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card">
-<img src="sarah book cover for library.png" alt="1 Hand Made Card Stock Coloring Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="sarah book cover for library.png" alt="1 Hand Made Card Stock Coloring Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>PID12 — 1 Hand Made Card Stock Coloring Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$27.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -367,7 +381,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID12%201%20Hand%20Made%20Card%20Stock%20Coloring%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID12%201%20Hand%20Made%20Card%20Stock%20Coloring%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card">
-<img src="sarah book cover for library.png" alt="Hand Made JESUS LOVES YOU ! Art Pad: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
+<img loading="lazy" src="sarah book cover for library.png" alt="Hand Made JESUS LOVES YOU ! Art Pad: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>PID13 — Hand Made JESUS LOVES YOU ! Art Pad: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$27.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -375,7 +389,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID13%20Hand%20Made%20JESUS%20LOVES%20YOU%20!%20Art%20Pad%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID13%20Hand%20Made%20JESUS%20LOVES%20YOU%20!%20Art%20Pad%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card staples-landscape" id="store-PID14">
-<div class="product-gallery collapsible-gallery"><img src="/website%20picture%20st1.png?v=20" alt="Staples Produced Soft Cover Photo Book"><div class="extra-product-pictures" hidden><img src="/website%20picture%20st2.png?v=20" alt="Staples Produced Soft Cover Photo Book"><img src="/website%20picture%20st3.png?v=20" alt="Staples Produced Soft Cover Photo Book"><img src="/website%20picture%20st4.png?v=20" alt="Staples Produced Soft Cover Photo Book"></div></div>
+<div class="product-gallery collapsible-gallery"><img loading="lazy" src="/website%20picture%20st1.png?v=20" alt="Staples Produced Soft Cover Photo Book"><div class="extra-product-pictures" hidden><img loading="lazy" src="/website%20picture%20st2.png?v=20" alt="Staples Produced Soft Cover Photo Book"><img loading="lazy" src="/website%20picture%20st3.png?v=20" alt="Staples Produced Soft Cover Photo Book"><img loading="lazy" src="/website%20picture%20st4.png?v=20" alt="Staples Produced Soft Cover Photo Book"></div></div>
 <h3>PID14 — 1 Staples Produced Soft Cover Photo Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition — Picked up at Local Staples</h3>
 <p class="price">C$22.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -383,7 +397,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID14%201%20Staples%20Produced%20Soft%20Cover%20Photo%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%20%E2%80%94%20Picked%20up%20at%20Local%20Staples&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID14%201%20Staples%20Produced%20Soft%20Cover%20Photo%20Book%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%20%E2%80%94%20Picked%20up%20at%20Local%20Staples%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card portrait-product" id="store-PID15">
-<div class="product-gallery collapsible-gallery"><img src="/website%20picture%20mg.png?v=20" alt="Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Card Tiles: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><div class="extra-product-pictures" hidden><img src="/website%20picture%20mgc.png?v=20" alt="Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Card Tiles: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="/website%20picture%20mgb.png?v=20" alt="Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Card Tiles: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"></div></div>
+<div class="product-gallery collapsible-gallery"><img loading="lazy" src="/website%20picture%20mg.png?v=20" alt="Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Card Tiles: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><div class="extra-product-pictures" hidden><img loading="lazy" src="/website%20picture%20mgc.png?v=20" alt="Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Card Tiles: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img loading="lazy" src="/website%20picture%20mgb.png?v=20" alt="Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Card Tiles: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"></div></div>
 <h3>PID15 — Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Card Tiles: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$30.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -391,7 +405,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID15%20Hand%20Made%20Laminated%20Ribbon%20Tied%20Matching%20JESUS%20LOVES%20YOU%20!%20Game%20Card%20Tiles%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID15%20Hand%20Made%20Laminated%20Ribbon%20Tied%20Matching%20JESUS%20LOVES%20YOU%20!%20Game%20Card%20Tiles%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card portrait-product" id="store-PID16">
-<div class="product-gallery collapsible-gallery"><img src="/website%20picture%20sb28cover.png?v=20" alt="Premium Saddle Book"><div class="extra-product-pictures" hidden><img src="/website%20picture%20sbback.png?v=20" alt="Premium Saddle Book"><img src="/website%20picture%20sb1%262.png?v=20" alt="Premium Saddle Book"><img src="/website%20picture%20sb3%264.png?v=20" alt="Premium Saddle Book"></div></div>
+<div class="product-gallery collapsible-gallery"><img loading="lazy" src="/website%20picture%20sb28cover.png?v=20" alt="Premium Saddle Book"><div class="extra-product-pictures" hidden><img loading="lazy" src="/website%20picture%20sbback.png?v=20" alt="Premium Saddle Book"><img loading="lazy" src="/website%20picture%20sb1%262.png?v=20" alt="Premium Saddle Book"><img loading="lazy" src="/website%20picture%20sb3%264.png?v=20" alt="Premium Saddle Book"></div></div>
 <h3>PID16 — 1 Saddle Book Premium Paper 28lbs: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$18.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -399,7 +413,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Order%20inquiry%3A%20PID16%201%20Saddle%20Book%20Premium%20Paper%2028lbs%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20order%3A%20PID16%201%20Saddle%20Book%20Premium%20Paper%2028lbs%3A%20Sarah%20the%20Baby%20Sheep%3A%20My%20Shepherd%2C%20Jesus's%20Birth%2C%20The%20Christmas%20Story%20Edition%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0AMy%20shipping%20address%20(if%20needed)%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions.%0A">E-mail Malinda to Order</a></div>
 </div></article>
 <article class="store-card portrait-product" id="store-PID17">
-<div class="product-gallery collapsible-gallery"><img src="/website%20picture%20sb20cover.png?v=20" alt="Regular Saddle Book"><div class="extra-product-pictures" hidden><img src="/website%20picture%20sbback.png?v=20" alt="Regular Saddle Book"><img src="/website%20picture%20sb1%262.png?v=20" alt="Regular Saddle Book"><img src="/website%20picture%20sb3%264.png?v=20" alt="Regular Saddle Book"></div></div>
+<div class="product-gallery collapsible-gallery"><img loading="lazy" src="/website%20picture%20sb20cover.png?v=20" alt="Regular Saddle Book"><div class="extra-product-pictures" hidden><img loading="lazy" src="/website%20picture%20sbback.png?v=20" alt="Regular Saddle Book"><img loading="lazy" src="/website%20picture%20sb1%262.png?v=20" alt="Regular Saddle Book"><img loading="lazy" src="/website%20picture%20sb3%264.png?v=20" alt="Regular Saddle Book"></div></div>
 <h3>PID17 — 1 Saddle Book Regular Paper: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
 <p class="price">C$11.00</p>
 <p class="product-available">AVAILABLE</p><div class="store-details" hidden>
@@ -410,7 +424,7 @@
 <h2 class="special-store-heading" id="physical-subscriptions">Physical Item Subscription Plans</h2>
 <div class="subscription-overview">
   <button class="subscription-main-picture" type="button" aria-expanded="false" aria-controls="subscription-plan-details">
-    <img src="purple.png?v=22" alt="Physical Item Subscriptions">
+    <img loading="lazy" src="purple.png?v=22" alt="Physical Item Subscriptions">
   </button>
   <div id="subscription-plan-details" class="store-intro subscription-plan-details" hidden>
     <p><strong>Each Month a new set of 17 Physical Items will be Available.</strong></p>
@@ -421,15 +435,15 @@
 
   <div class="subscription-tier-row">
     <a class="subscription-tier-choice" href="#bronze-subscriptions" role="button" aria-expanded="false">
-      <img src="bronze.png?v=22" alt="Bronze Physical Item Subscriptions">
+      <img loading="lazy" src="bronze.png?v=22" alt="Bronze Physical Item Subscriptions">
       <h3>Bronze Subscriptions<br><span>1 Physical Book Sent Monthly</span><br><strong>10% Off</strong></h3>
     </a>
     <a class="subscription-tier-choice" href="#silver-subscriptions" role="button" aria-expanded="false">
-      <img src="silver.png?v=22" alt="Silver Physical Item Subscriptions">
+      <img loading="lazy" src="silver.png?v=22" alt="Silver Physical Item Subscriptions">
       <h3>Silver Subscriptions<br><span>1 Physical Book + 1 Companion Item Sent Monthly</span><br><strong>Both 10% Off</strong></h3>
     </a>
     <a class="subscription-tier-choice" href="#gold-subscriptions" role="button" aria-expanded="false">
-      <img src="gold.png?v=22" alt="Gold Physical Item Subscriptions">
+      <img loading="lazy" src="gold.png?v=22" alt="Gold Physical Item Subscriptions">
       <h3>Gold Subscriptions<br><span>Complete Monthly Package</span></h3>
     </a>
   </div>
@@ -459,7 +473,7 @@
     </section>
 
     <section class="about-section" id="about">
-      <div class="about-art"><img src="about-malinda.png" alt="Malinda wearing dark purple and gold, surrounded by her twelve Story Garden animal characters"></div>
+      <div class="about-art"><img loading="lazy" src="about-malinda.png" alt="Malinda wearing dark purple and gold, surrounded by her twelve Story Garden animal characters"></div>
 <section class="story-match-section" aria-labelledby="story-match-title">
   <h3 id="story-match-title">Match Malinda’s Animal Friends!</h3>
   <p>Turn over two purple tiles. Matching animals disappear!</p>
@@ -506,7 +520,7 @@
   function shuffle(items){for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]]}return items}
   function makeDeck(){const deck=[];animals.forEach(animal=>{deck.push({name:animal.name,image:animal.image,pair:animal.name});deck.push({name:animal.name,image:animal.image,pair:animal.name})});return shuffle(deck)}
   function coverCard(card){card.innerHTML='<span class="white-heart">♥</span>';card.dataset.revealed="false";card.setAttribute("aria-label","Face-down animal tile")}
-  function revealImage(card,animal){card.innerHTML=`<img src="${animal.image}" alt="${animal.name}">`;card.dataset.revealed="true";card.setAttribute("aria-label",animal.name)}
+  function revealImage(card,animal){card.innerHTML=`<img loading="lazy" src="${animal.image}" alt="${animal.name}">`;card.dataset.revealed="true";card.setAttribute("aria-label",animal.name)}
   function startGame(){board.innerHTML="";message.textContent="";firstCard=null;secondCard=null;locked=false;matchedPairs=0;const deck=makeDeck();deck.forEach(animal=>{const card=document.createElement("button");card.type="button";card.className="story-match-card";card.dataset.pair=animal.pair;coverCard(card);card.addEventListener("click",()=>{if(locked||card.classList.contains("matched")||card.dataset.revealed==="true")return;revealImage(card,animal);if(!firstCard){firstCard=card;return}secondCard=card;locked=true;if(firstCard.dataset.pair===secondCard.dataset.pair){setTimeout(()=>{firstCard.classList.add("matched");secondCard.classList.add("matched");matchedPairs++;firstCard=null;secondCard=null;locked=false;if(matchedPairs===12)message.textContent="Wonderful! You matched all 12 animal friends!"},500)}else{setTimeout(()=>{coverCard(firstCard);coverCard(secondCard);firstCard=null;secondCard=null;locked=false},900)}});board.appendChild(card)})}
   reset.addEventListener("click",startGame);startGame();
 })();
@@ -583,9 +597,9 @@ Malinda Dollack</p>
 
   <div id="commentModal" class="modal form-modal" role="dialog" aria-modal="true"><button class="close-modal" aria-label="Close">×</button><h2>💬 Leave a Comment</h2><form class="email-form" data-subject="Website Comment"><label>Your Name<input name="name" required></label><label>Your Email<input name="email" type="email" required></label><label>Your Comment<textarea name="message" rows="6" required></textarea></label><button type="submit">Email Comment to Malinda</button></form></div>
 
-  <div id="photoModal" class="modal form-modal" role="dialog" aria-modal="true"><button class="close-modal" aria-label="Close">×</button><h2>📷 Share a Picture</h2><p>Choose a picture to preview it. Please only share a child’s photo with a parent or guardian’s permission.</p><label class="file-picker">Choose Picture<input id="photoInput" type="file" accept="image/*"></label><img id="photoPreview" class="upload-preview" alt="Selected photo preview"><a class="email-upload" href="mailto:berachahdirector@gmail.com?subject=Reader%20Photo%20Submission">Email the Picture to Malinda</a><p class="form-note">Your email program will open. Attach the selected photo before sending.</p></div>
+  <div id="photoModal" class="modal form-modal" role="dialog" aria-modal="true"><button class="close-modal" aria-label="Close">×</button><h2>📷 Share a Picture</h2><p>Choose a picture to preview it. Please only share a child’s photo with a parent or guardian’s permission.</p><label class="file-picker">Choose Picture<input id="photoInput" type="file" accept="image/*"></label><img loading="lazy" id="photoPreview" class="upload-preview" alt="Selected photo preview"><a class="email-upload" href="mailto:berachahdirector@gmail.com?subject=Reader%20Photo%20Submission">Email the Picture to Malinda</a><p class="form-note">Your email program will open. Attach the selected photo before sending.</p></div>
 
-  <div id="artModal" class="modal form-modal" role="dialog" aria-modal="true"><button class="close-modal" aria-label="Close">×</button><h2>🎨 Share Children’s Artwork</h2><p>Choose artwork to preview it, then email it to Malinda for approval.</p><label class="file-picker">Choose Artwork<input id="artInput" type="file" accept="image/*"></label><img id="artPreview" class="upload-preview" alt="Selected artwork preview"><a class="email-upload" href="mailto:berachahdirector@gmail.com?subject=Story%20Garden%20Artwork%20Submission">Email the Artwork to Malinda</a></div>
+  <div id="artModal" class="modal form-modal" role="dialog" aria-modal="true"><button class="close-modal" aria-label="Close">×</button><h2>🎨 Share Children’s Artwork</h2><p>Choose artwork to preview it, then email it to Malinda for approval.</p><label class="file-picker">Choose Artwork<input id="artInput" type="file" accept="image/*"></label><img loading="lazy" id="artPreview" class="upload-preview" alt="Selected artwork preview"><a class="email-upload" href="mailto:berachahdirector@gmail.com?subject=Story%20Garden%20Artwork%20Submission">Email the Artwork to Malinda</a></div>
 
   <div id="storeOrderModal" class="order-modal" role="dialog" aria-modal="true" aria-labelledby="storeOrderTitle">
     <div class="order-box">
@@ -609,11 +623,11 @@ Malinda Dollack</p>
     <h2 id="sarahPreviewTitle">Preview Sarah the Baby Sheep</h2>
     <p class="preview-note">Read the first five pages free. Purchase the complete e-book for C$7.00.</p>
     <div class="preview-pages">
-      <div class="preview-page"><img src="mastercover.png" alt="Sarah book cover"><b>Cover</b></div>
-      <div class="preview-page"><img src="mastercopyright.png" alt="Copyright page"><b>Copyright</b></div>
-      <div class="preview-page"><img src="masterdedication.png" alt="Dedication page"><b>Dedication</b></div>
-      <div class="preview-page"><img src="masterpage1.png" alt="Story page 1"><b>Page 1</b></div>
-      <div class="preview-page"><img src="masterpage2.png" alt="Story page 2"><b>Page 2</b></div>
+      <div class="preview-page"><img loading="lazy" src="mastercover.png" alt="Sarah book cover"><b>Cover</b></div>
+      <div class="preview-page"><img loading="lazy" src="mastercopyright.png" alt="Copyright page"><b>Copyright</b></div>
+      <div class="preview-page"><img loading="lazy" src="masterdedication.png" alt="Dedication page"><b>Dedication</b></div>
+      <div class="preview-page"><img loading="lazy" src="masterpage1.png" alt="Story page 1"><b>Page 1</b></div>
+      <div class="preview-page"><img loading="lazy" src="masterpage2.png" alt="Story page 2"><b>Page 2</b></div>
     </div>
     <div class="preview-buy">
       <a href="mailto:berachahdirector@gmail.com?subject=Purchase%20Sarah%20E-book%20C%247.00&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20purchase%20the%20Sarah%20e-book%20for%20C%247.00.%20Please%20send%20me%20the%20e-Transfer%20instructions.%0A">PURCHASE E-BOOK — C$7.00</a>
@@ -706,7 +720,7 @@ const grid=document.getElementById('bookGrid');
 books.forEach((b,i)=>{
   const card=document.createElement('article');
   card.className='book-card';
-  const media=b.img?`<img src="${b.img}" alt="${b.title} book cover">`:`<div class="placeholder"><span>📖</span><b>${b.name}</b><small>Cover artwork coming soon</small></div>`;
+  const media=b.img?`<img loading="lazy" src="${b.img}" alt="${b.title} book cover">`:`<div class="placeholder"><span>📖</span><b>${b.name}</b><small>Cover artwork coming soon</small></div>`;
   const availability=b.available?`<div class="book-actions"><a class="soon physical-item-link" href="#store">21 Items Available</a></div>`:`<div class="book-actions"><button class="soon coming-soon-book" type="button">COMING SOON</button></div>`;
   const seoDescription=b.available?`<p class="book-description">A joyful Christmas Bible story for kids about the birth of Jesus, the Nativity, and Luke 2, told through the eyes of Sarah the Baby Sheep.</p>`:``;
   card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${b.title}</h3><p class="reference">${b.ref}</p><p class="reference"><strong>${b.release}</strong></p>${seoDescription}${availability}`;
@@ -730,7 +744,7 @@ document.querySelectorAll('.close-modal').forEach(b=>b.addEventListener('click',
 
 const menu=document.querySelector('.menu');menu.addEventListener('click',()=>{const nav=document.querySelector('nav');nav.classList.toggle('open');menu.setAttribute('aria-expanded',nav.classList.contains('open'))});document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>document.querySelector('nav').classList.remove('open')));document.getElementById('year').textContent=new Date().getFullYear();
 
-const characterGrid=document.getElementById('characterGrid');const votes=JSON.parse(localStorage.getItem('storyGardenVotes')||'{}');books.forEach(b=>{const card=document.createElement('button');card.className='character-card';card.type='button';card.innerHTML=b.img?`<img src="${b.img}" alt="${b.name}"><strong>${b.name}</strong><span>${votes[b.name]||0} vote(s)</span>`:`<div class="placeholder"><span>🔥</span></div><strong>${b.name}</strong><span>${votes[b.name]||0} vote(s)</span>`;card.addEventListener('click',()=>{votes[b.name]=(votes[b.name]||0)+1;localStorage.setItem('storyGardenVotes',JSON.stringify(votes));card.querySelector('span').textContent=`${votes[b.name]} vote(s)`;document.getElementById('voteStatus').textContent=`Thank you! You voted for ${b.name}.`});characterGrid.appendChild(card)});
+const characterGrid=document.getElementById('characterGrid');const votes=JSON.parse(localStorage.getItem('storyGardenVotes')||'{}');books.forEach(b=>{const card=document.createElement('button');card.className='character-card';card.type='button';card.innerHTML=b.img?`<img loading="lazy" src="${b.img}" alt="${b.name}"><strong>${b.name}</strong><span>${votes[b.name]||0} vote(s)</span>`:`<div class="placeholder"><span>🔥</span></div><strong>${b.name}</strong><span>${votes[b.name]||0} vote(s)</span>`;card.addEventListener('click',()=>{votes[b.name]=(votes[b.name]||0)+1;localStorage.setItem('storyGardenVotes',JSON.stringify(votes));card.querySelector('span').textContent=`${votes[b.name]} vote(s)`;document.getElementById('voteStatus').textContent=`Thank you! You voted for ${b.name}.`});characterGrid.appendChild(card)});
 
 const reviewBook=document.getElementById('reviewBook');books.forEach(b=>reviewBook.insertAdjacentHTML('beforeend',`<option>${b.name}</option>`));const reviewList=document.getElementById('reviewList');function renderReviews(){const reviews=JSON.parse(localStorage.getItem('storyGardenReviews')||'[]');if(!reviews.length){reviewList.innerHTML='<p class="empty">Be the first visitor to leave a review on this device.</p>';return}reviewList.innerHTML=reviews.map(r=>`<article class="review-item"><div class="stars-display">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><strong>${escapeHtml(r.book)}</strong><p>“${escapeHtml(r.review)}”</p><small>— ${escapeHtml(r.name)}</small></article>`).join('')}
 function escapeHtml(text){return String(text).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]))}
@@ -808,12 +822,12 @@ document.querySelectorAll('.store-card').forEach(card=>{
 });
 
 const imageViewer=document.createElement('div');
-imageViewer.id='imageViewer';imageViewer.className='image-viewer';imageViewer.setAttribute('role','dialog');imageViewer.setAttribute('aria-modal','true');imageViewer.setAttribute('aria-label','Large picture view');imageViewer.innerHTML='<button class="image-viewer-close" type="button" aria-label="Close large picture">×</button><img alt=""><p></p>';document.body.appendChild(imageViewer);
+imageViewer.id='imageViewer';imageViewer.className='image-viewer';imageViewer.setAttribute('role','dialog');imageViewer.setAttribute('aria-modal','true');imageViewer.setAttribute('aria-label','Large picture view');imageViewer.innerHTML='<button class="image-viewer-close" type="button" aria-label="Close large picture">×</button><img loading="lazy" alt=""><p></p>';document.body.appendChild(imageViewer);
 function openImage(src,alt='Picture'){const img=imageViewer.querySelector('img');img.src=src;img.alt=alt;imageViewer.querySelector('p').textContent=alt;imageViewer.classList.add('open');document.body.classList.add('viewer-open')}
 function closeImage(){imageViewer.classList.remove('open');document.body.classList.remove('viewer-open')}
 imageViewer.addEventListener('click',e=>{if(e.target===imageViewer||e.target.closest('.image-viewer-close'))closeImage()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeImage()});document.addEventListener('click',e=>{const img=e.target.closest('img');if(!img||img.closest('#imageViewer')||img.closest('.store-card')||img.classList.contains('upload-preview')||img.closest('.cover-button'))return;e.preventDefault();e.stopPropagation();openImage(img.currentSrc||img.src,img.alt||'Picture')},true);
   </script>
-<script src="script.js?v=10"></script>
+<script src="script.js?v=10" defer></script>
 
 
 </body>
