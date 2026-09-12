@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const one = findCard(/^One Hand-made Laminated Jesus Loves You! Bookmark$/i);
   if (one) {
     const img = one.querySelector('img');
-    if (img) { img.src = 'bookmark-1.jpg?v=6'; img.alt = 'One Hand-made Laminated Jesus Loves You! Bookmark'; }
+    if (img) { img.src = 'web-images/bookmark-1.webp?v=1'; img.alt = 'One Hand-made Laminated Jesus Loves You! Bookmark'; }
     const price = one.querySelector('.price');
     if (price) price.textContent = 'C$6.00';
     setOrder(one, 'One Hand-made Laminated Jesus Loves You! Bookmark');
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const img = three.querySelector('img');
     const price = three.querySelector('.price');
     if (heading) heading.textContent = 'Three Hand-made Laminated Jesus Loves You! Bookmarks';
-    if (img) { img.src = 'bookmarks-3.jpg?v=6'; img.alt = 'Three Hand-made Laminated Jesus Loves You! Bookmarks'; }
+    if (img) { img.src = 'web-images/bookmarks-3.webp?v=1'; img.alt = 'Three Hand-made Laminated Jesus Loves You! Bookmarks'; }
     if (price) price.textContent = 'C$8.00';
     setOrder(three, 'Three Hand-made Laminated Jesus Loves You! Bookmarks');
     addAvailable(three);
@@ -122,12 +122,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (generic && !alreadyFour && !alreadyTwenty) {
     const four = generic.cloneNode(true);
     const twenty = generic.cloneNode(true);
-    configureSticker(four, 4, 'stickers-4.jpg');
-    configureSticker(twenty, 20, 'stickers-20.jpg');
+    configureSticker(four, 4, 'web-images/stickers-4.webp?v=1');
+    configureSticker(twenty, 20, 'web-images/stickers-20.webp?v=1');
     generic.replaceWith(four, twenty);
   } else {
-    configureSticker(alreadyFour, 4, 'stickers-4.jpg');
-    configureSticker(alreadyTwenty, 20, 'stickers-20.jpg');
+    configureSticker(alreadyFour, 4, 'web-images/stickers-4.webp?v=1');
+    configureSticker(alreadyTwenty, 20, 'web-images/stickers-20.webp?v=1');
   }
 
   // Purchased e-books are delivered as private links. Never expose the full Standard E-Book link in the public store.
