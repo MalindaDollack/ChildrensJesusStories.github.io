@@ -204,6 +204,87 @@
 .subscription-tier-row>.subscription-simple-block{display:block}
 .subscription-tier-row .subscription-inline-content .store-grid{display:flex;flex-direction:column;gap:7px;width:100%}
 </style>
+<style id="compact-subscription-row-css">
+.subscription-inline-content .store-grid{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:6px!important;
+  width:100%!important;
+}
+.subscription-inline-content .subscription-card{
+  display:grid!important;
+  grid-template-columns:46px 92px 150px minmax(0,1fr)!important;
+  grid-template-areas:"pic price code desc"!important;
+  align-items:center!important;
+  gap:10px!important;
+  padding:7px 10px!important;
+  min-height:54px!important;
+  border:1px solid #ead5f5!important;
+  border-radius:8px!important;
+  box-shadow:none!important;
+  background:#fff!important;
+}
+.subscription-inline-content .subscription-card .product-gallery{
+  grid-area:pic!important;
+  display:block!important;
+  width:42px!important;
+  height:42px!important;
+  margin:0!important;
+}
+.subscription-inline-content .subscription-card .product-gallery>img{
+  width:42px!important;
+  height:42px!important;
+  object-fit:contain!important;
+  border:1px solid #ead5f5!important;
+  border-radius:6px!important;
+  background:#fff!important;
+}
+.subscription-inline-content .subscription-card .extra-product-pictures,
+.subscription-inline-content .subscription-card .store-details,
+.subscription-inline-content .subscription-card .product-available,
+.subscription-inline-content .subscription-card .subscription-original-title{
+  display:none!important;
+}
+.subscription-inline-content .subscription-card .price{
+  grid-area:price!important;
+  margin:0!important;
+  font-size:.98rem!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+}
+.subscription-inline-content .subscription-card .subscription-code{
+  grid-area:code!important;
+  font-weight:900!important;
+  color:#4b146f!important;
+  font-size:.88rem!important;
+  white-space:nowrap!important;
+}
+.subscription-inline-content .subscription-card .subscription-description{
+  grid-area:desc!important;
+  color:#33243a!important;
+  font-weight:700!important;
+  font-size:.88rem!important;
+  line-height:1.22!important;
+}
+@media(max-width:760px){
+  .subscription-inline-content .subscription-card{
+    grid-template-columns:40px 78px 125px minmax(170px,1fr)!important;
+    gap:6px!important;
+    padding:6px!important;
+    overflow-x:auto!important;
+  }
+  .subscription-inline-content .subscription-card .product-gallery,
+  .subscription-inline-content .subscription-card .product-gallery>img{
+    width:36px!important;
+    height:36px!important;
+  }
+  .subscription-inline-content .subscription-card .price,
+  .subscription-inline-content .subscription-card .subscription-code,
+  .subscription-inline-content .subscription-card .subscription-description{
+    font-size:.78rem!important;
+  }
+}
+</style>
 </head>
 <body>
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
