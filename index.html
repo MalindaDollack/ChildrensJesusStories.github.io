@@ -211,6 +211,10 @@
 .subscription-info-toggle:not([open]) .subscription-plan-details{display:none!important}
 .subscription-tier-container[hidden]{display:none!important}
 </style>
+<style id="subscription-button-fix">
+.subscription-tier-choice{font:inherit;width:100%;text-align:center;cursor:pointer}
+.subscription-tier-container{display:none}
+</style>
 </head>
 <body>
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
@@ -430,37 +434,39 @@
 <!-- PHYSICAL-SUBSCRIPTIONS-START -->
 <h2 class="special-store-heading" id="physical-subscriptions">Physical Item Subscription Plans</h2>
 <div class="subscription-overview">
-  <details class="subscription-info-toggle">
-    <summary class="subscription-main-picture">
-      <img loading="lazy" decoding="async" src="web-images/purple.webp?v=1" alt="Physical Item Subscriptions">
-    </summary>
-    <div id="subscription-plan-details" class="store-intro subscription-plan-details">
-      <p><strong>Each Month a new set of 17 Physical Items will be Available.</strong></p>
-      <p><strong>No Refunds on Subscription Plans</strong> but you may transfer the subscription to alternate addresses anytime.</p>
-      <p>Example: If you have 12 grandchildren's birthdays and would like each one to receive a different book during the year, a different character book or item can be sent to a different address each month with your birthday message.</p>
-      <p><strong>Subscription PID references use the current Physical Item numbers:</strong> PID1 = 1 Bookmark, PID2 = 2 Bookmarks, PID3 = 3 Bookmarks, PID4 = 20 Small Stickers, PID5 = 4 Medium Stickers, PID6 = 1 Large Sticker, PID12 = Card Stock Coloring Book, PID13 = JESUS LOVES YOU ! Art Pad, PID15 = Matching Game Card Tile Set.</p>
-    </div>
-  </details>
+
+  <button class="subscription-main-picture" type="button" onclick="togglePhysicalInfo(this)" aria-expanded="false">
+    <img loading="lazy" decoding="async" src="web-images/purple.webp?v=1" alt="Physical Item Subscriptions">
+  </button>
+
+  <div id="subscription-plan-details" class="store-intro subscription-plan-details" style="display:none">
+    <p><strong>Each Month a new set of 17 Physical Items will be Available.</strong></p>
+    <p><strong>No Refunds on Subscription Plans</strong> but you may transfer the subscription to alternate addresses anytime.</p>
+    <p>Example: If you have 12 grandchildren's birthdays and would like each one to receive a different book during the year, a different character book or item can be sent to a different address each month with your birthday message.</p>
+    <p><strong>Subscription PID references use the current Physical Item numbers:</strong> PID1 = 1 Bookmark, PID2 = 2 Bookmarks, PID3 = 3 Bookmarks, PID4 = 20 Small Stickers, PID5 = 4 Medium Stickers, PID6 = 1 Large Sticker, PID12 = Card Stock Coloring Book, PID13 = JESUS LOVES YOU ! Art Pad, PID15 = Matching Game Card Tile Set.</p>
+  </div>
 
   <div class="subscription-tier-row">
-    <a class="subscription-tier-choice" href="#bronze-subscriptions" role="button" aria-expanded="false">
+    <button class="subscription-tier-choice" type="button" onclick="toggleSubscriptionTier('bronze-subscriptions',this)" aria-expanded="false">
       <img loading="lazy" decoding="async" src="web-images/bronze.webp?v=1" alt="Bronze Physical Item Subscriptions">
       <h3>Bronze Subscriptions<br><span>1 Physical Book Sent Monthly</span><br><strong>10% Off</strong></h3>
-    </a>
-    <a class="subscription-tier-choice" href="#silver-subscriptions" role="button" aria-expanded="false">
+    </button>
+
+    <button class="subscription-tier-choice" type="button" onclick="toggleSubscriptionTier('silver-subscriptions',this)" aria-expanded="false">
       <img loading="lazy" decoding="async" src="web-images/silver.webp?v=1" alt="Silver Physical Item Subscriptions">
       <h3>Silver Subscriptions<br><span>1 Physical Book + 1 Companion Item Sent Monthly</span><br><strong>Both 10% Off</strong></h3>
-    </a>
-    <a class="subscription-tier-choice" href="#gold-subscriptions" role="button" aria-expanded="false">
+    </button>
+
+    <button class="subscription-tier-choice" type="button" onclick="toggleSubscriptionTier('gold-subscriptions',this)" aria-expanded="false">
       <img loading="lazy" decoding="async" src="web-images/gold.webp?v=1" alt="Gold Physical Item Subscriptions">
       <h3>Gold Subscriptions<br><span>Complete Monthly Package</span></h3>
-    </a>
+    </button>
   </div>
 </div>
 
-<section id="bronze-subscriptions" class="subscription-tier-container" hidden data-src="bronze-subscriptions.html?v=11"></section>
-<section id="silver-subscriptions" class="subscription-tier-container" hidden data-src="silver-subscriptions.html?v=11"></section>
-<section id="gold-subscriptions" class="subscription-tier-container" hidden data-src="gold-subscriptions.html?v=11"></section>
+<section id="bronze-subscriptions" class="subscription-tier-container" style="display:none" data-src="bronze-subscriptions.html?v=12"></section>
+<section id="silver-subscriptions" class="subscription-tier-container" style="display:none" data-src="silver-subscriptions.html?v=12"></section>
+<section id="gold-subscriptions" class="subscription-tier-container" style="display:none" data-src="gold-subscriptions.html?v=12"></section>
 
 <!-- PHYSICAL-SUBSCRIPTIONS-END -->
 </section>
@@ -645,59 +651,48 @@ Malinda Dollack</p>
   </div>
 
   <script>
-const subscriptionTierLinks=document.querySelectorAll('.subscription-tier-choice[href^="#"]');
-const subscriptionTierIds=['bronze-subscriptions','silver-subscriptions','gold-subscriptions'];
+function togglePhysicalInfo(button){
+  var details=document.getElementById('subscription-plan-details');
+  if(!details)return;
+  var opening=details.style.display==='none' || details.style.display==='';
+  details.style.display=opening?'block':'none';
+  button.setAttribute('aria-expanded',opening?'true':'false');
+}
 
-async function setSubscriptionTierOpen(id,open){
-  const container=document.getElementById(id);
+async function toggleSubscriptionTier(id,button){
+  var ids=['bronze-subscriptions','silver-subscriptions','gold-subscriptions'];
+  var container=document.getElementById(id);
   if(!container)return;
-  if(!open){
-    container.hidden=true;
-    return;
+
+  var opening=container.style.display==='none' || container.style.display==='';
+
+  for(var i=0;i<ids.length;i++){
+    var other=document.getElementById(ids[i]);
+    if(other) other.style.display='none';
   }
-  if(!container.dataset.loaded){
+  var buttons=document.querySelectorAll('.subscription-tier-choice');
+  for(var j=0;j<buttons.length;j++) buttons[j].setAttribute('aria-expanded','false');
+
+  if(!opening)return;
+
+  container.style.display='block';
+  button.setAttribute('aria-expanded','true');
+
+  if(!container.getAttribute('data-loaded')){
     container.innerHTML='<p class="store-intro"><strong>Loading subscriptions…</strong></p>';
-    container.hidden=false;
     try{
-      const response=await fetch(container.dataset.src);
+      var response=await fetch(container.getAttribute('data-src'),{cache:'no-store'});
       if(!response.ok) throw new Error('Could not load subscriptions');
       container.innerHTML=await response.text();
-      container.dataset.loaded='true';
+      container.setAttribute('data-loaded','true');
     }catch(err){
-      container.innerHTML='<p class="store-intro"><strong>Subscriptions could not load. Please click again.</strong></p>';
+      container.innerHTML='<p class="store-intro"><strong>Subscriptions could not load. Please click the picture again.</strong></p>';
+      container.removeAttribute('data-loaded');
       return;
     }
   }
-  container.hidden=false;
+  container.scrollIntoView({behavior:'smooth',block:'start'});
 }
-
-subscriptionTierIds.forEach(id=>{
-  const container=document.getElementById(id);
-  if(container) container.hidden=true;
-});
-
-subscriptionTierLinks.forEach(link=>{
-  link.setAttribute('aria-expanded','false');
-  link.addEventListener('click',async e=>{
-    e.preventDefault();
-    const id=link.getAttribute('href').slice(1);
-    const container=document.getElementById(id);
-    const currentlyOpen=container && !container.hidden;
-
-    for(const otherId of subscriptionTierIds){
-      if(otherId!==id) await setSubscriptionTierOpen(otherId,false);
-    }
-    subscriptionTierLinks.forEach(other=>other.setAttribute('aria-expanded','false'));
-
-    if(currentlyOpen){
-      await setSubscriptionTierOpen(id,false);
-    }else{
-      await setSubscriptionTierOpen(id,true);
-      link.setAttribute('aria-expanded','true');
-      setTimeout(()=>document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'}),0);
-    }
-  });
-});
 
 const books = [
   {name:"Sweet-Pea", title:"Sweet-Pea the Baby Sparrow: Do Not Be Afraid ! God Cares ! Even the feathers on your head are numbered.", subtitle:"God's Message of Caring told through the Eyes of Sweet-Pea the Baby Sparrow !", ref:"Matthew 10:29–31 NIV", img:"web-images/sweet-pea book cover for library.webp?v=1", release:"Coming November 1, 2026"},
