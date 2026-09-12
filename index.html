@@ -170,6 +170,22 @@
   gtag('js', new Date());
   gtag('config', 'G-HN6L4THW21');
 </script>
+
+<style id="subscription-tier-visibility-fix">
+  /* Keep the actual Bronze/Silver/Gold subscription lists hidden until their picture/title is clicked. */
+  #bronze-subscriptions[hidden],
+  #silver-subscriptions[hidden],
+  #gold-subscriptions[hidden],
+  #bronze-subscriptions + .store-grid[hidden],
+  #silver-subscriptions + .store-grid[hidden],
+  #gold-subscriptions + .store-grid[hidden]{
+    display:none!important;
+  }
+  .subscription-tier-choice{
+    cursor:pointer;
+  }
+</style>
+
 </head>
 <body>
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
@@ -390,7 +406,7 @@
 <h2 class="special-store-heading" id="physical-subscriptions">Physical Item Subscription Plans</h2>
 <div class="subscription-overview">
   <button class="subscription-main-picture" type="button" aria-expanded="false" aria-controls="subscription-plan-details">
-    <img src="https://raw.githubusercontent.com/MalindaDollack/ChildrensJesusStories.github.io/main/purple.png" alt="Physical Item Subscriptions">
+    <img src="purple.png?v=22" alt="Physical Item Subscriptions">
   </button>
   <div id="subscription-plan-details" class="store-intro subscription-plan-details" hidden>
     <p><strong>Each Month a new set of 17 Physical Items will be Available.</strong></p>
@@ -401,15 +417,15 @@
 
   <div class="subscription-tier-row">
     <a class="subscription-tier-choice" href="#bronze-subscriptions">
-      <img src="https://raw.githubusercontent.com/MalindaDollack/ChildrensJesusStories.github.io/main/bronze.png" alt="Bronze Physical Item Subscriptions">
+      <img src="bronze.png?v=22" alt="Bronze Physical Item Subscriptions">
       <h3>Bronze Subscriptions<br><span>1 Physical Book Sent Monthly</span><br><strong>10% Off</strong></h3>
     </a>
     <a class="subscription-tier-choice" href="#silver-subscriptions">
-      <img src="https://raw.githubusercontent.com/MalindaDollack/ChildrensJesusStories.github.io/main/silver.png" alt="Silver Physical Item Subscriptions">
+      <img src="silver.png?v=22" alt="Silver Physical Item Subscriptions">
       <h3>Silver Subscriptions<br><span>1 Physical Book + 1 Companion Item Sent Monthly</span><br><strong>Both 10% Off</strong></h3>
     </a>
     <a class="subscription-tier-choice" href="#gold-subscriptions">
-      <img src="https://raw.githubusercontent.com/MalindaDollack/ChildrensJesusStories.github.io/main/gold.png" alt="Gold Physical Item Subscriptions">
+      <img src="gold.png?v=22" alt="Gold Physical Item Subscriptions">
       <h3>Gold Subscriptions<br><span>Complete Monthly Package</span></h3>
     </a>
   </div>
@@ -1382,6 +1398,45 @@ if(subscriptionMainPicture){
     subscriptionMainPicture.setAttribute('aria-expanded',opening?'true':'false');
   });
 }
+
+
+const subscriptionTierLinks=document.querySelectorAll('.subscription-tier-choice[href^="#"]');
+const subscriptionTierIds=['bronze-subscriptions','silver-subscriptions','gold-subscriptions'];
+
+function setSubscriptionTierOpen(id,open){
+  const heading=document.getElementById(id);
+  if(!heading)return;
+  const grid=heading.nextElementSibling;
+  if(open){
+    heading.removeAttribute('hidden');
+    if(grid && grid.classList.contains('store-grid')) grid.removeAttribute('hidden');
+  }else{
+    heading.setAttribute('hidden','');
+    if(grid && grid.classList.contains('store-grid')) grid.setAttribute('hidden','');
+  }
+}
+
+subscriptionTierIds.forEach(id=>setSubscriptionTierOpen(id,false));
+
+subscriptionTierLinks.forEach(link=>{
+  link.setAttribute('aria-expanded','false');
+  link.addEventListener('click',e=>{
+    e.preventDefault();
+    const id=link.getAttribute('href').slice(1);
+    const heading=document.getElementById(id);
+    const currentlyOpen=heading && !heading.hasAttribute('hidden');
+
+    subscriptionTierIds.forEach(otherId=>setSubscriptionTierOpen(otherId,false));
+    subscriptionTierLinks.forEach(other=>other.setAttribute('aria-expanded','false'));
+
+    if(!currentlyOpen){
+      setSubscriptionTierOpen(id,true);
+      link.setAttribute('aria-expanded','true');
+      setTimeout(()=>document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'}),0);
+    }
+  });
+});
+
 
 const books = [
   {name:"Sweet-Pea", title:"Sweet-Pea the Baby Sparrow: Do Not Be Afraid ! God Cares ! Even the feathers on your head are numbered.", subtitle:"God's Message of Caring told through the Eyes of Sweet-Pea the Baby Sparrow !", ref:"Matthew 10:29–31 NIV", img:"sweet-pea book cover for library.png", release:"Coming November 1, 2026"},
