@@ -1,5 +1,86 @@
+<style>
+.compact-subscription-list{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:6px!important;
+  width:100%!important;
+}
+.compact-subscription-list .subscription-card{
+  display:grid!important;
+  grid-template-columns:46px 92px 150px minmax(0,1fr)!important;
+  grid-template-areas:"pic price code desc"!important;
+  align-items:center!important;
+  gap:10px!important;
+  padding:7px 10px!important;
+  min-height:54px!important;
+  border:1px solid #ead5f5!important;
+  border-radius:8px!important;
+  box-shadow:none!important;
+  background:#fff!important;
+}
+.compact-subscription-list .subscription-card .product-gallery{
+  grid-area:pic!important;
+  display:block!important;
+  width:42px!important;
+  height:42px!important;
+  margin:0!important;
+}
+.compact-subscription-list .subscription-card .product-gallery>img{
+  width:42px!important;
+  height:42px!important;
+  object-fit:contain!important;
+  border:1px solid #ead5f5!important;
+  border-radius:6px!important;
+  background:#fff!important;
+}
+.compact-subscription-list .subscription-card .extra-product-pictures,
+.compact-subscription-list .subscription-card .store-details,
+.compact-subscription-list .subscription-card .product-available,
+.compact-subscription-list .subscription-card .subscription-original-title{
+  display:none!important;
+}
+.compact-subscription-list .subscription-card .price{
+  grid-area:price!important;
+  margin:0!important;
+  font-size:.98rem!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+}
+.compact-subscription-list .subscription-card .subscription-code{
+  grid-area:code!important;
+  font-weight:900!important;
+  color:#4b146f!important;
+  font-size:.88rem!important;
+  white-space:nowrap!important;
+}
+.compact-subscription-list .subscription-card .subscription-description{
+  grid-area:desc!important;
+  color:#33243a!important;
+  font-weight:700!important;
+  font-size:.88rem!important;
+  line-height:1.22!important;
+}
+@media(max-width:760px){
+  .compact-subscription-list .subscription-card{
+    grid-template-columns:40px 78px 125px minmax(170px,1fr)!important;
+    gap:6px!important;
+    padding:6px!important;
+    overflow-x:auto!important;
+  }
+  .compact-subscription-list .subscription-card .product-gallery,
+  .compact-subscription-list .subscription-card .product-gallery>img{
+    width:36px!important;
+    height:36px!important;
+  }
+  .compact-subscription-list .subscription-card .price,
+  .compact-subscription-list .subscription-card .subscription-code,
+  .compact-subscription-list .subscription-card .subscription-description{
+    font-size:.78rem!important;
+  }
+}
+</style>
 <h2 class="special-store-heading">Gold Subscriptions</h2>
-<div class="store-grid"><article class="store-card subscription-card">
+<div class="store-grid compact-subscription-list"><article class="store-card subscription-card">
 <div class="product-gallery subscription-thumbnails collapsible-gallery"><img src="web-images/website picture bbcon.webp?v=1" alt="1 Hand Made Customizable Hand Made Laminated, Ribbon Bound, Round Cornered, Baby Book: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><div class="extra-product-pictures" hidden><img src="web-images/website picture bm3.webp?v=1" alt="3 Hand-Made JESUS LOVES YOU ! Laminated Book Marks: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="web-images/website picture s20.webp?v=1" alt="20 Hand Made Small Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="web-images/website picture s4.webp?v=1" alt="4 Hand Made Medium Jesus Loves You ! Stickers: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="web-images/website picture s1.webp?v=1" alt="1 Hand Made Large Jesus Loves You ! Sticker: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="web-images/sarah book cover for library.webp?v=1" alt="Hand Made JESUS LOVES YOU ! Art Pad: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"><img src="web-images/website picture mg.webp?v=1" alt="Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Card Tiles: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition"></div></div>
 <h3 class="subscription-original-title" style="display:none">PIDGSCB1-ALL — Gold Subscription — One Hand Made Customizable Baby Book + Complete Gold Companion Package</h3><span class="subscription-code">PIDGSCB1-ALL</span><span class="subscription-description">Gold Subscription — One Hand Made Customizable Baby Book + Complete Gold Companion Package</span>
 <p class="price">C$1780.20</p>
