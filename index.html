@@ -460,8 +460,8 @@
 <h3>SO1 — Christian Website Services</h3>
 <p class="price">C$20.00 per hour</p>
 <p class="product-available">AVAILABLE</p>
-<div class="store-details">
-<p>Service is C$20.00 per hour. E-mail Malinda with the service requested, number of hours, and what you would like help with.</p>
+<div class="store-details" hidden>
+<p>Get friendly, one-on-one help creating, updating, and improving your Christian website. Services can include website setup, page design, product and store pages, adding or changing pictures and information, SEO help, troubleshooting, and general website support. Whether you are building something new or improving an existing site, the goal is to help you create a clear, welcoming website that shares your Christian message with others.</p>
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Service%20request%3A%20SO1%20%E2%80%94%20Christian%20Website%20Services&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20request%3A%20SO1%20%E2%80%94%20Christian%20Website%20Services%0A%0ANumber%20of%20hours%20requested%3A%0AWhat%20I%20would%20like%20help%20with%3A%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions%20and%20let%20me%20know%20your%20availability.%0A">E-mail Malinda to Request This Service</a></div>
 </div>
 </article><article class="store-card" id="store-SO2">
@@ -469,8 +469,8 @@
 <h3>SO2 — Christian Author Services</h3>
 <p class="price">C$20.00 per hour</p>
 <p class="product-available">AVAILABLE</p>
-<div class="store-details">
-<p>Service is C$20.00 per hour. E-mail Malinda with the service requested, number of hours, and what you would like help with.</p>
+<div class="store-details" hidden>
+<p>Personalized support for Christian authors as they bring their books and ideas to life. Services can include book planning, writing support, editing help, formatting, self-publishing assistance, marketing ideas, and special help with Christian children's books. The goal is to help you develop and share stories that glorify God, encourage readers, and make a positive difference.</p>
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Service%20request%3A%20SO2%20%E2%80%94%20Christian%20Author%20Services&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20request%3A%20SO2%20%E2%80%94%20Christian%20Author%20Services%0A%0ANumber%20of%20hours%20requested%3A%0AWhat%20I%20would%20like%20help%20with%3A%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions%20and%20let%20me%20know%20your%20availability.%0A">E-mail Malinda to Request This Service</a></div>
 </div>
 </article><article class="store-card" id="store-SO3">
@@ -478,8 +478,8 @@
 <h3>SO3 — Christian Education Services Chat GPT</h3>
 <p class="price">C$20.00 per hour</p>
 <p class="product-available">AVAILABLE</p>
-<div class="store-details">
-<p>Service is C$20.00 per hour. E-mail Malinda with the service requested, number of hours, and what you would like help with.</p>
+<div class="store-details" hidden>
+<p>Friendly, step-by-step help learning how to use ChatGPT for Christian, educational, creative, and everyday projects. Learn how to ask questions, get useful answers, develop writing and image ideas, work on Christian projects, receive website help, and build your technology skills. Lessons are designed to help you become more confident using today's technology while always keeping Jesus first.</p>
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Service%20request%3A%20SO3%20%E2%80%94%20Christian%20Education%20Services%20Chat%20GPT&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20request%3A%20SO3%20%E2%80%94%20Christian%20Education%20Services%20Chat%20GPT%0A%0ANumber%20of%20hours%20requested%3A%0AWhat%20I%20would%20like%20help%20with%3A%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions%20and%20let%20me%20know%20your%20availability.%0A">E-mail Malinda to Request This Service</a></div>
 </div>
 </article><article class="store-card" id="store-SO4">
@@ -487,8 +487,8 @@
 <h3>SO4 — Christian Education Services GitHub</h3>
 <p class="price">C$20.00 per hour</p>
 <p class="product-available">AVAILABLE</p>
-<div class="store-details">
-<p>Service is C$20.00 per hour. E-mail Malinda with the service requested, number of hours, and what you would like help with.</p>
+<div class="store-details" hidden>
+<p>Step-by-step help learning how to use GitHub for Christian websites and online projects. Services can include setting up a repository, uploading and committing files, organizing files, updating website pages, using GitHub Pages, fixing common errors, and learning how to maintain your own website. The goal is to make GitHub easier to understand so you can confidently use technology to share your Christian work online.</p>
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com?subject=Service%20request%3A%20SO4%20%E2%80%94%20Christian%20Education%20Services%20GitHub&body=Hello%20Malinda%2C%0A%0AI%20would%20like%20to%20request%3A%20SO4%20%E2%80%94%20Christian%20Education%20Services%20GitHub%0A%0ANumber%20of%20hours%20requested%3A%0AWhat%20I%20would%20like%20help%20with%3A%0A%0AMy%20name%3A%0AMy%20email%20address%3A%0A%0APlease%20send%20me%20the%20e-Transfer%20instructions%20and%20let%20me%20know%20your%20availability.%0A">E-mail Malinda to Request This Service</a></div>
 </div>
 </article></div>
@@ -1805,5 +1805,18 @@ imageViewer.addEventListener('click',e=>{if(e.target===imageViewer||e.target.clo
 <script src="script.js?v=10" defer></script>
 
 
+<script id="service-card-toggle-script">
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('#services-offered .store-card').forEach(function(card){
+    var img = card.querySelector('img');
+    var details = card.querySelector('.store-details');
+    if (!img || !details) return;
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', function () {
+      details.hidden = !details.hidden;
+    });
+  });
+});
+</script>
 </body>
 </html>
