@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       flipButton.textContent = 'FLIP BOOK E-BOOK C$10.00';
       flipButton.style.cursor = 'pointer';
-      flipButton.onclick = () => window.open('flip-book-preview-clean.html?v=31', '_blank', 'noopener');
+      flipButton.onclick = () => window.open('flip-book-preview.html?v=33', '_blank', 'noopener');
     }
   }
 });
