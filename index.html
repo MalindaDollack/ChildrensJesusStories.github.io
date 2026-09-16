@@ -1554,7 +1554,7 @@ Malinda Dollack</p>
 </section>
 
 <style>
-  .story-match-section{width:min(100%,470px);margin:24px auto 0;padding:18px;border:4px solid #5b197d;border-radius:24px;background:#f8efff;box-shadow:0 10px 24px rgba(75,20,111,.18);text-align:center;color:#4b146f}
+  .story-match-section{width:min(100%,760px);margin:24px auto 0;padding:18px;border:4px solid #5b197d;border-radius:24px;background:#f8efff;box-shadow:0 10px 24px rgba(75,20,111,.18);text-align:center;color:#4b146f}
   .story-match-section h3{margin:0 0 6px;font-size:clamp(1.35rem,4vw,1.8rem)}
   .story-match-section>p{margin:0 0 14px;font-weight:700}
   .story-match-board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
@@ -1634,6 +1634,9 @@ Malinda Dollack</p>
 .sarah-sudoku-animal{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#fff}
 .sarah-sudoku-animal img,.sarah-sudoku-animal svg{width:100%;height:100%;display:block}
 .sarah-sudoku-animal.dog{font-size:clamp(1.4rem,4vw,2.2rem);background:#fff}
+.sarah-sudoku-animal.clean{flex-direction:column;line-height:1;background:#fff}
+.sarah-sudoku-animal.clean .sudoku-symbol{font-size:clamp(1.15rem,3vw,2rem)}
+.sarah-sudoku-animal.clean small{font-size:.62rem;font-weight:900;color:#4b146f;margin-top:1px}
 .sarah-sudoku-message{min-height:24px;font-weight:900}
 #sarahSudokuReset{border:0;border-radius:999px;background:#5b197d;color:white;font-weight:900;font-size:1rem;padding:10px 18px;cursor:pointer}
 .sarah-sudoku-last{margin:14px auto 4px}
@@ -1674,10 +1677,9 @@ Malinda Dollack</p>
  }
  function tileText(n){return n+" "+names[n]}
  function animalHTML(n){
-   if(n===5)return '<span class="sarah-sudoku-animal dog" aria-label="Dog">🐶</span>';
-   const crop={1:[130,148,56,72],2:[186,148,57,72],3:[243,148,56,72],4:[299,148,57,72],6:[412,148,57,72],7:[469,148,56,72],8:[525,148,57,72],9:[582,148,56,72]}[n];
-   const x=crop[0],y=crop[1],w=crop[2],h=crop[3];
-   return '<span class="sarah-sudoku-animal" aria-label="'+names[n]+'"><svg viewBox="'+x+' '+y+' '+w+' '+h+'" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true"><image href="web-images/Sarah%20Animal%20Suduko.webp?v=2" x="0" y="0" width="768" height="1152"/></svg></span>';
+   const symbols={1:"🐑",2:"🐸",3:"🫏",4:"🐱",5:"🐶",6:"🐷",7:"👶",8:"😇",9:"🐑"};
+   const labels={1:"Sarah",2:"Frog",3:"Donkey",4:"Cat",5:"Dog",6:"Pig",7:"Baby Jesus",8:"Angel",9:"Jesus and Sarah"};
+   return '<span class="sarah-sudoku-animal clean" aria-label="'+labels[n]+'"><span class="sudoku-symbol">'+symbols[n]+'</span><small>'+n+'</small></span>';
  }
  function render(){
    board.innerHTML="";
@@ -1731,103 +1733,46 @@ Malinda Dollack</p>
 
 <section class="sarah-wordsearch-section" aria-labelledby="sarah-wordsearch-title">
   <h3 id="sarah-wordsearch-title">Sarah the Sheep: My Shepherd, Jesus’s Birth. The Christmas Story Find-a-Word</h3>
-  <p class="sarah-wordsearch-intro">Find all 16 hidden Christmas Story words. Hold down your mouse button and drag across a word to highlight it. On a phone or tablet, touch the first letter and slide to the last letter.</p>
-  <div class="sarah-wordsearch-game">
-    <div class="sarah-wordsearch-grid" id="sarahWordGrid" aria-label="Sarah Christmas Story word search"></div>
-    <div class="sarah-wordsearch-list" id="sarahWordList"></div>
+  <p class="sarah-wordsearch-intro">Use the exact Sarah Find-a-Word puzzle below. Hold down your mouse button and drag across each word to highlight it. On a phone or tablet, touch and slide across the word.</p>
+  <div class="sarah-original-wordsearch" id="sarahOriginalWordsearch">
+    <img src="web-images/Sarah%20Find%20A%20Word.webp?v=2" alt="Original Sarah Find-a-Word puzzle supplied by Malinda">
+    <canvas id="sarahWordCanvas" aria-label="Highlight layer for the original Sarah Find-a-Word"></canvas>
   </div>
-  <p class="sarah-wordsearch-note"><strong>When all the words are found, read the letters that are left over in order. They spell: JESUS LOVES YOU !</strong></p>
+  <p class="sarah-wordsearch-note"><strong>Find all the words. The letters left over spell: JESUS LOVES YOU !</strong></p>
   <p id="sarahWordMessage" class="sarah-wordsearch-message" aria-live="polite"></p>
-  <button type="button" id="sarahWordReset">Start Again</button>
+  <button type="button" id="sarahWordReset">Clear Highlights</button>
+  <button type="button" id="sarahWordFinished">I Found All The Words!</button>
   <div id="sarahWordWin" class="sarah-wordsearch-win" hidden>
     <img src="web-images/game-win-jesus-loves-you.webp?v=1" alt="Sarah the Sheep says JESUS LOVES YOU !">
   </div>
 </section>
-
 <style>
-.sarah-wordsearch-section{width:min(100%,850px);margin:30px auto;padding:18px;border:4px solid #5b197d;border-radius:24px;background:#fff;text-align:center;color:#4b146f;box-shadow:0 10px 24px rgba(75,20,111,.18)}
+.sarah-wordsearch-section{width:min(100%,760px);margin:30px auto;padding:18px;border:4px solid #5b197d;border-radius:24px;background:#fff;text-align:center;color:#4b146f;box-shadow:0 10px 24px rgba(75,20,111,.18)}
 .sarah-wordsearch-section h3{margin:0 0 8px;font-size:clamp(1.3rem,3.8vw,2rem)}
-.sarah-wordsearch-intro,.sarah-wordsearch-note{max-width:760px;margin:10px auto;font-weight:700}
-.sarah-wordsearch-game{display:flex;gap:20px;justify-content:center;align-items:flex-start;margin:16px auto}
-.sarah-wordsearch-grid{display:grid;grid-template-columns:repeat(18,1fr);width:min(78vw,650px);border:3px solid #5b197d;touch-action:none;user-select:none;background:#fff}
-.sarah-word-letter{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid #d7b9e6;font-weight:900;font-size:clamp(.62rem,1.7vw,1.05rem);color:#4b146f;background:#fff;cursor:pointer}
-.sarah-word-letter.preview{background:#f1d7ff}
-.sarah-word-letter.found{background:#dfb7f3;color:#32104a}
-.sarah-word-letter.leftover{background:#fff6c9;color:#4b146f}
-.sarah-wordsearch-list{min-width:145px;text-align:left;display:grid;gap:5px;font-weight:900}
-.sarah-wordsearch-list span{padding:3px 7px;border-radius:8px}
-.sarah-wordsearch-list span.found{text-decoration:line-through;background:#e7caef}
+.sarah-wordsearch-intro,.sarah-wordsearch-note{max-width:700px;margin:10px auto;font-weight:700}
+.sarah-original-wordsearch{position:relative;width:min(100%,650px);margin:16px auto}
+.sarah-original-wordsearch img{display:block;width:100%;height:auto;margin:0 auto;border:2px solid #5b197d}
+#sarahWordCanvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
 .sarah-wordsearch-message{min-height:26px;font-weight:900;font-size:1.08rem}
-#sarahWordReset{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:900;font-size:1rem;padding:10px 18px;cursor:pointer}
+#sarahWordReset,#sarahWordFinished{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:900;font-size:1rem;padding:10px 18px;margin:4px;cursor:pointer}
 .sarah-wordsearch-win{margin:14px auto 0;width:min(100%,420px)}
 .sarah-wordsearch-win img{width:100%;height:auto;border-radius:18px}
 .sarah-wordsearch-win.flash{animation:sarahWordFlash .7s ease-in-out 8}
 @keyframes sarahWordFlash{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.18;transform:scale(1.025)}}
-@media(max-width:700px){.sarah-wordsearch-section{padding:10px}.sarah-wordsearch-game{display:block}.sarah-wordsearch-grid{width:100%}.sarah-wordsearch-list{grid-template-columns:repeat(2,1fr);margin-top:12px;text-align:center}.sarah-word-letter{font-size:clamp(.5rem,3vw,.85rem)}}
 </style>
-
 <script>
 (() => {
- const rows=[
-  ["MERRYCHRISTMAS","FROG"],
-  ["BETHLEHEM","BROTHERS"],
-  ["SHEPERD","ANGELS","BIBLE"],
-  ["MANGER","BIRTH","JESUS"],
-  ["SARAH","SHEEP","LOVE","MAMA"],
-  ["PAPA","STAR"]
- ];
- const words=["ANGELS","BETHLEHEM","BIBLE","BIRTH","BROTHERS","FROG","JESUS","LOVE","MAMA","MANGER","MERRYCHRISTMAS","PAPA","SARAH","SHEEP","SHEPERD","STAR"];
- const secret="JESUSLOVESYOU";
- const grid=document.getElementById("sarahWordGrid"),list=document.getElementById("sarahWordList"),msg=document.getElementById("sarahWordMessage"),reset=document.getElementById("sarahWordReset"),win=document.getElementById("sarahWordWin");
- let cells=[],ranges=[],found=new Set(),dragging=false,startIndex=null,currentIndex=null;
- function build(){
-   grid.innerHTML="";list.innerHTML="";cells=[];ranges=[];found=new Set();win.hidden=true;win.classList.remove("flash");msg.textContent="";
-   let secretAt=0,index=0;
-   rows.forEach((parts,r)=>{
-     let col=0;
-     parts.forEach(word=>{
-       const start=index;
-       [...word].forEach(ch=>{addCell(ch,index,r,col,false);index++;col++});
-       ranges.push({word,start,end:index-1});
-     });
-     while(col<18){addCell(secret[secretAt++],index,r,col,true);index++;col++}
-   });
-   words.forEach(w=>{const s=document.createElement("span");s.textContent=w;s.dataset.word=w;list.appendChild(s)});
- }
- function addCell(ch,index,r,col,leftover){
-   const d=document.createElement("div");d.className="sarah-word-letter";d.textContent=ch;d.dataset.index=index;d.dataset.row=r;d.dataset.col=col;if(leftover)d.dataset.leftover="1";
-   d.addEventListener("pointerdown",e=>{e.preventDefault();dragging=true;startIndex=index;currentIndex=index;d.setPointerCapture?.(e.pointerId);preview()});
-   d.addEventListener("pointerenter",()=>{if(dragging){currentIndex=index;preview()}});
-   d.addEventListener("pointermove",e=>{if(!dragging)return;const el=document.elementFromPoint(e.clientX,e.clientY);if(el&&el.classList.contains("sarah-word-letter")){currentIndex=Number(el.dataset.index);preview()}});
-   d.addEventListener("pointerup",()=>finish());
-   grid.appendChild(d);cells.push(d);
- }
- function selectedRange(){
-   if(startIndex===null||currentIndex===null)return [];
-   const a=cells[startIndex],b=cells[currentIndex];if(!a||!b||a.dataset.row!==b.dataset.row)return [];
-   const lo=Math.min(startIndex,currentIndex),hi=Math.max(startIndex,currentIndex);return cells.slice(lo,hi+1);
- }
- function preview(){cells.forEach(x=>x.classList.remove("preview"));selectedRange().forEach(x=>{if(!x.classList.contains("found"))x.classList.add("preview")})}
- function finish(){
-   if(!dragging)return;dragging=false;
-   const sel=selectedRange();const lo=Math.min(startIndex,currentIndex),hi=Math.max(startIndex,currentIndex);
-   const hit=ranges.find(x=>x.start===lo&&x.end===hi);
-   cells.forEach(x=>x.classList.remove("preview"));
-   if(hit&&!found.has(hit.word)){
-     found.add(hit.word);for(let i=hit.start;i<=hit.end;i++)cells[i].classList.add("found");
-     const label=list.querySelector('[data-word="'+hit.word+'"]');if(label)label.classList.add("found");
-     msg.textContent="You found "+hit.word+"!";
-     if(found.size===words.length)complete();
-   }
-   startIndex=currentIndex=null;
- }
- function complete(){
-   cells.filter(x=>x.dataset.leftover==="1").forEach(x=>x.classList.add("leftover"));
-   msg.textContent="Wonderful! The letters left over spell JESUS LOVES YOU !";
-   win.hidden=false;win.classList.remove("flash");void win.offsetWidth;win.classList.add("flash");
- }
- document.addEventListener("pointerup",()=>{if(dragging)finish()});
- reset.addEventListener("click",build);build();
+ const wrap=document.getElementById("sarahOriginalWordsearch"),img=wrap.querySelector("img"),canvas=document.getElementById("sarahWordCanvas"),ctx=canvas.getContext("2d"),reset=document.getElementById("sarahWordReset"),finished=document.getElementById("sarahWordFinished"),win=document.getElementById("sarahWordWin"),msg=document.getElementById("sarahWordMessage");
+ let drawing=false,sx=0,sy=0,marks=[];
+ function size(){const r=img.getBoundingClientRect();canvas.width=Math.max(1,Math.round(r.width*devicePixelRatio));canvas.height=Math.max(1,Math.round(r.height*devicePixelRatio));draw()}
+ function point(e){const r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}}
+ function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.lineCap="round";ctx.strokeStyle="rgba(109,31,145,.38)";ctx.lineWidth=Math.max(12,canvas.width/38);marks.forEach(m=>{ctx.beginPath();ctx.moveTo(m.x1,m.y1);ctx.lineTo(m.x2,m.y2);ctx.stroke()})}
+ canvas.addEventListener("pointerdown",e=>{e.preventDefault();drawing=true;const p=point(e);sx=p.x;sy=p.y;canvas.setPointerCapture?.(e.pointerId)});
+ canvas.addEventListener("pointerup",e=>{if(!drawing)return;drawing=false;const p=point(e);marks.push({x1:sx,y1:sy,x2:p.x,y2:p.y});draw()});
+ canvas.addEventListener("pointercancel",()=>drawing=false);
+ reset.addEventListener("click",()=>{marks=[];draw();win.hidden=true;msg.textContent=""});
+ finished.addEventListener("click",()=>{msg.textContent="Wonderful! JESUS LOVES YOU !";win.hidden=false;win.classList.remove("flash");void win.offsetWidth;win.classList.add("flash")});
+ img.addEventListener("load",size);window.addEventListener("resize",size);if(img.complete)size();
 })();
 </script>
 
