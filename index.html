@@ -1573,6 +1573,100 @@ This is a special Saddle Book edition Coloring Book Edition with only one purpos
 })();
 </script>
 
+
+<section class="sarah-sudoku-section" aria-labelledby="sarah-sudoku-title">
+  <h3 id="sarah-sudoku-title">Sarah the Baby sheep: My Shepherd, Jesus's Birth. The Christmas Story Sodoku Game</h3>
+  <img class="sarah-sudoku-picture" loading="lazy" decoding="async" src="web-images/Sarah%20Animal%20Suduko.webp?v=2" alt="Sarah the Baby Sheep Sudoku game">
+  <div class="sarah-sudoku-instructions">
+    <p><strong>How to Play:</strong> Fill every empty square so that each row, each column, and each 3×3 box contains each number/picture 1 through 9 one time. Number 5 is the dog.</p>
+    <p>Drag a movable tile from the column into an empty square. You can also click a tile, then click an empty square. Click a filled square to remove your answer.</p>
+  </div>
+  <div class="sarah-sudoku-play">
+    <div class="sarah-sudoku-board" id="sarahSudokuBoard" aria-label="Interactive Sudoku board"></div>
+    <div class="sarah-sudoku-tiles" id="sarahSudokuTiles" aria-label="Movable Sudoku tiles"></div>
+  </div>
+  <p id="sarahSudokuMessage" class="sarah-sudoku-message" aria-live="polite"></p>
+  <button type="button" id="sarahSudokuReset">Start Again</button>
+  <p class="sarah-sudoku-last"><strong>When you win Sarah the Sheep will appear with a Very Important Message ! JESUS LOVES YOU !</strong></p>
+  <div id="sarahSudokuWin" class="sarah-sudoku-win" hidden>
+    <img src="web-images/game-win-jesus-loves-you.webp?v=1" alt="Sarah the Sheep says JESUS LOVES YOU !">
+  </div>
+</section>
+
+<style>
+.sarah-sudoku-section{width:min(100%,760px);margin:30px auto;padding:18px;border:4px solid #5b197d;border-radius:24px;background:#fff;text-align:center;color:#4b146f;box-shadow:0 10px 24px rgba(75,20,111,.18)}
+.sarah-sudoku-section h3{margin:0 0 12px;font-size:clamp(1.25rem,3.5vw,1.9rem)}
+.sarah-sudoku-picture{width:min(100%,560px);height:auto;border:2px solid #5b197d}
+.sarah-sudoku-instructions{max-width:650px;margin:12px auto;text-align:left}
+.sarah-sudoku-play{display:flex;gap:14px;justify-content:center;align-items:flex-start;margin:14px auto;max-width:650px}
+.sarah-sudoku-board{display:grid;grid-template-columns:repeat(9,1fr);width:min(82vw,540px);aspect-ratio:1;border:3px solid #4b146f;background:white}
+.sarah-sudoku-cell{border:1px solid #9c79b4;background:white;padding:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(.7rem,2.3vw,1.15rem);color:#4b146f;cursor:pointer;min-width:0}
+.sarah-sudoku-cell:nth-child(9n+3),.sarah-sudoku-cell:nth-child(9n+6){border-right:3px solid #4b146f}
+.sarah-sudoku-cell.box-bottom{border-bottom:3px solid #4b146f}
+.sarah-sudoku-cell.given{background:#f5edfa;cursor:default}
+.sarah-sudoku-cell.wrong{background:#ffe3e3}
+.sarah-sudoku-tiles{display:flex;flex-direction:column;gap:5px}
+.sarah-sudoku-tile{width:54px;height:54px;border:2px solid #4b146f;border-radius:9px;background:#f8efff;color:#4b146f;font-weight:900;cursor:grab;font-size:1rem}
+.sarah-sudoku-tile.selected{outline:4px solid #d79bea}
+.sarah-sudoku-message{min-height:24px;font-weight:900}
+#sarahSudokuReset{border:0;border-radius:999px;background:#5b197d;color:white;font-weight:900;font-size:1rem;padding:10px 18px;cursor:pointer}
+.sarah-sudoku-last{margin:14px auto 4px}
+.sarah-sudoku-win{margin:14px auto 0;width:min(100%,420px)}
+.sarah-sudoku-win img{width:100%;height:auto;border-radius:18px}
+.sarah-sudoku-win.flash{animation:sarahSudokuFlash .7s ease-in-out 8}
+@keyframes sarahSudokuFlash{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.18;transform:scale(1.025)}}
+@media(max-width:620px){.sarah-sudoku-section{padding:10px}.sarah-sudoku-play{gap:6px}.sarah-sudoku-tile{width:38px;height:38px;font-size:.8rem}}
+</style>
+
+<script>
+(() => {
+ const solution=[
+ [5,3,4,6,7,8,9,1,2],[6,7,2,1,9,5,3,4,8],[1,9,8,3,4,2,5,6,7],
+ [8,5,9,7,6,1,4,2,3],[4,2,6,8,5,3,7,9,1],[7,1,3,9,2,4,8,5,6],
+ [9,6,1,5,3,7,2,8,4],[2,8,7,4,1,9,6,3,5],[3,4,5,2,8,6,1,7,9]];
+ const puzzle=[
+ [5,3,0,0,7,0,0,1,2],[6,0,2,1,9,0,3,0,8],[1,9,8,3,0,2,5,6,0],
+ [8,0,9,7,6,1,0,2,3],[4,2,6,0,5,3,7,9,1],[7,1,3,9,2,0,8,5,6],
+ [9,6,1,5,3,7,2,8,0],[2,8,7,4,1,9,6,0,5],[3,4,5,2,8,6,1,7,9]];
+ const names={1:"Sarah",2:"Frog",3:"Donkey",4:"Cat",5:"Dog",6:"Pig",7:"Baby Jesus",8:"Angel",9:"Jesus and Sarah"};
+ const board=document.getElementById("sarahSudokuBoard"),tiles=document.getElementById("sarahSudokuTiles"),msg=document.getElementById("sarahSudokuMessage"),win=document.getElementById("sarahSudokuWin"),reset=document.getElementById("sarahSudokuReset");
+ let selected=null;
+ function tileText(n){return n+" "+names[n]}
+ function render(){
+   board.innerHTML="";
+   for(let r=0;r<9;r++)for(let col=0;col<9;col++){
+     const b=document.createElement("button");b.type="button";b.className="sarah-sudoku-cell"+(puzzle[r][col]?" given":"")+((r===2||r===5)?" box-bottom":"");
+     b.dataset.r=r;b.dataset.c=col;b.textContent=puzzle[r][col]||"";
+     if(puzzle[r][col])b.setAttribute("aria-label","Given "+tileText(puzzle[r][col]));
+     else{
+       b.setAttribute("aria-label","Empty Sudoku square");
+       b.addEventListener("dragover",e=>e.preventDefault());
+       b.addEventListener("drop",e=>{e.preventDefault();place(b,Number(e.dataTransfer.getData("text/plain")))});
+       b.addEventListener("click",()=>{if(b.textContent){b.textContent="";b.classList.remove("wrong");check()}else if(selected)place(b,selected)});
+     }
+     board.appendChild(b);
+   }
+ }
+ function makeTiles(){
+   tiles.innerHTML="";
+   for(let n=1;n<=9;n++){const t=document.createElement("button");t.type="button";t.className="sarah-sudoku-tile";t.draggable=true;t.textContent=tileText(n);t.title=tileText(n);
+     t.addEventListener("dragstart",e=>e.dataTransfer.setData("text/plain",String(n)));
+     t.addEventListener("click",()=>{selected=n;tiles.querySelectorAll("button").forEach(x=>x.classList.toggle("selected",x===t))});
+     tiles.appendChild(t);
+   }
+ }
+ function place(cell,n){if(!n)return;cell.textContent=n;cell.classList.toggle("wrong",solution[+cell.dataset.r][+cell.dataset.c]!==n);check()}
+ function check(){
+   const cells=[...board.children];let complete=true,correct=true;
+   cells.forEach((cell,i)=>{const r=Math.floor(i/9),col=i%9,v=Number(cell.textContent);if(!v)complete=false;if(v&&v!==solution[r][col])correct=false});
+   if(complete&&correct){msg.textContent="Wonderful! You solved Sarah's Sudoku!";win.hidden=false;win.classList.remove("flash");void win.offsetWidth;win.classList.add("flash")}
+   else{win.hidden=true;win.classList.remove("flash");msg.textContent=complete&&!correct?"Almost! Some tiles need to be moved.":""}
+ }
+ function start(){selected=null;win.hidden=true;win.classList.remove("flash");msg.textContent="";render();makeTiles()}
+ reset.addEventListener("click",start);start();
+})();
+</script>
+
       <article class="about-copy">
         <p class="eyebrow">💜 About the Author</p>
         <h2>Hello! My name is Malinda Dollack.</h2>
