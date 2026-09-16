@@ -1630,6 +1630,10 @@ Malinda Dollack</p>
 .sarah-sudoku-tiles{display:flex;flex-direction:column;gap:5px}
 .sarah-sudoku-tile{width:54px;height:54px;border:2px solid #4b146f;border-radius:9px;background:#f8efff;color:#4b146f;font-weight:900;cursor:grab;font-size:1rem}
 .sarah-sudoku-tile.selected{outline:4px solid #d79bea}
+.sarah-sudoku-tile,.sarah-sudoku-cell{overflow:hidden}
+.sarah-sudoku-animal{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#fff}
+.sarah-sudoku-animal img{width:100%;height:100%;object-fit:cover;display:block}
+.sarah-sudoku-animal.dog{font-size:clamp(1.4rem,4vw,2.2rem);background:#fff}
 .sarah-sudoku-message{min-height:24px;font-weight:900}
 #sarahSudokuReset{border:0;border-radius:999px;background:#5b197d;color:white;font-weight:900;font-size:1rem;padding:10px 18px;cursor:pointer}
 .sarah-sudoku-last{margin:14px auto 4px}
@@ -1669,34 +1673,39 @@ Malinda Dollack</p>
    easyMasks[index].forEach(([r,col])=>puzzle[r][col]=0);
  }
  function tileText(n){return n+" "+names[n]}
+ function animalHTML(n){
+   if(n===5)return '<span class="sarah-sudoku-animal dog" aria-label="Dog">🐶</span>';
+   const pos={1:"0%",2:"12.5%",3:"25%",4:"37.5%",6:"62.5%",7:"75%",8:"87.5%",9:"100%"}[n];
+   return '<span class="sarah-sudoku-animal" aria-label="'+names[n]+'" style="background-image:url(\'web-images/Sarah%20Animal%20Suduko.webp?v=2\');background-size:900% auto;background-position:'+pos+' 0%;background-repeat:no-repeat"></span>';
+ }
  function render(){
    board.innerHTML="";
    for(let r=0;r<9;r++)for(let col=0;col<9;col++){
      const b=document.createElement("button");b.type="button";b.className="sarah-sudoku-cell"+(puzzle[r][col]?" given":"")+((r===2||r===5)?" box-bottom":"");
-     b.dataset.r=r;b.dataset.c=col;b.textContent=puzzle[r][col]||"";
+     b.dataset.r=r;b.dataset.c=col;if(puzzle[r][col]){b.dataset.value=puzzle[r][col];b.innerHTML=animalHTML(puzzle[r][col])}else{b.dataset.value="";b.innerHTML=""}
      if(puzzle[r][col])b.setAttribute("aria-label","Given "+tileText(puzzle[r][col]));
      else{
        b.setAttribute("aria-label","Empty Sudoku square");
        b.addEventListener("dragover",e=>e.preventDefault());
        b.addEventListener("drop",e=>{e.preventDefault();place(b,Number(e.dataTransfer.getData("text/plain")))});
-       b.addEventListener("click",()=>{if(b.textContent){b.textContent="";b.classList.remove("wrong");check()}else if(selected)place(b,selected)});
+       b.addEventListener("click",()=>{if(b.dataset.value){b.dataset.value="";b.innerHTML="";b.classList.remove("wrong");check()}else if(selected)place(b,selected)});
      }
      board.appendChild(b);
    }
  }
  function makeTiles(){
    tiles.innerHTML="";
-   for(let n=1;n<=9;n++){const t=document.createElement("button");t.type="button";t.className="sarah-sudoku-tile";t.draggable=true;t.textContent=tileText(n);t.title=tileText(n);
+   for(let n=1;n<=9;n++){const t=document.createElement("button");t.type="button";t.className="sarah-sudoku-tile";t.draggable=true;t.innerHTML=animalHTML(n);t.title=tileText(n);t.setAttribute("aria-label",tileText(n));
      t.addEventListener("dragstart",e=>e.dataTransfer.setData("text/plain",String(n)));
      t.addEventListener("click",()=>{selected=n;tiles.querySelectorAll("button").forEach(x=>x.classList.toggle("selected",x===t))});
      tiles.appendChild(t);
    }
  }
- function place(cell,n){if(!n||won)return;cell.textContent=n;cell.classList.toggle("wrong",solution[+cell.dataset.r][+cell.dataset.c]!==n);check()}
+ function place(cell,n){if(!n||won)return;cell.dataset.value=n;cell.innerHTML=animalHTML(n);cell.classList.toggle("wrong",solution[+cell.dataset.r][+cell.dataset.c]!==n);check()}
  function check(){
    if(won)return;
    const cells=[...board.children];let complete=true,correct=true;
-   cells.forEach((cell,i)=>{const r=Math.floor(i/9),col=i%9,v=Number(cell.textContent);if(!v)complete=false;if(v&&v!==solution[r][col])correct=false});
+   cells.forEach((cell,i)=>{const r=Math.floor(i/9),col=i%9,v=Number(cell.dataset.value);if(!v)complete=false;if(v&&v!==solution[r][col])correct=false});
    if(complete&&correct){
      won=true;msg.textContent="Wonderful! You solved Sarah's Sudoku! A new easy puzzle is coming next.";
      win.hidden=false;win.classList.remove("flash");void win.offsetWidth;win.classList.add("flash");
