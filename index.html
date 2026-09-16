@@ -1620,17 +1620,32 @@ This is a special Saddle Book edition Coloring Book Edition with only one purpos
 
 <script>
 (() => {
- const solution=[
+ const baseSolution=[
  [5,3,4,6,7,8,9,1,2],[6,7,2,1,9,5,3,4,8],[1,9,8,3,4,2,5,6,7],
  [8,5,9,7,6,1,4,2,3],[4,2,6,8,5,3,7,9,1],[7,1,3,9,2,4,8,5,6],
  [9,6,1,5,3,7,2,8,4],[2,8,7,4,1,9,6,3,5],[3,4,5,2,8,6,1,7,9]];
- const puzzle=[
- [5,3,0,0,7,0,0,1,2],[6,0,2,1,9,0,3,0,8],[1,9,8,3,0,2,5,6,0],
- [8,0,9,7,6,1,0,2,3],[4,2,6,0,5,3,7,9,1],[7,1,3,9,2,0,8,5,6],
- [9,6,1,5,3,7,2,8,0],[2,8,7,4,1,9,6,0,5],[3,4,5,2,8,6,1,7,9]];
+ const easyMasks=[
+ [[0,2],[0,3],[0,5],[1,1],[1,5],[1,7],[2,4],[2,8],[3,1],[3,6],[4,3],[5,5],[6,8],[7,7]],
+ [[0,1],[0,4],[0,7],[1,2],[1,6],[2,0],[2,5],[3,3],[3,8],[4,1],[4,6],[5,4],[6,2],[7,5]],
+ [[0,0],[0,5],[1,3],[1,8],[2,2],[2,6],[3,1],[3,4],[4,7],[5,0],[5,5],[6,3],[7,6],[8,1]],
+ [[0,3],[0,8],[1,0],[1,4],[2,1],[2,7],[3,2],[3,5],[4,0],[4,8],[5,6],[6,4],[7,1],[8,7]],
+ [[0,2],[0,6],[1,1],[1,7],[2,3],[2,8],[3,0],[3,4],[4,5],[5,2],[5,8],[6,1],[7,4],[8,6]],
+ [[0,4],[0,7],[1,2],[1,5],[2,0],[2,6],[3,3],[3,8],[4,1],[4,7],[5,4],[6,2],[7,0],[8,5]],
+ [[0,1],[0,6],[1,3],[1,8],[2,4],[2,7],[3,0],[3,5],[4,2],[4,8],[5,6],[6,1],[7,5],[8,3]],
+ [[0,0],[0,3],[1,4],[1,7],[2,2],[2,8],[3,1],[3,6],[4,5],[5,0],[5,4],[6,7],[7,2],[8,6]],
+ [[0,5],[0,8],[1,1],[1,6],[2,3],[2,7],[3,2],[3,4],[4,0],[4,6],[5,8],[6,1],[7,5],[8,3]],
+ [[0,2],[0,7],[1,0],[1,5],[2,4],[2,6],[3,1],[3,8],[4,3],[5,2],[5,7],[6,0],[7,4],[8,5]],
+ [[0,4],[0,8],[1,2],[1,7],[2,1],[2,5],[3,0],[3,6],[4,2],[4,7],[5,4],[6,3],[7,8],[8,1]],
+ [[0,1],[0,5],[1,3],[1,6],[2,0],[2,8],[3,2],[3,7],[4,4],[5,1],[5,6],[6,5],[7,0],[8,3]]
+ ];
  const names={1:"Sarah",2:"Frog",3:"Donkey",4:"Cat",5:"Dog",6:"Pig",7:"Baby Jesus",8:"Angel",9:"Jesus and Sarah"};
  const board=document.getElementById("sarahSudokuBoard"),tiles=document.getElementById("sarahSudokuTiles"),msg=document.getElementById("sarahSudokuMessage"),win=document.getElementById("sarahSudokuWin"),reset=document.getElementById("sarahSudokuReset");
- let selected=null;
+ let selected=null,solution=[],puzzle=[],current=-1,won=false,nextTimer=null;
+ function copyGrid(g){return g.map(row=>row.slice())}
+ function makePuzzle(index){
+   solution=copyGrid(baseSolution);puzzle=copyGrid(solution);
+   easyMasks[index].forEach(([r,col])=>puzzle[r][col]=0);
+ }
  function tileText(n){return n+" "+names[n]}
  function render(){
    board.innerHTML="";
@@ -1655,15 +1670,29 @@ This is a special Saddle Book edition Coloring Book Edition with only one purpos
      tiles.appendChild(t);
    }
  }
- function place(cell,n){if(!n)return;cell.textContent=n;cell.classList.toggle("wrong",solution[+cell.dataset.r][+cell.dataset.c]!==n);check()}
+ function place(cell,n){if(!n||won)return;cell.textContent=n;cell.classList.toggle("wrong",solution[+cell.dataset.r][+cell.dataset.c]!==n);check()}
  function check(){
+   if(won)return;
    const cells=[...board.children];let complete=true,correct=true;
    cells.forEach((cell,i)=>{const r=Math.floor(i/9),col=i%9,v=Number(cell.textContent);if(!v)complete=false;if(v&&v!==solution[r][col])correct=false});
-   if(complete&&correct){msg.textContent="Wonderful! You solved Sarah's Sudoku!";win.hidden=false;win.classList.remove("flash");void win.offsetWidth;win.classList.add("flash")}
-   else{win.hidden=true;win.classList.remove("flash");msg.textContent=complete&&!correct?"Almost! Some tiles need to be moved.":""}
+   if(complete&&correct){
+     won=true;msg.textContent="Wonderful! You solved Sarah's Sudoku! A new easy puzzle is coming next.";
+     win.hidden=false;win.classList.remove("flash");void win.offsetWidth;win.classList.add("flash");
+     nextTimer=setTimeout(()=>start(true),6000);
+   } else {win.hidden=true;win.classList.remove("flash");msg.textContent=complete&&!correct?"Almost! Some tiles need to be moved.":""}
  }
- function start(){selected=null;win.hidden=true;win.classList.remove("flash");msg.textContent="";render();makeTiles()}
- reset.addEventListener("click",start);start();
+ function chooseNext(){
+   let n=current;
+   while(n===current)n=Math.floor(Math.random()*easyMasks.length);
+   return n;
+ }
+ function start(newRandom){
+   if(nextTimer){clearTimeout(nextTimer);nextTimer=null}
+   selected=null;won=false;win.hidden=true;win.classList.remove("flash");msg.textContent="";
+   current=newRandom?chooseNext():(current<0?Math.floor(Math.random()*easyMasks.length):current);
+   makePuzzle(current);render();makeTiles();
+ }
+ reset.addEventListener("click",()=>start(false));start(true);
 })();
 </script>
 
