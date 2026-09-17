@@ -2013,5 +2013,40 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
+
+<!-- Windows 7 / older-browser game compatibility patch -->
+<style id="older-device-game-compatibility">
+/* Explicit sizes are fallbacks for browsers that do not understand aspect-ratio. */
+.sarah-sudoku-board{height:540px;max-height:82vw}
+@media(max-width:620px){.sarah-sudoku-board{height:82vw}}
+/* Keep the two games simple and fully clickable on older browsers. */
+.sarah-sudoku-cell,.sarah-sudoku-tile,#sarahWordCanvas{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+</style>
+<script id="older-device-game-compatibility-script">
+(function(){
+  /* The Sudoku already has click-to-place controls, so it does not require drag-and-drop.
+     This fallback makes the Find-a-Word highlightable in browsers without Pointer Events. */
+  if(window.PointerEvent){return;}
+  var canvas=document.getElementById('sarahWordCanvas');
+  var img=document.querySelector('#sarahOriginalWordsearch img');
+  var reset=document.getElementById('sarahWordReset');
+  if(!canvas||!img||!canvas.getContext){return;}
+  var ctx=canvas.getContext('2d'),drawing=false,sx=0,sy=0;
+  function point(clientX,clientY){
+    var r=canvas.getBoundingClientRect();
+    return {x:(clientX-r.left)*canvas.width/r.width,y:(clientY-r.top)*canvas.height/r.height};
+  }
+  function line(x1,y1,x2,y2){
+    ctx.lineCap='round';ctx.strokeStyle='rgba(109,31,145,.38)';ctx.lineWidth=Math.max(12,canvas.width/38);
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  }
+  canvas.onmousedown=function(e){e=e||window.event;var p=point(e.clientX,e.clientY);sx=p.x;sy=p.y;drawing=true;return false;};
+  canvas.onmouseup=function(e){if(!drawing)return false;e=e||window.event;var p=point(e.clientX,e.clientY);drawing=false;line(sx,sy,p.x,p.y);return false;};
+  canvas.onmouseleave=function(){drawing=false;};
+  canvas.ontouchstart=function(e){if(!e.touches||!e.touches.length)return;var t=e.touches[0],p=point(t.clientX,t.clientY);sx=p.x;sy=p.y;drawing=true;if(e.preventDefault)e.preventDefault();};
+  canvas.ontouchend=function(e){if(!drawing)return;var t=e.changedTouches&&e.changedTouches[0];if(t){var p=point(t.clientX,t.clientY);line(sx,sy,p.x,p.y);}drawing=false;if(e.preventDefault)e.preventDefault();};
+  if(reset){reset.addEventListener('click',function(){ctx.clearRect(0,0,canvas.width,canvas.height);},false);}
+})();
+</script>
 </body>
 </html>
