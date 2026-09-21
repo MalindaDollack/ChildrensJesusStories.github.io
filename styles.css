@@ -15,3 +15,6 @@ img:not(.upload-preview){cursor:zoom-in}
 .story-match-section{grid-column:1;grid-row:2}
 .about-copy{grid-column:2;grid-row:1 / span 2}
 @media(max-width:1100px){.about-art,.story-match-section,.about-copy{grid-column:1!important;grid-row:auto!important}}
+
+/* Preserve the Sarah hero image natural 900:725 ratio while allowing responsive sizing. */
+.hero-book{height:auto;aspect-ratio:900/725}
