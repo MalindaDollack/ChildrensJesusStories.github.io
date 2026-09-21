@@ -410,6 +410,13 @@
   #services-offered .services-grid{grid-template-columns:1fr}
 }
 </style>
+
+<!-- TEMPORARY-SUBSCRIPTION-PUBLIC-HIDE -->
+<style>
+/* Keep subscription plans in the file, but hide them from public view until payment handling is finalized. */
+#physical-subscriptions + .subscription-overview{display:none!important}
+#physical-subscriptions::after{content:"Coming Soon";display:block;margin-top:8px;font-family:"Nunito",sans-serif;font-size:1.15rem;font-weight:900;color:#7a2d87}
+</style>
 </head>
 <body>
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
