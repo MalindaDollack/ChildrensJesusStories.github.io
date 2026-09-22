@@ -1638,6 +1638,8 @@ Malinda Dollack</p>
 </style>
 
 <script>
+window.addEventListener('load', function(){
+
 (() => {
   const animals = [
     { name: "Sarah", image: "web-images/sarah book cover for library.webp?v=1" },
@@ -1662,6 +1664,8 @@ Malinda Dollack</p>
   function startGame(){board.innerHTML="";message.textContent="";firstCard=null;secondCard=null;locked=false;matchedPairs=0;const deck=makeDeck();deck.forEach(animal=>{const card=document.createElement("button");card.type="button";card.className="story-match-card";card.dataset.pair=animal.pair;coverCard(card);card.addEventListener("click",()=>{if(locked||card.classList.contains("matched")||card.dataset.revealed==="true")return;revealImage(card,animal);if(!firstCard){firstCard=card;return}secondCard=card;locked=true;if(firstCard.dataset.pair===secondCard.dataset.pair){setTimeout(()=>{firstCard.classList.add("matched");secondCard.classList.add("matched");matchedPairs++;firstCard=null;secondCard=null;locked=false;if(matchedPairs===12)message.textContent="Wonderful! You matched all 12 animal friends!"},500)}else{setTimeout(()=>{coverCard(firstCard);coverCard(secondCard);firstCard=null;secondCard=null;locked=false},900)}});board.appendChild(card)})}
   reset.addEventListener("click",startGame);startGame();
 })();
+
+}, {once:true});
 </script>
 
 
@@ -1717,6 +1721,8 @@ Malinda Dollack</p>
 </style>
 
 <script>
+window.addEventListener('load', function(){
+
 (() => {
  const baseSolution=[
  [5,3,4,6,7,8,9,1,2],[6,7,2,1,9,5,3,4,8],[1,9,8,3,4,2,5,6,7],
@@ -1798,6 +1804,8 @@ Malinda Dollack</p>
  }
  reset.addEventListener("click",()=>start(false));start(true);
 })();
+
+}, {once:true});
 </script>
 
 
@@ -1842,6 +1850,8 @@ Malinda Dollack</p>
 @keyframes sarahWordFlash{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.18;transform:scale(1.025)}}
 </style>
 <script>
+window.addEventListener('load', function(){
+
 (() => {
  const wrap=document.getElementById("sarahOriginalWordsearch"),img=wrap.querySelector("img"),canvas=document.getElementById("sarahWordCanvas"),ctx=canvas.getContext("2d"),reset=document.getElementById("sarahWordReset"),finished=document.getElementById("sarahWordFinished"),win=document.getElementById("sarahWordWin"),msg=document.getElementById("sarahWordMessage");
  let drawing=false,sx=0,sy=0,marks=[];
@@ -1855,6 +1865,8 @@ Malinda Dollack</p>
  finished.addEventListener("click",()=>{msg.textContent="Wonderful! JESUS LOVES YOU !";win.hidden=false;win.classList.remove("flash");void win.offsetWidth;win.classList.add("flash")});
  img.addEventListener("load",size);window.addEventListener("resize",size);if(img.complete)size();
 })();
+
+}, {once:true});
 </script>
 
       
