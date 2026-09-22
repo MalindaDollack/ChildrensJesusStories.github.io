@@ -64,10 +64,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function addAvailable(card) {
     if (!card || card.querySelector('.product-available')) return;
-    const badge = document.createElement('p');
+    const badge = document.createElement('button');
+    badge.type = 'button';
     badge.className = 'product-available';
     badge.textContent = 'AVAILABLE';
-    badge.style.cssText = 'display:inline-block;align-self:flex-start;margin:4px 0 8px;padding:5px 10px;border-radius:999px;background:#e8f7e8;color:#176b2c;font-weight:900;font-size:.92rem;border:2px solid #67b878';
+    badge.setAttribute('aria-expanded','false');
+    badge.onclick = function () {
+      var card = this.parentNode;
+      var details = card ? card.querySelector('.store-details') : null;
+      var extra = card ? card.querySelector('.extra-product-pictures') : null;
+      if (details) details.hidden = !details.hidden;
+      if (extra) extra.hidden = !extra.hidden;
+      this.setAttribute('aria-expanded', details ? String(!details.hidden) : 'true');
+      return false;
+    };
+    badge.style.cssText = 'display:inline-block;align-self:flex-start;margin:4px 0 8px;padding:5px 10px;border-radius:999px;background:#e8f7e8;color:#176b2c;font-weight:900;font-size:.92rem;border:2px solid #67b878;cursor:pointer;font-family:inherit';
     const price = card.querySelector('.price');
     (price || card.querySelector('h3'))?.insertAdjacentElement('afterend', badge);
   }
