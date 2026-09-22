@@ -28,9 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (orderLink) { orderLink.textContent='Buy Now !'; orderLink.href='mailto:berachahdirector@gmail.com?subject='+encodeURIComponent('Order inquiry: DID3 Standard E - Book: '+fullEditionTitle)+'&body='+encodeURIComponent('Dear Malinda,\n\nI would like to order the link: DID3 Standard E - Book: '+fullEditionTitle+'.\n\nMy name:\nMy email address:\n\nPlease send me the e-Transfer instructions.\n\nGod Bless You and Your Family Mightily !\n'); }
   }
 
-  const sarahShelfCard = [...document.querySelectorAll('#bookGrid .book-card')].find(card => /Sarah the Baby Sheep/i.test(card.querySelector('h3')?.textContent || ''));
-  const sarahShelfCover = sarahShelfCard ? sarahShelfCard.querySelector('.cover-button img') : null;
+  const sarahShelfCover = document.querySelector('#bookGrid .book-card:first-child .cover-button img');
   if (sarahShelfCover) { sarahShelfCover.src = standardCoverFile; sarahShelfCover.alt = fullTitle + ' Standard E-Book cover'; }
+
+  const sarahShelfCard = document.querySelector('#bookGrid .book-card:first-child');
   if (sarahShelfCard) {
     const actions = sarahShelfCard.querySelector('.book-actions');
     if (actions) {
