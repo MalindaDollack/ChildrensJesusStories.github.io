@@ -193,7 +193,11 @@ document.addEventListener('DOMContentLoaded', () => {
       body = body.replace(/\s*$/,'') + '\n\nGod Bless You and Your Family Mightily !\n';
     }
     params.set('body',body);
-    link.setAttribute('href',base+'?'+params.toString());
+    const rebuilt = [];
+    params.forEach((value,key) => {
+      rebuilt.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+    });
+    link.setAttribute('href',base+'?'+rebuilt.join('&'));
   });
 
   // Replace all public e-book wording "Download" with "Link", including order e-mails.
