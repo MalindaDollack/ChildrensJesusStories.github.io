@@ -453,7 +453,23 @@
     <section class="shelf-section" id="books">
       <div class="section-title"><span>📚</span><div><small>THE COMPLETE COLLECTION</small><h2>Children’s Bible Stories & Christian Books for Kids</h2>
 </div><span>📚</span></div>
-      <div class="bookcase"><div class="shelf-grid" id="bookGrid"></div></div>
+      <div class="bookcase"><div class="shelf-grid" id="bookGrid">
+<article class="book-card">
+  <button class="cover-button" aria-label="Enlarge Sweet-Pea the Baby Sparrow: Do Not Be Afraid ! God Cares ! Even the feathers on your head are numbered."><img loading="lazy" decoding="async" src="web-images/sweet-pea book cover for library.webp?v=1" alt="Sweet-Pea the Baby Sparrow: Do Not Be Afraid ! God Cares ! Even the feathers on your head are numbered. book cover"><span class="book-number">1</span></button>
+  <h3>Sweet-Pea the Baby Sparrow: Do Not Be Afraid ! God Cares ! Even the feathers on your head are numbered.</h3>
+  <p class="reference">Matthew 10:29–31 NIV</p>
+  <p class="reference"><strong>Coming November 1, 2026</strong></p>
+  <div class="book-actions"><button class="soon coming-soon-book" type="button">COMING SOON</button></div>
+</article>
+<article class="book-card">
+  <button class="cover-button" aria-label="Enlarge Sarah the Baby Sheep: My Shepherd, Jesus’s Birth, The Christmas Story"><img loading="lazy" decoding="async" src="web-images/sarah book cover for library.webp?v=1" alt="Sarah the Baby Sheep: My Shepherd, Jesus’s Birth, The Christmas Story book cover"><span class="book-number">2</span></button>
+  <h3>Sarah the Baby Sheep: My Shepherd, Jesus’s Birth, The Christmas Story</h3>
+  <p class="reference">Luke 2:1–20 NIV</p>
+  <p class="reference"><strong>Available Now! • December 1, 2026</strong></p>
+  <p class="book-description">A joyful Christmas Bible story for kids about the birth of Jesus, the Nativity, and Luke 2, told through the eyes of Sarah the Baby Sheep.</p>
+  <div class="book-actions"><a class="soon physical-item-link" href="#store">21 Items Available</a></div>
+</article>
+</div></div>
     </section>
 
     <section class="store-section" id="store">
@@ -1954,16 +1970,22 @@ const books = [
 
 const grid=document.getElementById('bookGrid');
 books.forEach((b,i)=>{
-  const card=document.createElement('article');
-  card.className='book-card';
-  const media=b.img?`<img loading="lazy" decoding="async" src="${b.img}" alt="${b.title} book cover">`:`<div class="placeholder"><span>📖</span><b>${b.name}</b><small>Cover artwork coming soon</small></div>`;
-  const availability=b.available?`<div class="book-actions"><a class="soon physical-item-link" href="#store">21 Items Available</a></div>`:`<div class="book-actions"><button class="soon coming-soon-book" type="button">COMING SOON</button></div>`;
-  const seoDescription=b.available?`<p class="book-description">A joyful Christmas Bible story for kids about the birth of Jesus, the Nativity, and Luke 2, told through the eyes of Sarah the Baby Sheep.</p>`:``;
-  card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${b.title}</h3><p class="reference">${b.ref}</p><p class="reference"><strong>${b.release}</strong></p>${seoDescription}${availability}`;
+  let card=grid.children[i];
+  if(!card){
+    card=document.createElement('article');
+    card.className='book-card';
+    const media=b.img?`<img loading="lazy" decoding="async" src="${b.img}" alt="${b.title} book cover">`:`<div class="placeholder"><span>📖</span><b>${b.name}</b><small>Cover artwork coming soon</small></div>`;
+    const availability=b.available?`<div class="book-actions"><a class="soon physical-item-link" href="#store">21 Items Available</a></div>`:`<div class="book-actions"><button class="soon coming-soon-book" type="button">COMING SOON</button></div>`;
+    const seoDescription=b.available?`<p class="book-description">A joyful Christmas Bible story for kids about the birth of Jesus, the Nativity, and Luke 2, told through the eyes of Sarah the Baby Sheep.</p>`:``;
+    card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${b.title}</h3><p class="reference">${b.ref}</p><p class="reference"><strong>${b.release}</strong></p>${seoDescription}${availability}`;
+    grid.appendChild(card);
+  }
   const cover=card.querySelector('.cover-button');
   if(b.available){cover.addEventListener('click',openSarahPreview)}else if(b.img){cover.addEventListener('click',()=>openImage(b.img,b.title))}else{cover.addEventListener('click',()=>showModal('comingSoonModal',b.title))}
-  if(!b.available){card.querySelector('.coming-soon-book').addEventListener('click',()=>showModal('comingSoonModal',b.title))}
-  grid.appendChild(card);
+  if(!b.available){
+    const coming=card.querySelector('.coming-soon-book');
+    if(coming)coming.addEventListener('click',()=>showModal('comingSoonModal',b.title));
+  }
 });
 
 const sarahPreviewModal=document.getElementById('sarahPreviewModal');
