@@ -1,21 +1,5 @@
-// Stable website enhancements loader - August 31, 2026.
-document.write('<script src="script-enhancements.js?v=5"><\/script>');
-document.write('<script src="game-win-celebration.js?v=6"><\/script>');
-
 document.addEventListener('DOMContentLoaded', () => {
   const WEBSITE_EMAIL = 'berachahdirector@gmail.com';
-  const OLD_EMAIL = 'dollackj316@gmail.com';
-
-  // Change every visible old email address and every mailto link across the website.
-  document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-    link.href = link.href.replace(/dollackj316@gmail\.com/gi, WEBSITE_EMAIL);
-  });
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-  const emailTextNodes = [];
-  while (walker.nextNode()) {
-    if (walker.currentNode.nodeValue && walker.currentNode.nodeValue.toLowerCase().includes(OLD_EMAIL)) emailTextNodes.push(walker.currentNode);
-  }
-  emailTextNodes.forEach(node => { node.nodeValue = node.nodeValue.replace(/dollackj316@gmail\.com/gi, WEBSITE_EMAIL); });
 
   // Keep below-the-fold pictures from slowing initial page load.
   document.querySelectorAll('img:not(.hero-book):not(.welcome-guide img)').forEach(img => {
@@ -168,37 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const description = [...coloringCard.querySelectorAll('p')].find(p => !p.classList.contains('price') && !p.classList.contains('product-available'));
     if (description) description.textContent = 'The private Standard E-Book Coloring Book link is e-mailed to the buyer after the e-Transfer is received.';
   }
-
-  // Keep all website-generated e-mails consistent.
-  document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-    const raw = link.getAttribute('href') || '';
-    const q = raw.indexOf('?');
-    if (q < 0) return;
-    const base = raw.slice(0,q);
-    const params = new URLSearchParams(raw.slice(q+1));
-    let body = params.get('body');
-    if (!body) return;
-
-    body = body.replace(/^Hello Malinda,?/i,'Dear Malinda,');
-    body = body.replace(/My shipping address \(if needed\):/gi,'My Shipping Address:');
-    body = body.replace(/My shipping address:/gi,'My Shipping Address:');
-    body = body.replace(/My mailing address:/gi,'My Shipping Address:');
-
-    // Digital items and free digital items never request a shipping address.
-    if (/\bDID\d+\b/i.test(body)) {
-      body = body.replace(/\nMy Shipping Address:\s*/gi,'\n');
-    }
-
-    if (!/God Bless You and Your Family Mightily !/i.test(body)) {
-      body = body.replace(/\s*$/,'') + '\n\nGod Bless You and Your Family Mightily !\n';
-    }
-    params.set('body',body);
-    const rebuilt = [];
-    params.forEach((value,key) => {
-      rebuilt.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
-    });
-    link.setAttribute('href',base+'?'+rebuilt.join('&'));
-  });
 
   // Replace all public e-book wording "Download" with "Link", including order e-mails.
   store.querySelectorAll('h3, img, a').forEach(el => {
