@@ -1992,7 +1992,7 @@ function openImage(src,alt='Picture'){const img=imageViewer.querySelector('img')
 function closeImage(){imageViewer.classList.remove('open');document.body.classList.remove('viewer-open')}
 imageViewer.addEventListener('click',e=>{if(e.target===imageViewer||e.target.closest('.image-viewer-close'))closeImage()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeImage()});document.addEventListener('click',e=>{const img=e.target.closest('img');if(!img||img.closest('#imageViewer')||img.closest('.store-card')||img.closest('.subscription-overview')||img.closest('.subscription-simple-block')||img.classList.contains('upload-preview')||img.closest('.cover-button'))return;e.preventDefault();e.stopPropagation();openImage(img.currentSrc||img.src,img.alt||'Picture')},true);
   </script>
-<script src="script.js?v=12" defer></script>
+<script src="script.js?v=13" defer></script>
 
 
 <script id="service-card-toggle-script">
