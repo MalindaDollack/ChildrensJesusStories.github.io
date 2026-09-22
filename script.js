@@ -1,5 +1,5 @@
 // Stable website enhancements loader - August 31, 2026.
-document.write('<script src="script-enhancements.js?v=3"><\/script>');
+document.write('<script src="script-enhancements.js?v=4"><\/script>');
 document.write('<script src="game-win-celebration.js?v=6"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function setOrder(card, product) {
     const link = card?.querySelector('.store-order a');
     if (!link) return;
-    link.href = `mailto:${WEBSITE_EMAIL}?subject=${encodeURIComponent('Order inquiry: ' + product)}&body=${encodeURIComponent('Hello Malinda,\n\nI would like to order: ' + product + '\n\nMy name:\nMy mailing address:\n\nPlease tell me the exact shipping cost and e-Transfer instructions.\n')}`;
+    link.href = `mailto:${WEBSITE_EMAIL}?subject=${encodeURIComponent('Order inquiry: ' + product)}&body=${encodeURIComponent('Dear Malinda,\n\nI would like to order: ' + product + '\n\nMy name:\nMy Shipping Address:\n\nPlease tell me the exact shipping cost and e-Transfer instructions.\n\nGod Bless You and Your Family Mightily !\n')}`;
   }
 
   const one = findCard(/^One Hand-made Laminated Jesus Loves You! Bookmark$/i);
@@ -168,6 +168,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const description = [...coloringCard.querySelectorAll('p')].find(p => !p.classList.contains('price') && !p.classList.contains('product-available'));
     if (description) description.textContent = 'The private Standard E-Book Coloring Book link is e-mailed to the buyer after the e-Transfer is received.';
   }
+
+  // Keep all website-generated e-mails consistent.
+  document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+    const raw = link.getAttribute('href') || '';
+    const q = raw.indexOf('?');
+    if (q < 0) return;
+    const base = raw.slice(0,q);
+    const params = new URLSearchParams(raw.slice(q+1));
+    let body = params.get('body');
+    if (!body) return;
+
+    body = body.replace(/^Hello Malinda,?/i,'Dear Malinda,');
+    body = body.replace(/My shipping address \(if needed\):/gi,'My Shipping Address:');
+    body = body.replace(/My shipping address:/gi,'My Shipping Address:');
+    body = body.replace(/My mailing address:/gi,'My Shipping Address:');
+
+    // Digital items and free digital items never request a shipping address.
+    if (/\bDID\d+\b/i.test(body)) {
+      body = body.replace(/\nMy Shipping Address:\s*/gi,'\n');
+    }
+
+    if (!/God Bless You and Your Family Mightily !/i.test(body)) {
+      body = body.replace(/\s*$/,'') + '\n\nGod Bless You and Your Family Mightily !\n';
+    }
+    params.set('body',body);
+    link.setAttribute('href',base+'?'+params.toString());
+  });
 
   // Replace all public e-book wording "Download" with "Link", including order e-mails.
   store.querySelectorAll('h3, img, a').forEach(el => {
