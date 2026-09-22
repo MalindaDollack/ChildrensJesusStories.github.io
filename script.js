@@ -1,5 +1,5 @@
 // Stable website enhancements loader - August 31, 2026.
-document.write('<script src="script-enhancements.js?v=5"><\/script>');
+document.write('<script src="script-enhancements.js?v=6"><\/script>');
 document.write('<script src="game-win-celebration.js?v=6"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (order) order.insertAdjacentElement('beforebegin', preview);
       else standardCard.appendChild(preview);
     }
-    preview.href = 'sarah-5-page-preview.html?v=32';
+    preview.href = 'sarah-5-page-preview.html?v=36';
     preview.target = '_blank';
     preview.rel = 'noopener';
     preview.textContent = 'View 5-Page Standard E-Book Preview';
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const description = [...flipCard.querySelectorAll('p')].find(p => !p.classList.contains('price') && !p.classList.contains('product-available'));
     if (description) description.textContent = 'The private Flip Book E-Book link is e-mailed to the buyer after the e-Transfer is received.';
     let preview = flipCard.querySelector('.flip-preview-link');
-    if (preview) preview.href = 'flip-book-preview.html?v=35';
+    if (preview) preview.href = 'flip-book-preview.html?v=36';
   }
 
   const coloringCard = findCard(/Standard E-Book Coloring Book Edition/i);
@@ -152,7 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
       body = body.replace(/\s*$/,'') + '\n\nGod Bless You and Your Family Mightily !\n';
     }
     params.set('body',body);
-    link.setAttribute('href',base+'?'+params.toString());
+    const rebuilt = [];
+    params.forEach((value,key) => {
+      rebuilt.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+    });
+    link.setAttribute('href',base+'?'+rebuilt.join('&'));
   });
 
   // Replace all public e-book wording "Download" with "Link", including order e-mails.
