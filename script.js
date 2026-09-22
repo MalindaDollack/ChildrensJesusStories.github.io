@@ -89,58 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
     link.href = `mailto:${WEBSITE_EMAIL}?subject=${encodeURIComponent('Order inquiry: ' + product)}&body=${encodeURIComponent('Dear Malinda,\n\nI would like to order: ' + product + '\n\nMy name:\nMy Shipping Address:\n\nPlease tell me the exact shipping cost and e-Transfer instructions.\n\nGod Bless You and Your Family Mightily !\n')}`;
   }
 
-  const one = findCard(/^One Hand-made Laminated Jesus Loves You! Bookmark$/i);
-  if (one) {
-    const img = one.querySelector('img');
-    if (img) { img.src = 'web-images/bookmark-1.webp?v=1'; img.alt = 'One Hand-made Laminated Jesus Loves You! Bookmark'; }
-    const price = one.querySelector('.price');
-    if (price) price.textContent = 'C$6.00';
-    setOrder(one, 'One Hand-made Laminated Jesus Loves You! Bookmark');
-    addAvailable(one);
-  }
-
-  const three = findCard(/^(Four|Three) Hand-made Laminated Jesus Loves You! Bookmarks$/i);
-  if (three) {
-    const heading = three.querySelector('h3');
-    const img = three.querySelector('img');
-    const price = three.querySelector('.price');
-    if (heading) heading.textContent = 'Three Hand-made Laminated Jesus Loves You! Bookmarks';
-    if (img) { img.src = 'web-images/bookmarks-3.webp?v=1'; img.alt = 'Three Hand-made Laminated Jesus Loves You! Bookmarks'; }
-    if (price) price.textContent = 'C$8.00';
-    setOrder(three, 'Three Hand-made Laminated Jesus Loves You! Bookmarks');
-    addAvailable(three);
-  }
-
-  const generic = findCard(/^Hand-made Jesus Loves You! Stickers$/i);
-  const alreadyFour = findCard(/^4 Hand-made Jesus Loves You! Stickers$/i);
-  const alreadyTwenty = findCard(/^20 Hand-made Jesus Loves You! Stickers$/i);
-
-  function configureSticker(card, quantity, image) {
-    if (!card) return;
-    const product = `${quantity} Hand-made Jesus Loves You! Stickers`;
-    const heading = card.querySelector('h3');
-    const img = card.querySelector('img');
-    const price = card.querySelector('.price');
-    const body = [...card.querySelectorAll('p')].find(p => !p.classList.contains('price') && !p.classList.contains('product-available'));
-    if (heading) heading.textContent = product;
-    if (img) { img.src = `${image}?v=6`; img.alt = product; img.loading = 'lazy'; }
-    if (price) price.textContent = 'C$7.00';
-    if (body) body.textContent = `${quantity} Jesus Loves You! stickers. Allow 24 hours processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. E-mail ${WEBSITE_EMAIL} for the exact shipping cost to your location.`;
-    setOrder(card, product);
-    addAvailable(card);
-  }
-
-  if (generic && !alreadyFour && !alreadyTwenty) {
-    const four = generic.cloneNode(true);
-    const twenty = generic.cloneNode(true);
-    configureSticker(four, 4, 'web-images/stickers-4.webp?v=1');
-    configureSticker(twenty, 20, 'web-images/stickers-20.webp?v=1');
-    generic.replaceWith(four, twenty);
-  } else {
-    configureSticker(alreadyFour, 4, 'web-images/stickers-4.webp?v=1');
-    configureSticker(alreadyTwenty, 20, 'web-images/stickers-20.webp?v=1');
-  }
-
   // Purchased e-books are delivered as private links. Never expose the full Standard E-Book link in the public store.
   const standardCard = cards.find(card => /Standard E-Book Edition/i.test(card.querySelector('h3')?.textContent || '') && !/Coloring Book/i.test(card.querySelector('h3')?.textContent || ''));
   if (standardCard) {
