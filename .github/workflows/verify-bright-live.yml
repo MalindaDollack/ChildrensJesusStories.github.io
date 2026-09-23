@@ -11,35 +11,26 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Playwright Chromium
+      - name: Install Chromium
         run: npx -y playwright@1.55.0 install --with-deps chromium
       - name: Capture normal and forced-dark public site
         shell: bash
         run: |
-          cat > /tmp/check.mjs <<'EOF'
-          import { chromium } from "playwright";
-          const url="https://bigblueeyeschildrensbiblestories.com/?brightverify="+Date.now();
-          async function shot(name,args){
-            const browser=await chromium.launch({headless:true,args});
-            const page=await browser.newPage({viewport:{width:1440,height:900}});
-            await page.goto(url,{waitUntil:"networkidle"});
-            await page.screenshot({path:name,fullPage:true});
-            const info=await page.evaluate(()=>({
-              colorScheme:getComputedStyle(document.documentElement).colorScheme,
-              bodyBg:getComputedStyle(document.body).backgroundColor,
-              oldPopup:document.body.innerText.includes("E-mail Malinda Your Home Address"),
-              did1:document.documentElement.innerHTML.includes("subject=DID1"),
-              did4:document.documentElement.innerHTML.includes("subject=DID4"),
-              lightMeta:!!document.querySelector('meta[name="color-scheme"][content="only light"],meta[name="color-scheme"][content="light only"]')
-            }));
-            console.log(name,JSON.stringify(info));
-            if(info.oldPopup || !info.did1 || !info.did4 || !info.lightMeta) process.exitCode=1;
-            await browser.close();
-          }
-          await shot("normal.png",[]);
-          await shot("forced-dark.png",["--force-dark-mode","--enable-features=WebContentsForceDark"]);
-          EOF
-          npx -y -p playwright@1.55.0 node /tmp/check.mjs
+          set -euo pipefail
+          chrome="$(find "$HOME/.cache/ms-playwright" -type f -path "*/chrome-linux/chrome" -perm -111 | head -1)"
+          test -n "$chrome"
+          url="https://bigblueeyeschildrensbiblestories.com/?brightverify=${GITHUB_RUN_ID}"
+          "$chrome" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1440,2200 --screenshot=normal.png "$url"
+          "$chrome" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --force-dark-mode --enable-features=WebContentsForceDark --window-size=1440,2200 --screenshot=forced-dark.png "$url"
+          test -s normal.png
+          test -s forced-dark.png
+          html="$(curl -fsSL -H 'Cache-Control: no-cache' "$url")"
+          css="$(curl -fsSL -H 'Cache-Control: no-cache' "https://bigblueeyeschildrensbiblestories.com/styles.css?brightverify=${GITHUB_RUN_ID}")"
+          ! grep -Fq 'E-mail Malinda Your Home Address' <<<"$html"
+          grep -Eq '<meta name="color-scheme" content="(only light|light only)">' <<<"$html"
+          grep -Fq 'subject=DID1' <<<"$html"
+          grep -Fq 'subject=DID4' <<<"$html"
+          grep -Eq 'color-scheme:(only light|light only)' <<<"$css"
       - name: Upload visual proof
         uses: actions/upload-artifact@v4
         with:
