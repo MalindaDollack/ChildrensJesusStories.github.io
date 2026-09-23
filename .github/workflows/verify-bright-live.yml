@@ -1,4 +1,5 @@
 name: Verify bright live website
+# rerun after final deployment
 
 on:
   push:
