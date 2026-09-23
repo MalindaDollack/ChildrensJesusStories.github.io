@@ -1,0 +1,72 @@
+name: Verify final recovery candidate
+
+on:
+  push:
+    branches: ["final-recovery-2026-09-23"]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static audit
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, urllib.parse
+          html=Path("index.html").read_text(encoding="utf-8")
+          p3=Path("sarah-5-page-preview.html").read_text(encoding="utf-8")
+          p4=Path("flip-book-preview.html").read_text(encoding="utf-8")
+          script=Path("script.js").read_text(encoding="utf-8")
+          css=Path("styles.css").read_text(encoding="utf-8")
+          assert "E-mail Malinda Your Home Address" not in html
+          assert "storeOrderModal" not in html
+          assert "SWEET-PEA-FLY-GAME" not in html
+          assert 'script.js?v=14' in html
+          assert "script-enhancements.js" not in script
+          assert 'meta name="color-scheme" content="only light"' in html
+          assert "color-scheme: only light !important" in html
+          assert "color-scheme:only light" in css
+          assert 'src="fb1.png?v=36"' in html
+          def mailtos(s):
+              return [urllib.parse.unquote(m) for m in re.findall(r'href="mailto:berachahdirector@gmail\.com\?([^"]+)"',s)]
+          links=mailtos(html)
+          for code in ["DID1","DID2","DID3","DID4"]+[f"PID{i}" for i in range(1,18)]:
+              found=[]
+              for x in links:
+                  subj=re.search(r'(?:^|&)subject=([^&]*)',x)
+                  if subj and subj.group(1)==code: found.append(x)
+              assert found, f"missing exact subject {code}"
+          for code,page in [("DID3",p3),("DID4",p4)]:
+              vals=mailtos(page)
+              assert any(re.search(r'(?:^|&)subject='+code+r'(?:&|$)',x) for x in vals), f"bad preview {code}"
+          print("STATIC AUDIT PASSED")
+          PY
+      - name: Install Chromium
+        run: npx -y playwright@1.55.0 install --with-deps chromium
+      - name: Render candidate normally and with forced dark mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8765 >/tmp/site.log 2>&1 &
+          server=$!
+          trap 'kill $server 2>/dev/null || true' EXIT
+          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8765/ >/dev/null && break; sleep 1; done
+          chrome="$(find "$HOME/.cache/ms-playwright" -type f -path "*/chrome-linux/chrome" -perm -111 | head -1)"
+          test -n "$chrome"
+          "$chrome" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1440,2200 --screenshot=candidate-normal.png "http://127.0.0.1:8765/"
+          "$chrome" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --force-dark-mode --enable-features=WebContentsForceDark --window-size=1440,2200 --screenshot=candidate-forced-dark.png "http://127.0.0.1:8765/"
+          test -s candidate-normal.png
+          test -s candidate-forced-dark.png
+      - name: Upload candidate screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-candidate-proof
+          path: |
+            candidate-normal.png
+            candidate-forced-dark.png
+          retention-days: 1
