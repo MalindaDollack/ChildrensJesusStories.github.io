@@ -1,0 +1,41 @@
+name: Verify live public website
+
+on:
+  push:
+    branches: ["verify-live-site-2026-09-23"]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify public website is current
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://bigblueeyeschildrensbiblestories.com"
+          ok=0
+          for i in $(seq 1 12); do
+            q="verify-${GITHUB_RUN_ID}-${i}"
+            html="$(curl -fsSL -H 'Cache-Control: no-cache' "$base/?$q")"
+            css="$(curl -fsSL -H 'Cache-Control: no-cache' "$base/styles.css?$q")"
+            p3="$(curl -fsSL -H 'Cache-Control: no-cache' "$base/sarah-5-page-preview.html?$q")"
+            p4="$(curl -fsSL -H 'Cache-Control: no-cache' "$base/flip-book-preview.html?$q")"
+            if \
+              ! grep -Fq 'E-mail Malinda Your Home Address' <<<"$html" && \
+              grep -Fq 'script.js?v=14' <<<"$html" && \
+              grep -Fq 'subject=DID1' <<<"$html" && \
+              grep -Fq 'subject=DID4' <<<"$html" && \
+              grep -Fq 'fb1.png?v=36' <<<"$html" && \
+              grep -Fq -- '--purple:#4b146f' <<<"$css" && \
+              grep -Fq 'subject=DID3' <<<"$p3" && \
+              grep -Fq 'subject=DID4' <<<"$p4"; then
+              ok=1
+              echo "LIVE SITE VERIFIED"
+              break
+            fi
+            sleep 5
+          done
+          test "$ok" -eq 1
