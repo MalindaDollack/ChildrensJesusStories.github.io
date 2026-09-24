@@ -7,11 +7,7 @@
 
   <meta name="theme-color" content="#4b146f"><meta name="color-scheme" content="only light">
   <title>Children's Bible Stories & Christian Books for Kids | Malinda's Story Garden</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="web-images/sarah book cover for library.webp?v=1" type="image/webp" fetchpriority="high">
+<link rel="preload" as="image" href="web-images/sarah book cover for library.webp?v=1" type="image/webp" fetchpriority="high">
   <link rel="stylesheet" href="styles.css?v=20260923-1">
 
   <style>
@@ -166,15 +162,6 @@
   /* Force hidden extra product pictures */
   .extra-product-pictures[hidden]{display:none!important}
 </style>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HN6L4THW21"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-HN6L4THW21');
-</script>
-
 <style>
 .subscription-tier-container[hidden]{display:none!important}
 .subscription-tier-container{width:min(1220px,96vw);margin:0 auto 24px}
@@ -427,6 +414,21 @@
       forced-color-adjust: none;
     }
   </style>
+
+<style id="author-image-render-fix-20260923">
+.about-art img{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:3/2!important;
+  object-fit:contain!important;
+  filter:none!important;
+  opacity:1!important;
+  mix-blend-mode:normal!important;
+  transform:none!important;
+  background:#fff!important;
+}
+</style>
 </head>
 <body>
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
@@ -1508,7 +1510,7 @@ This is a special Saddle Book edition Coloring Book Edition with only one purpos
     </section>
 
     <section class="about-section" id="about">
-      <div class="about-art"><img loading="lazy" decoding="async" src="about-malinda.png?v=2" alt="Malinda wearing dark purple and gold, surrounded by her twelve Story Garden animal characters"></div>
+      <div class="about-art"><img loading="lazy" decoding="async" width="900" height="600" src="about-malinda.png?v=2" alt="Malinda wearing dark purple and gold, surrounded by her twelve Story Garden animal characters"></div>
 <article class="about-copy">
         <p class="eyebrow">💜 About the Author</p>
         <h2>Hello! My name is Malinda Dollack.</h2>
@@ -1783,7 +1785,7 @@ Malinda Dollack</p>
 
   <div class="sweetpea-reference">
     <h4>Sweet-Pea’s Colors</h4>
-    <img loading="lazy" decoding="async" src="sweetpea-new.png?v=2" alt="Colored Sweet-Pea the Baby Sparrow reference picture">
+    <img loading="lazy" decoding="async" src="web-images/sweetpea-new.webp?v=1" alt="Colored Sweet-Pea the Baby Sparrow reference picture">
   </div>
 
   <div class="sweetpea-coloring-wrap" id="sweetpeaColoringWrap">
@@ -1944,7 +1946,7 @@ Malinda Dollack</p>
   });
 
   source.onload=makeColoringPage;
-  source.src="sweetpea-new.png?v=2";
+  source.src="web-images/sweetpea-new.webp?v=1";
 })();
 </script>
 
