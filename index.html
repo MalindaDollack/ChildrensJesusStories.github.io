@@ -69,7 +69,7 @@
     .order-help{font-size:.93rem;color:#5a4a61;margin-top:10px}
     @media(max-width:560px){.store-card img{height:210px}.store-section{padding-left:10px;padding-right:10px}}
   .special-samaritan-card,.special-samaritan-card *{color:#ff0000!important}
-.special-samaritan-card .store-order a{background:#fff!important;color:#ff0000!important;border:3px solid #ff0000!important}
+.special-samaritan-card .store-order a{background:#c40000!important;color:#fff!important;border:3px solid #c40000!important}
 .special-samaritan-card .product-available{background:#fff!important;color:#ff0000!important;border-color:#ff0000!important}
 </style>
 
@@ -2015,7 +2015,7 @@ function openImage(src,alt='Picture'){const img=imageViewer.querySelector('img')
 function closeImage(){imageViewer.classList.remove('open');document.body.classList.remove('viewer-open')}
 imageViewer.addEventListener('click',e=>{if(e.target===imageViewer||e.target.closest('.image-viewer-close'))closeImage()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeImage()});document.addEventListener('click',e=>{const img=e.target.closest('img');if(!img||img.closest('#imageViewer')||img.closest('.store-card')||img.closest('.subscription-overview')||img.closest('.subscription-simple-block')||img.classList.contains('upload-preview')||img.closest('.cover-button'))return;e.preventDefault();e.stopPropagation();openImage(img.currentSrc||img.src,img.alt||'Picture')},true);
   </script>
-<script src="script.js?v=10" defer></script>
+<script src="script.js?v=11" defer></script>
 
 
 <script id="service-card-toggle-script">
