@@ -1,5 +1,13 @@
 // Stable website enhancements loader - August 31, 2026.
-document.write('<script src="game-win-celebration.js?v=6"><\/script>');
+// Load the celebration script after the page DOM is ready so it cannot block the website from opening.
+function loadGameWinCelebration() {
+  if (document.querySelector('script[data-game-win-celebration]')) return;
+  const celebrationScript = document.createElement('script');
+  celebrationScript.src = 'game-win-celebration.js?v=6';
+  celebrationScript.async = true;
+  celebrationScript.dataset.gameWinCelebration = 'true';
+  document.body.appendChild(celebrationScript);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const WEBSITE_EMAIL = 'berachahdirector@gmail.com';
