@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jesus Makes Sweet-Pea Fly!</title>
+<style>
+html,body{margin:0;padding:0;background:#ffffff;color:#4b146f;font-family:Arial,sans-serif}
+.page{width:94%;max-width:760px;margin:0 auto;padding:18px 0 40px;text-align:center}
+.back{display:inline-block;background:#5b197d;color:#fff;text-decoration:none;font-weight:bold;padding:10px 16px;border-radius:18px;margin-bottom:14px}
+.box{border:4px solid #5b197d;border-radius:20px;padding:16px;background:#fff}
+h1{margin:4px 0 8px;font-size:30px}
+.instructions{font-size:18px;font-weight:bold}
+.reference{width:92%;max-width:420px;margin:14px auto}
+.reference img{display:block;width:100%;height:auto;border:3px solid #ead5f5;border-radius:14px;background:#fff}
+.stage{position:relative;width:92%;max-width:600px;margin:12px auto}
+.stage img{display:block;width:100%;height:auto;border:3px solid #5b197d;border-radius:14px;background:#fff}
+#paintCanvas{position:absolute;left:0;top:0;width:100%;height:100%;z-index:4;cursor:crosshair;background:transparent}
+.wing{display:none;position:absolute;top:37%;width:30%;height:22%;background:#d6a16f;border:3px solid #6f4a32;border-radius:60% 40% 60% 40%;z-index:1}
+#leftWing{left:-8%;transform:rotate(22deg)}
+#rightWing{right:-8%;transform:scaleX(-1) rotate(22deg)}
+.palette{margin:16px auto 10px}
+.color{width:40px;height:40px;border:3px solid #5b197d;border-radius:50%;margin:4px;cursor:pointer}
+.selected{outline:4px solid #ffd94e}
+.action{border:0;border-radius:18px;background:#5b197d;color:#fff;font-weight:bold;padding:11px 17px;margin:6px;cursor:pointer;font-size:16px}
+#jesusHeart{border:3px solid #5b197d;border-radius:18px;background:#fff;color:#5b197d;font-weight:bold;padding:11px 18px;margin:6px;cursor:pointer;font-size:18px}
+#message{min-height:28px;font-size:18px;font-weight:bold;color:#a00078}
+.small{font-size:14px;font-weight:bold}
+@media(max-width:540px){h1{font-size:24px}.instructions{font-size:16px}.color{width:34px;height:34px}}
+</style>
+</head>
+<body>
+<div class="page">
+<a class="back" href="index.html#about">Back to Malinda's Story Garden</a>
+<div class="box">
+<h1>Jesus Makes Sweet-Pea Fly !</h1>
+<p class="instructions">Color Sweet-Pea and Fill her heart with Jesus and she will fly!</p>
+
+<div class="reference">
+<h2>Sweet-Pea's Colors</h2>
+<img src="sweetpea-new.png" alt="Colored Sweet-Pea the Baby Sparrow">
+</div>
+
+<h2>Color Sweet-Pea</h2>
+<div class="stage" id="stage">
+<div class="wing" id="leftWing"></div>
+<div class="wing" id="rightWing"></div>
+<img id="birdImage" src="sweetpea-new.png" alt="Sweet-Pea coloring picture">
+<canvas id="paintCanvas"></canvas>
+</div>
+
+<div class="palette" id="palette">
+<button class="color" type="button" data-color="#6f4a32" style="background:#6f4a32" title="Brown"></button>
+<button class="color" type="button" data-color="#c99569" style="background:#c99569" title="Tan"></button>
+<button class="color" type="button" data-color="#ffffff" style="background:#ffffff" title="White"></button>
+<button class="color selected" type="button" data-color="#ff4fa3" style="background:#ff4fa3" title="Bright Pink"></button>
+<button class="color" type="button" data-color="#ffc4df" style="background:#ffc4df" title="Light Pink"></button>
+<button class="color" type="button" data-color="#4aa8ff" style="background:#4aa8ff" title="Blue"></button>
+<button class="color" type="button" data-color="#5b197d" style="background:#5b197d" title="Dark Purple"></button>
+<button class="color" type="button" data-color="#f4ce48" style="background:#f4ce48" title="Gold"></button>
+<button class="color" type="button" data-color="#ff0000" style="background:#ff0000" title="Bright Red"></button>
+</div>
+
+<p class="small">Choose a color and color Sweet-Pea. Then choose Bright Red and click the Jesus heart.</p>
+<button id="jesusHeart" type="button">Jesus !</button>
+<button id="clearButton" class="action" type="button">Start Again</button>
+<p id="message"></p>
+</div>
+</div>
+
+<script type="text/javascript">
+(function(){
+  var canvas=document.getElementById('paintCanvas');
+  var ctx=canvas.getContext ? canvas.getContext('2d') : null;
+  var bird=document.getElementById('birdImage');
+  var palette=document.getElementById('palette');
+  var heart=document.getElementById('jesusHeart');
+  var clearButton=document.getElementById('clearButton');
+  var message=document.getElementById('message');
+  var leftWing=document.getElementById('leftWing');
+  var rightWing=document.getElementById('rightWing');
+  var selected='#ff4fa3';
+  var drawing=false;
+  var lastX=0,lastY=0;
+  var flapTimer=null;
+  var flapUp=false;
+
+  function resizeCanvas(){
+    var w=bird.naturalWidth || bird.width || 600;
+    var h=bird.naturalHeight || bird.height || 600;
+    canvas.width=w;
+    canvas.height=h;
+  }
+
+  function chooseColor(btn){
+    var buttons=palette.getElementsByTagName('button');
+    var i;
+    for(i=0;i<buttons.length;i++){buttons[i].className='color';}
+    btn.className='color selected';
+    selected=btn.getAttribute('data-color');
+  }
+
+  palette.onclick=function(e){
+    e=e||window.event;
+    var t=e.target||e.srcElement;
+    if(t && t.tagName && t.tagName.toLowerCase()==='button'){chooseColor(t);}
+  };
+
+  function point(clientX,clientY){
+    var r=canvas.getBoundingClientRect();
+    return {
+      x:(clientX-r.left)*canvas.width/r.width,
+      y:(clientY-r.top)*canvas.height/r.height
+    };
+  }
+
+  function drawDot(x,y){
+    ctx.save();
+    ctx.globalAlpha=0.5;
+    ctx.fillStyle=selected;
+    ctx.beginPath();
+    ctx.arc(x,y,Math.max(15,canvas.width/35),0,Math.PI*2,false);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawLine(x1,y1,x2,y2){
+    ctx.save();
+    ctx.globalAlpha=0.5;
+    ctx.strokeStyle=selected;
+    ctx.lineCap='round';
+    ctx.lineJoin='round';
+    ctx.lineWidth=Math.max(28,canvas.width/18);
+    ctx.beginPath();
+    ctx.moveTo(x1,y1);
+    ctx.lineTo(x2,y2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  if(ctx){
+    canvas.onmousedown=function(e){
+      e=e||window.event;
+      var p=point(e.clientX,e.clientY);
+      drawing=true;lastX=p.x;lastY=p.y;drawDot(p.x,p.y);
+      return false;
+    };
+    canvas.onmousemove=function(e){
+      if(!drawing){return false;}
+      e=e||window.event;
+      var p=point(e.clientX,e.clientY);
+      drawLine(lastX,lastY,p.x,p.y);
+      lastX=p.x;lastY=p.y;
+      return false;
+    };
+    canvas.onmouseup=function(){drawing=false;return false;};
+    canvas.onmouseout=function(){drawing=false;};
+
+    canvas.ontouchstart=function(e){
+      if(!e.touches||!e.touches.length){return;}
+      var t=e.touches[0],p=point(t.clientX,t.clientY);
+      drawing=true;lastX=p.x;lastY=p.y;drawDot(p.x,p.y);
+      if(e.preventDefault){e.preventDefault();}
+    };
+    canvas.ontouchmove=function(e){
+      if(!drawing||!e.touches||!e.touches.length){return;}
+      var t=e.touches[0],p=point(t.clientX,t.clientY);
+      drawLine(lastX,lastY,p.x,p.y);
+      lastX=p.x;lastY=p.y;
+      if(e.preventDefault){e.preventDefault();}
+    };
+    canvas.ontouchend=function(e){drawing=false;if(e&&e.preventDefault){e.preventDefault();}};
+  }else{
+    message.innerHTML='Sweet-Pea is visible, but this browser cannot use the coloring brush.';
+  }
+
+  function stopFlying(){
+    if(flapTimer){window.clearInterval(flapTimer);flapTimer=null;}
+    leftWing.style.display='none';
+    rightWing.style.display='none';
+    bird.style.marginTop='0px';
+  }
+
+  function startFlying(){
+    stopFlying();
+    leftWing.style.display='block';
+    rightWing.style.display='block';
+    flapTimer=window.setInterval(function(){
+      flapUp=!flapUp;
+      leftWing.style.transform=flapUp?'rotate(-25deg)':'rotate(32deg)';
+      rightWing.style.transform=flapUp?'scaleX(-1) rotate(-25deg)':'scaleX(-1) rotate(32deg)';
+      bird.style.marginTop=flapUp?'-10px':'0px';
+    },280);
+  }
+
+  heart.onclick=function(){
+    heart.style.background=selected;
+    heart.style.color=(selected.toLowerCase()==='#ffffff')?'#5b197d':'#ffffff';
+    if(selected.toLowerCase()==='#ff0000'){
+      startFlying();
+      message.innerHTML='JESUS LOVES YOU ! Sweet-Pea is flying !';
+    }else{
+      stopFlying();
+      message.innerHTML='Choose Bright Red for the Jesus heart.';
+    }
+  };
+
+  clearButton.onclick=function(){
+    if(ctx){ctx.clearRect(0,0,canvas.width,canvas.height);}
+    stopFlying();
+    heart.style.background='#ffffff';
+    heart.style.color='#5b197d';
+    message.innerHTML='';
+  };
+
+  bird.onload=resizeCanvas;
+  if(bird.complete){resizeCanvas();}
+})();
+</script>
+</body>
+</html>
