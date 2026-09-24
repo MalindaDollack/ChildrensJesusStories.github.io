@@ -1,16 +1,6 @@
 name: Optimize website images
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '**/*.png'
-      - '**/*.PNG'
-      - '**/*.jpg'
-      - '**/*.JPG'
-      - '**/*.jpeg'
-      - '**/*.JPEG'
-      - '.github/workflows/optimize-images.yml'
   workflow_dispatch:
 
 permissions:
