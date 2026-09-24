@@ -1,5 +1,5 @@
 // Stable website enhancements loader - August 31, 2026.
-document.write('<script src="script-enhancements.js?v=3"><\/script>');
+document.write('<script src="script-enhancements.js?v=4"><\/script>');
 document.write('<script src="game-win-celebration.js?v=6"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -181,4 +181,57 @@ document.addEventListener('DOMContentLoaded', () => {
       el.href = el.href.replace(/dollackj316@gmail\.com/gi, WEBSITE_EMAIL).replace(/Download/gi, 'Link').replace(/%20Download%20/gi, '%20Link%20');
     }
   });
+  
+  // FINAL STORE ORDER NORMALIZER - September 24, 2026
+  // Product subjects contain only the DID/PID/SESB code. Digital products omit
+  // shipping address; physical products and subscriptions include it.
+  // The four SO service request links are intentionally left as service requests.
+  store.querySelectorAll('.store-card .store-order a').forEach(function(link) {
+    var card = link.closest('.store-card');
+    if (!card) return;
+
+    var titleElement = card.querySelector('.subscription-original-title') || card.querySelector('h3');
+    if (!titleElement) return;
+
+    var productTitle = (titleElement.textContent || '').replace(/\s+/g, ' ').trim();
+    if (/^SO\d+\b/i.test(productTitle)) return;
+
+    var codeMatch = productTitle.match(/^([A-Z0-9-]+)\s*(?:—|–|-)\s*/);
+    if (!codeMatch) return;
+
+    var productCode = codeMatch[1];
+    var isDigital = /^DID/i.test(productCode);
+    var lines = [
+      'Dear Malinda,',
+      '',
+      'I would like to order: ' + productTitle,
+      '',
+      'My name:',
+      'My email address:'
+    ];
+
+    if (!isDigital) lines.push('My Shipping Address:');
+
+    lines.push(
+      '',
+      'Please send me the e-Transfer instructions.',
+      '',
+      'God Bless You and Your Family Mightily !'
+    );
+
+    link.textContent = 'Buy Now';
+    link.href = 'mailto:' + WEBSITE_EMAIL +
+      '?subject=' + encodeURIComponent(productCode) +
+      '&body=' + encodeURIComponent(lines.join('\n'));
+
+    if (card.classList.contains('special-samaritan-card')) {
+      link.style.setProperty('background', '#c40000', 'important');
+      link.style.setProperty('color', '#ffffff', 'important');
+      link.style.setProperty('border-color', '#c40000', 'important');
+    } else {
+      link.style.setProperty('background', '#5b197d', 'important');
+      link.style.setProperty('color', '#ffffff', 'important');
+    }
+  });
+
 });
