@@ -68,23 +68,28 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.store-order a').forEach(link => {
     const card = link.closest('article');
     const titleNode = card ? card.querySelector('h3') : null;
-    const title = titleNode ? titleNode.textContent.replace(/\\s+/g, ' ').trim() : '';
+    const title = titleNode ? titleNode.textContent.replace(/\s+/g, ' ').trim() : '';
     if (!title) return;
 
     const idMatch = title.match(/^([A-Z0-9-]+)/i);
     if (!idMatch) return;
     const productId = idMatch[1].toUpperCase();
-    const isDigital = /^DID\\d+/i.test(productId);
-    const isSpecialShoebox = /^SESB\\d+/i.test(productId);
+    const isDigital = /^DID\d+/i.test(productId);
+    const isSpecialShoebox = /^SESB\d+/i.test(productId);
 
-    let body = (isDigital ? 'Dear Malinda,' : 'Hello Malinda,') + '\\n\\n';
-    body += 'I would like to order: ' + title + '\\n\\n';
-    if (isSpecialShoebox) body += 'Quantity:\\n\\n';
-    body += 'My name:\\n';
-    body += 'My email address:\\n';
-    if (!isDigital) body += 'My Shipping Address:\\n';
-    body += '\\nPlease send me the e-Transfer instructions.\\n';
-    if (isDigital) body += '\\nGod Bless You and Your Family Mightily !\\n';
+    const emailTitle = title
+      .replace(/[—–]/g, '-')
+      .replace(/[‘’]/g, "'")
+      .replace(/[“”]/g, '"')
+      .replace(/…/g, '...');
+    let body = (isDigital ? 'Dear Malinda,' : 'Hello Malinda,') + '\n\n';
+    body += 'I would like to order: ' + emailTitle + '\n\n';
+    if (isSpecialShoebox) body += 'Quantity:\n\n';
+    body += 'My name:\n';
+    body += 'My email address:\n';
+    if (!isDigital) body += 'My Shipping Address:\n';
+    body += '\nPlease send me the e-Transfer instructions.\n';
+    if (isDigital) body += '\nGod Bless You and Your Family Mightily !\n';
 
     link.textContent = 'Buy Now';
     link.setAttribute('href', 'mailto:' + WEBSITE_EMAIL + '?subject=' + encodeURIComponent(productId) + '&body=' + encodeURIComponent(body));
