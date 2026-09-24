@@ -25,11 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
   emailTextNodes.forEach(node => { node.nodeValue = node.nodeValue.replace(/dollackj316@gmail\.com/gi, WEBSITE_EMAIL); });
 
   // Keep below-the-fold pictures from slowing initial page load.
-  document.querySelectorAll('img:not(.hero-book):not(.welcome-guide img):not(.about-art img):not(.sarah-original-wordsearch img):not(.sweetpea-game-launcher img)').forEach(img => {
-    if (!img.hasAttribute('loading')) img.loading = 'lazy';
-    if (!img.hasAttribute('decoding')) img.decoding = 'async';
-  });
-
   // YouTube channel link and website section.
   const youtubeUrl = 'https://www.youtube.com/@malindadollack777';
   const nav = document.querySelector('header nav');
@@ -97,8 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Load the optional game celebration only after the page itself is usable.
-  window.setTimeout(loadGameWinCelebration, 0);
-
   // Store products, pictures, prices, previews, and order subjects are now defined directly in index.html.
   // Do not rewrite them here; this prevents older catalog rules from overriding the current website.
 });
