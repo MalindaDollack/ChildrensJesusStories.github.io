@@ -419,8 +419,8 @@
 .about-art img{
   display:block!important;
   width:100%!important;
+  max-width:100%!important;
   height:auto!important;
-  aspect-ratio:3/2!important;
   object-fit:contain!important;
   filter:none!important;
   opacity:1!important;
@@ -1510,7 +1510,7 @@ This is a special Saddle Book edition Coloring Book Edition with only one purpos
     </section>
 
     <section class="about-section" id="about">
-      <div class="about-art"><img loading="lazy" decoding="async" width="900" height="600" src="about-malinda.png?v=2" alt="Malinda wearing dark purple and gold, surrounded by her twelve Story Garden animal characters"></div>
+      <div class="about-art"><img src="about-malinda.png?v=3" alt="Malinda wearing dark purple and gold, surrounded by her twelve Story Garden animal characters"></div>
 <article class="about-copy">
         <p class="eyebrow">💜 About the Author</p>
         <h2>Hello! My name is Malinda Dollack.</h2>
@@ -1727,7 +1727,7 @@ Malinda Dollack</p>
   <p class="sarah-wordsearch-intro">Use the exact Sarah Find-a-Word puzzle below. Hold down your mouse button and drag across each word to highlight it. On a phone or tablet, touch and slide across the word.</p>
   <div class="sarah-wordsearch-layout">
     <div class="sarah-original-wordsearch" id="sarahOriginalWordsearch">
-      <img loading="lazy" decoding="async" src="web-images/Sarah%20Find%20A%20Word.webp?v=2" alt="Original Sarah Find-a-Word puzzle supplied by Malinda">
+      <img src="web-images/Sarah%20Find%20A%20Word.webp?v=3" alt="Original Sarah Find-a-Word puzzle supplied by Malinda">
       <canvas id="sarahWordCanvas" aria-label="Highlight layer for the original Sarah Find-a-Word"></canvas>
     </div>
     <div class="sarah-word-list" aria-label="Find-a-Word word list">
@@ -1753,8 +1753,8 @@ Malinda Dollack</p>
 .sarah-word-list h4{margin:0 0 8px;font-size:1rem}
 .sarah-word-list p{margin:0;font-weight:800;line-height:1.45;font-size:.86rem}
 @media(max-width:650px){.sarah-wordsearch-layout{display:flex;flex-direction:row;align-items:flex-start;gap:8px}.sarah-original-wordsearch{width:calc(100% - 118px);margin:0}.sarah-word-list{width:110px;flex:0 0 110px;margin:0;padding:6px 4px}.sarah-word-list h4{font-size:.82rem}.sarah-word-list p{columns:1;font-size:.68rem;line-height:1.3}}
-.sarah-original-wordsearch img{display:block;width:100%;height:auto;margin:0 auto;border:2px solid #5b197d}
-#sarahWordCanvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.sarah-original-wordsearch img{display:block!important;position:relative;z-index:1;width:100%!important;max-width:100%!important;height:auto!important;margin:0 auto;border:2px solid #5b197d;background:#fff!important;opacity:1!important;filter:none!important}
+#sarahWordCanvas{position:absolute;z-index:2;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;background:transparent!important}
 .sarah-wordsearch-message{min-height:26px;font-weight:900;font-size:1.08rem}
 #sarahWordReset,#sarahWordFinished{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:900;font-size:1rem;padding:10px 18px;margin:4px;cursor:pointer}
 .sarah-wordsearch-win{margin:14px auto 0;width:min(100%,420px)}
