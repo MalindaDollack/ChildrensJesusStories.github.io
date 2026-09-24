@@ -1,10 +1,7 @@
 name: Update Store Catalog
 
 on:
-  push:
-    paths:
-      - 'update_catalog.py'
-      - '.github/workflows/update-store.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
