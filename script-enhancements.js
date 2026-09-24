@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const standardEbookCard = storeGrid ? [...storeGrid.querySelectorAll('.store-card')].find(card => /PDF (?:Download|Link) Standard E-Book Edition|Standard E-Book Edition/i.test(card.textContent)) : null;
   if (standardEbookCard) {
     const heading = standardEbookCard.querySelector('h3');
-    if (heading) heading.textContent = fullTitle + ' — PDF Link Standard E-Book Edition';
+    // Keep the exact DID3 product title already written in index.html.
     const img = standardEbookCard.querySelector('img');
     if (img) { img.src = standardCoverFile; img.alt = fullTitle + ' Standard E-Book cover'; }
     let preview = standardEbookCard.querySelector('.standard-preview-link');
