@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   emailTextNodes.forEach(node => { node.nodeValue = node.nodeValue.replace(/dollackj316@gmail\.com/gi, WEBSITE_EMAIL); });
 
   // Keep below-the-fold pictures from slowing initial page load.
-  document.querySelectorAll('img:not(.hero-book):not(.welcome-guide img)').forEach(img => {
+  document.querySelectorAll('img:not(.hero-book):not(.welcome-guide img):not(.about-art img):not(.sarah-original-wordsearch img):not(.sweetpea-game-launcher img)').forEach(img => {
     if (!img.hasAttribute('loading')) img.loading = 'lazy';
     if (!img.hasAttribute('decoding')) img.decoding = 'async';
   });
