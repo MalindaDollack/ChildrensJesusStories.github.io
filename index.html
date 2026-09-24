@@ -166,20 +166,6 @@
 .subscription-tier-container[hidden]{display:none!important}
 .subscription-tier-container{width:min(1220px,96vw);margin:0 auto 24px}
 </style>
-<style id="performance-fix">
-#store .store-grid,
-.shelf-section,
-.welcome-guide,
-#community,
-#contact{
-  content-visibility:auto;
-  contain-intrinsic-size:800px;
-}
-.store-card{
-  content-visibility:auto;
-  contain-intrinsic-size:420px;
-}
-</style>
 <style>
 .subscription-info-toggle{border:0;margin:0;padding:0}
 .subscription-info-toggle>summary{list-style:none}
@@ -428,6 +414,24 @@
   transform:none!important;
   background:#fff!important;
 }
+</style>
+<style id="critical-image-compat-20260923">
+.about-art img,
+.sarah-original-wordsearch img{
+  display:block!important;
+  position:relative!important;
+  visibility:visible!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:auto!important;
+  opacity:1!important;
+  filter:none!important;
+  transform:none!important;
+  background:#fff!important;
+}
+.sarah-original-wordsearch{display:block!important;visibility:visible!important;min-height:200px!important}
+.sarah-wordsearch-section,.sarah-wordsearch-intro,.sarah-wordsearch-layout{visibility:visible!important;opacity:1!important}
+#sarahWordCanvas{z-index:2!important;background:transparent!important}
 </style>
 </head>
 <body>
@@ -1510,7 +1514,7 @@ This is a special Saddle Book edition Coloring Book Edition with only one purpos
     </section>
 
     <section class="about-section" id="about">
-      <div class="about-art"><img src="about-malinda.png?v=3" alt="Malinda wearing dark purple and gold, surrounded by her twelve Story Garden animal characters"></div>
+      <div class="about-art"><img src="web-images/about-malinda.webp?v=4" alt="Malinda wearing dark purple and gold, surrounded by her twelve Story Garden animal characters"></div>
 <article class="about-copy">
         <p class="eyebrow">💜 About the Author</p>
         <h2>Hello! My name is Malinda Dollack.</h2>
@@ -1727,7 +1731,7 @@ Malinda Dollack</p>
   <p class="sarah-wordsearch-intro">Use the exact Sarah Find-a-Word puzzle below. Hold down your mouse button and drag across each word to highlight it. On a phone or tablet, touch and slide across the word.</p>
   <div class="sarah-wordsearch-layout">
     <div class="sarah-original-wordsearch" id="sarahOriginalWordsearch">
-      <img src="web-images/Sarah%20Find%20A%20Word.webp?v=3" alt="Original Sarah Find-a-Word puzzle supplied by Malinda">
+      <img src="web-images/Sarah%20Find-A-Word.webp?v=4" alt="Original Sarah Find-a-Word puzzle supplied by Malinda">
       <canvas id="sarahWordCanvas" aria-label="Highlight layer for the original Sarah Find-a-Word"></canvas>
     </div>
     <div class="sarah-word-list" aria-label="Find-a-Word word list">
