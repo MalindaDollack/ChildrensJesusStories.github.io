@@ -75,7 +75,21 @@ document.addEventListener('DOMContentLoaded', () => {
   function setOrder(card, product) {
     const link = card?.querySelector('.store-order a');
     if (!link) return;
-    link.href = `mailto:${WEBSITE_EMAIL}?subject=${encodeURIComponent('Order inquiry: ' + product)}&body=${encodeURIComponent('Hello Malinda,\n\nI would like to order: ' + product + '\n\nMy name:\nMy mailing address:\n\nPlease tell me the exact shipping cost and e-Transfer instructions.\n')}`;
+    const emailProductTitle = String(product || '').replace(/[—–]/g, ' - ').replace(/\s+/g, ' ').trim();
+    const lines = [
+      'Dear Malinda,',
+      '',
+      'I would like to order: ' + emailProductTitle,
+      '',
+      'My name:',
+      'My email address:',
+      'My Shipping Address:',
+      '',
+      'Please send me the e-Transfer instructions.',
+      '',
+      'God Bless You and Your Family Mightily !'
+    ];
+    link.href = `mailto:${WEBSITE_EMAIL}?subject=${encodeURIComponent(emailProductTitle)}&body=${encodeURIComponent(lines.join('\n'))}`;
   }
 
   const one = findCard(/^One Hand-made Laminated Jesus Loves You! Bookmark$/i);
@@ -201,10 +215,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     var productCode = codeMatch[1];
     var isDigital = /^DID/i.test(productCode);
+    // Use an ordinary hyphen in outgoing e-mail text so older Windows/e-mail
+    // programs never display the em dash as mojibake such as "â€”".
+    var emailProductTitle = productTitle.replace(/[—–]/g, ' - ').replace(/\s+/g, ' ').trim();
     var lines = [
       'Dear Malinda,',
       '',
-      'I would like to order: ' + productTitle,
+      'I would like to order: ' + emailProductTitle,
       '',
       'My name:',
       'My email address:'
