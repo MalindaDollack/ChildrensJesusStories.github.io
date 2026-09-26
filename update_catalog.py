@@ -5,19 +5,33 @@ import re
 path = Path('index.html')
 html = path.read_text(encoding='utf-8')
 
-EMAIL = 'dollackj316@gmail.com'
+EMAIL = 'berachahdirector@gmail.com'
 
 def mailto(subject, body):
     return f"mailto:{EMAIL}?subject={quote(subject)}&body={quote(body)}"
 
 def card(title, price, details, physical=False, image='sarah.png'):
-    subject = f"Order inquiry: {title}"
+    email_title = re.sub(r'\\s+', ' ', re.sub(r'[—–]', ' - ', title)).strip()
+    code_match = re.match(r'^([A-Z0-9-]+)', email_title)
+    subject = code_match.group(1) if code_match else email_title
+    lines = [
+        'Dear Malinda,',
+        '',
+        f'I would like to order: {email_title}',
+        '',
+        'My name:',
+        'My email address:'
+    ]
     if physical:
-        body = f"Hello Malinda,\n\nI would like to order: {title}\n\nMy name:\nMy mailing address:\n\nPlease tell me the exact shipping cost and e-Transfer instructions.\n"
-        button = 'E-mail Malinda Your Home Address'
-    else:
-        body = f"Hello Malinda,\n\nI would like: {title}\n\nMy name:\nMy e-mail address:\n\nPlease send me the e-Transfer instructions if payment is required.\n"
-        button = 'E-mail Malinda to Order'
+        lines.append('My Shipping Address:')
+    lines += [
+        '',
+        'Please send me the e-Transfer instructions.',
+        '',
+        'God Bless You and Your Family Mightily !'
+    ]
+    body = '\n'.join(lines)
+    button = 'Buy Now'
     href = mailto(subject, body)
     return f'''<article class="store-card">
       <img src="{image}" alt="{title}">
