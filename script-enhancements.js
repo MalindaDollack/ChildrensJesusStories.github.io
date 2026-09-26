@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const description = [...standardEbookCard.querySelectorAll('p')].find(p => !p.classList.contains('price') && !p.classList.contains('product-available'));
     if (description) description.textContent = 'The private Standard E-Book link is e-mailed to the buyer after the e-Transfer is received.';
     const orderLink = standardEbookCard.querySelector('.store-order a');
-    if (orderLink) { orderLink.textContent='Buy Now !'; orderLink.href='mailto:berachahdirector@gmail.com?subject='+encodeURIComponent('Order inquiry: '+fullTitle+' — Standard E-Book Link')+'&body='+encodeURIComponent('Hello Malinda,\n\nI would like to order: '+fullTitle+' — PDF Link Standard E-Book Edition\n\nMy name:\nMy e-mail address:\n\nPlease send me the e-Transfer instructions.\n'); }
+    if (orderLink) { orderLink.textContent='Buy Now !'; orderLink.href='mailto:berachahdirector@gmail.com?subject='+encodeURIComponent('Order inquiry: '+fullTitle+' — Standard E-Book Link')+'&body='+encodeURIComponent('Dear Malinda,\n\nI would like to order: '+fullTitle.replace(/[—–]/g,' - ').replace(/\\s+/g,' ').trim()+' - PDF Link Standard E-Book Edition\n\nMy name:\nMy email address:\n\nPlease send me the e-Transfer instructions.\n\nGod Bless You and Your Family Mightily !'); }
   }
 
   const sarahShelfCover = document.querySelector('#bookGrid .book-card:first-child .cover-button img');
