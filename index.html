@@ -1714,7 +1714,9 @@ Malinda Dollack</p>
 .sarah-sudoku-instructions{max-width:650px;margin:12px auto;text-align:left}
 .sarah-sudoku-play{display:flex;gap:14px;justify-content:center;align-items:flex-start;margin:14px auto;max-width:650px}
 .sarah-sudoku-board{display:grid;grid-template-columns:repeat(9,1fr);width:min(82vw,540px);aspect-ratio:1;border:3px solid #4b146f;background:white}
-.sarah-sudoku-cell{border:1px solid #9c79b4;background:white;padding:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(.7rem,2.3vw,1.15rem);color:#4b146f;cursor:pointer;min-width:0}
+.sarah-sudoku-cell{border:0;border-right:1px solid #9c79b4;border-bottom:1px solid #9c79b4;background:white;padding:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(.7rem,2.3vw,1.15rem);color:#4b146f;cursor:pointer;min-width:0;box-sizing:border-box}
+.sarah-sudoku-cell:nth-child(9n){border-right:0}
+.sarah-sudoku-cell:nth-last-child(-n+9){border-bottom:0}
 .sarah-sudoku-cell:nth-child(9n+3),.sarah-sudoku-cell:nth-child(9n+6){border-right:3px solid #4b146f}
 .sarah-sudoku-cell.box-bottom{border-bottom:3px solid #4b146f}
 .sarah-sudoku-cell.given{background:#f5edfa;cursor:default}
