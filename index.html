@@ -1731,8 +1731,9 @@ Malinda Dollack</p>
 .sarah-sudoku-animal.clean{flex-direction:column;line-height:1;background:#fff}
 .sarah-sudoku-animal.clean img{display:block;width:46px;height:46px;object-fit:contain;background:#fff}.sarah-sudoku-animal.clean.dog-tile,.sarah-sudoku-animal.clean.dog-tile img{background:#fff!important}.dog-white-frame{display:block;width:46px;height:46px;overflow:hidden;background:#fff!important}.dog-white-frame img{display:block;width:46px!important;height:46px!important;object-fit:contain;background:#fff!important}.sarah-sudoku-dog{font-size:38px;line-height:1}
 .sarah-sudoku-animal.clean small{font-size:.62rem;font-weight:900;color:#4b146f;margin-top:1px}
-.sudoku-picture-frame{display:block;width:46px;height:46px;overflow:hidden;background:#fff}
-.sudoku-picture-frame img{display:block;width:46px!important;height:46px!important;object-fit:cover!important;background:#fff!important;transform:scale(1.08);transform-origin:center center}
+.sudoku-picture-frame{display:block;width:46px;height:46px;overflow:hidden;background:#fff;position:relative}
+.sudoku-picture-frame img{display:block;width:46px!important;height:46px!important;object-fit:cover!important;background:#fff!important;transform:scale(1.12);transform-origin:center center}
+.sudoku-picture-frame:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,#fff 0 5px,transparent 5px 100%),linear-gradient(to right,#fff 0 4px,transparent 4px calc(100% - 4px),#fff calc(100% - 4px) 100%)}
 .sarah-sudoku-bottom-banner{width:min(100%,650px);height:150px;margin:8px auto 14px;background-image:url("web-images/Sarah%20Animal%20Suduko.webp?v=2");background-repeat:no-repeat;background-size:100% auto;background-position:center bottom;border:2px solid #5b197d;box-sizing:border-box}\n.sarah-sudoku-message{min-height:24px;font-weight:900}
 #sarahSudokuReset{border:0;border-radius:999px;background:#5b197d;color:white;font-weight:900;font-size:1rem;padding:10px 18px;cursor:pointer}
 .sarah-sudoku-last{margin:14px auto 4px}
