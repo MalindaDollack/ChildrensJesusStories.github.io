@@ -2020,59 +2020,208 @@ Malinda Dollack</p>
 })();
 </script>
 
-<section class="sarah-wordsearch-section" aria-labelledby="sarah-wordsearch-title">
-  <h3 id="sarah-wordsearch-title">Sarah the Sheep: My Shepherd, Jesus’s Birth. The Christmas Story Find-a-Word</h3>
-  <p class="sarah-wordsearch-intro">Use the exact Sarah Find-a-Word puzzle below. Hold down your mouse button and drag across each word to highlight it. On a phone or tablet, touch and slide across the word.</p>
-  <div class="sarah-wordsearch-layout">
-    <div class="sarah-original-wordsearch" id="sarahOriginalWordsearch">
-      <img loading="lazy" decoding="async" src="web-images/Sarah%20Find%20A%20Word.webp?v=2" alt="Original Sarah Find-a-Word puzzle supplied by Malinda">
-      <canvas id="sarahWordCanvas" aria-label="Highlight layer for the original Sarah Find-a-Word"></canvas>
-    </div>
-    <div class="sarah-word-list" aria-label="Find-a-Word word list">
-      <h4>Words to Find</h4>
-      <p>AFRAID<br>ANGEL<br>BABY<br>BETHLEHEM<br>CHRIST<br>DAVID<br>GLORY<br>GOD<br>HEAVEN<br>JESUS<br>JOSEPH<br>JOY<br>LORD<br>MARY<br>MANGER<br>PEACE<br>SAVIOR<br>SHEEP<br>SHEPHERD<br>STAR</p>
-    </div>
+
+<section class="malinda-wordsearch-section" aria-labelledby="malinda-wordsearch-title">
+  <div class="malinda-wordsearch-top">
+    <img src="web-images/matching-win-malinda.webp?v=2" alt="Malinda in purple flowers">
+    <div class="malinda-wordsearch-ribbon">Malinda's Story Garden</div>
+    <img src="web-images/matching-win-malinda.webp?v=2" alt="Malinda in purple flowers">
   </div>
-  <p class="sarah-wordsearch-note"><strong>Find all the words. The letters left over spell: JESUS LOVES YOU !</strong></p>
-  <p id="sarahWordMessage" class="sarah-wordsearch-message" aria-live="polite"></p>
-  <button type="button" id="sarahWordReset">Clear Highlights</button>
-  <button type="button" id="sarahWordFinished">I Found All The Words!</button>
-  <div id="sarahWordWin" class="sarah-wordsearch-win" hidden>
-    <img loading="lazy" decoding="async" src="web-images/game-win-jesus-loves-you.webp?v=1" alt="Sarah the Sheep says JESUS LOVES YOU !">
+  <div class="malinda-wordsearch-flowers" aria-hidden="true">✿ ✿ ✿ ✿ ✿</div>
+  <h3 id="malinda-wordsearch-title">Malinda's Story Garden Find-a-Word Game</h3>
+  <p class="malinda-wordsearch-intro">Find all 13 hidden phrases in the square letter grid. Hold down your mouse button and drag in a straight line across a phrase. Words may go across, down, up, backward, or diagonally.</p>
+
+  <div class="malinda-wordsearch-gridwrap">
+    <div id="malindaWordGrid" class="malinda-wordsearch-grid" aria-label="Malinda's Story Garden Find-a-Word puzzle"></div>
+  </div>
+
+  <div class="malinda-word-list" aria-label="Find-a-Word word list">
+    <h4>Words to Find</h4>
+    <div id="malindaWordList"></div>
+  </div>
+
+  <p class="malinda-wordsearch-note"><strong>Special message: JESUS LOVES YOU !</strong></p>
+  <p id="malindaWordMessage" class="malinda-wordsearch-message" aria-live="polite"></p>
+  <button type="button" id="malindaWordReset">New Game / Clear Highlights</button>
+  <button type="button" id="malindaWordFinished">I Found All The Words!</button>
+
+  <div id="malindaWordWin" class="malinda-wordsearch-win" hidden>
+    <img loading="lazy" decoding="async" src="web-images/matching-win-malinda.webp?v=2" alt="You Won! JESUS LOVES YOU !">
+  </div>
+
+  <div class="malinda-wordsearch-banner" aria-label="Malinda's Story Garden - Faith-Filled Adventures for Little Hearts">
+    <div class="malinda-wordsearch-banner-sky">
+      <span class="malinda-wordsearch-butterfly">🦋</span>
+      <div class="malinda-wordsearch-banner-sign">
+        <span>💜 Malinda’s 💜</span>
+        <strong>Story Garden</strong>
+        <small>Faith-Filled Adventures for Little Hearts</small>
+      </div>
+      <span class="malinda-wordsearch-butterfly">🦋</span>
+    </div>
+    <div class="malinda-wordsearch-banner-flowers">🌸 🌼 🌺 💜 🌸 🌼 🌺 💜 🌸 🌼 🌺</div>
   </div>
 </section>
+
 <style>
-.sarah-wordsearch-section{width:min(100%,760px);margin:30px auto;padding:18px;border:4px solid #5b197d;border-radius:24px;background:#fff;text-align:center;color:#4b146f;box-shadow:0 10px 24px rgba(75,20,111,.18)}
-.sarah-wordsearch-section h3{margin:0 0 8px;font-size:clamp(1.3rem,3.8vw,2rem)}
-.sarah-wordsearch-intro,.sarah-wordsearch-note{max-width:700px;margin:10px auto;font-weight:700}
-.sarah-wordsearch-layout{display:flex;align-items:flex-start;justify-content:center;gap:16px;max-width:720px;margin:16px auto}
-.sarah-original-wordsearch{position:relative;width:min(100%,540px);margin:0}
-.sarah-word-list{width:150px;flex:0 0 150px;border:2px solid #5b197d;border-radius:12px;padding:10px 8px;background:#fff;text-align:center;color:#4b146f;box-sizing:border-box}
-.sarah-word-list h4{margin:0 0 8px;font-size:1rem}
-.sarah-word-list p{margin:0;font-weight:800;line-height:1.45;font-size:.86rem}
-@media(max-width:650px){.sarah-wordsearch-layout{display:flex;flex-direction:row;align-items:flex-start;gap:8px}.sarah-original-wordsearch{width:calc(100% - 118px);margin:0}.sarah-word-list{width:110px;flex:0 0 110px;margin:0;padding:6px 4px}.sarah-word-list h4{font-size:.82rem}.sarah-word-list p{columns:1;font-size:.68rem;line-height:1.3}}
-.sarah-original-wordsearch img{display:block;width:100%;height:auto;margin:0 auto;border:2px solid #5b197d}
-#sarahWordCanvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
-.sarah-wordsearch-message{min-height:26px;font-weight:900;font-size:1.08rem}
-#sarahWordReset,#sarahWordFinished{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:900;font-size:1rem;padding:10px 18px;margin:4px;cursor:pointer}
-.sarah-wordsearch-win{margin:14px auto 0;width:min(100%,420px)}
-.sarah-wordsearch-win img{width:100%;height:auto;border-radius:18px}
-.sarah-wordsearch-win.flash{animation:sarahWordFlash .7s ease-in-out 8}
-@keyframes sarahWordFlash{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.18;transform:scale(1.025)}}
+.malinda-wordsearch-section{width:min(100%,900px);margin:30px auto;padding:18px;border:4px solid #5b197d;border-radius:24px;background:#fff;text-align:center;color:#4b146f;box-shadow:0 10px 24px rgba(75,20,111,.18)}
+.malinda-wordsearch-section h3{margin:8px 0;font-size:clamp(1.35rem,3.8vw,2rem)}
+.malinda-wordsearch-intro,.malinda-wordsearch-note{max-width:820px;margin:10px auto;font-weight:800;line-height:1.45}
+.malinda-wordsearch-top{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px}
+.malinda-wordsearch-top img{width:110px;height:110px;object-fit:cover;object-position:50% 56%;border:4px solid #5b197d;border-radius:50%;background:#fff}
+.malinda-wordsearch-ribbon{min-width:420px;padding:15px 30px;border-radius:16px;background:#5b197d;color:#fff;font-weight:900;font-size:1.75rem}
+.malinda-wordsearch-flowers{font-size:1.8rem;letter-spacing:10px;color:#6f1aa4;margin:4px 0 8px}
+.malinda-wordsearch-gridwrap{overflow:auto;padding:4px 0 8px}
+.malinda-wordsearch-grid{display:inline-block;border:4px solid #5b197d;background:#fff;user-select:none;-moz-user-select:none;-webkit-user-select:none;touch-action:none}
+.malinda-wordsearch-row{display:flex}
+.malinda-wordsearch-cell{display:flex;align-items:center;justify-content:center;width:31px;height:31px;border:1px solid #cfb4de;font-weight:900;font-size:15px;color:#2f153f;background:#fff;cursor:crosshair;box-sizing:border-box}
+.malinda-wordsearch-cell.preview{background:#f3c8ec}
+.malinda-wordsearch-cell.found{background:#dfb4ff;color:#2f153f}
+.malinda-wordsearch-cell.start{outline:3px solid #d0208f;outline-offset:-3px}
+.malinda-wordsearch-cell.msg{background:#fff1a8;color:#5b197d}
+.malinda-word-list{max-width:820px;margin:15px auto 8px;border:2px solid #d9b3ee;border-radius:14px;padding:12px;background:#faf4ff;text-align:left}
+.malinda-word-list h4{text-align:center;margin:0 0 8px;font-size:1.15rem}
+.malinda-word{display:inline-block;width:48%;margin:4px 1%;font-weight:900;font-size:.98rem}
+.malinda-word.done{text-decoration:line-through;color:#888}
+.malinda-wordsearch-message{min-height:28px;font-weight:900;font-size:1.08rem}
+#malindaWordReset,#malindaWordFinished{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:900;font-size:1rem;padding:10px 18px;margin:4px;cursor:pointer}
+.malinda-wordsearch-win{margin:14px auto 0;width:min(100%,520px)}
+.malinda-wordsearch-win img{width:100%;height:auto;border-radius:18px}
+.malinda-wordsearch-win.flash{animation:malindaWordFlash .7s ease-in-out 8}
+@keyframes malindaWordFlash{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.18;transform:scale(1.025)}}
+.malinda-wordsearch-banner{margin:18px auto 0;max-width:760px;border:3px solid #5b197d;border-radius:16px;overflow:hidden;background:#fff}
+.malinda-wordsearch-banner-sky{display:flex;align-items:center;justify-content:center;gap:14px;padding:18px 16px;background:linear-gradient(#6dcdf7,#eaf9ff)}
+.malinda-wordsearch-banner-sign{background:#f1c58e;border:4px solid #8d5222;border-radius:18px;padding:10px 24px;box-shadow:inset 0 0 0 2px #f8e0b8}
+.malinda-wordsearch-banner-sign span{display:block;color:#e31883;font-weight:900;font-size:1.4rem}
+.malinda-wordsearch-banner-sign strong{display:block;color:#4b146f;font-size:2.3rem;line-height:1}
+.malinda-wordsearch-banner-sign small{display:block;color:#6b218a;font-weight:900;font-size:.95rem;margin-top:6px}
+.malinda-wordsearch-butterfly{font-size:2rem}
+.malinda-wordsearch-banner-flowers{padding:10px;background:#f7fff3;font-size:1.55rem;letter-spacing:4px}
+@media(max-width:720px){
+  .malinda-wordsearch-top img{width:72px;height:72px}
+  .malinda-wordsearch-ribbon{min-width:0;padding:12px 16px;font-size:1.15rem}
+  .malinda-wordsearch-cell{width:24px;height:24px;font-size:12px}
+  .malinda-word{width:98%}
+  .malinda-wordsearch-banner-sign strong{font-size:1.8rem}
+}
+@media(max-width:560px){
+  .malinda-wordsearch-top{gap:5px}
+  .malinda-wordsearch-top img{width:54px;height:54px}
+  .malinda-wordsearch-ribbon{font-size:.95rem;padding:9px 10px}
+  .malinda-wordsearch-flowers{font-size:1.25rem;letter-spacing:6px}
+  .malinda-wordsearch-cell{width:20px;height:20px;font-size:10px}
+}
 </style>
+
 <script>
-(() => {
- const wrap=document.getElementById("sarahOriginalWordsearch"),img=wrap.querySelector("img"),canvas=document.getElementById("sarahWordCanvas"),ctx=canvas.getContext("2d"),reset=document.getElementById("sarahWordReset"),finished=document.getElementById("sarahWordFinished"),win=document.getElementById("sarahWordWin"),msg=document.getElementById("sarahWordMessage");
- let drawing=false,sx=0,sy=0,marks=[];
- function size(){const r=img.getBoundingClientRect();canvas.width=Math.max(1,Math.round(r.width*devicePixelRatio));canvas.height=Math.max(1,Math.round(r.height*devicePixelRatio));draw()}
- function point(e){const r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}}
- function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.lineCap="round";ctx.strokeStyle="rgba(109,31,145,.38)";ctx.lineWidth=Math.max(12,canvas.width/38);marks.forEach(m=>{ctx.beginPath();ctx.moveTo(m.x1,m.y1);ctx.lineTo(m.x2,m.y2);ctx.stroke()})}
- canvas.addEventListener("pointerdown",e=>{e.preventDefault();drawing=true;const p=point(e);sx=p.x;sy=p.y;canvas.setPointerCapture && canvas.setPointerCapture(e.pointerId)});
- canvas.addEventListener("pointerup",e=>{if(!drawing)return;drawing=false;const p=point(e);marks.push({x1:sx,y1:sy,x2:p.x,y2:p.y});draw()});
- canvas.addEventListener("pointercancel",()=>drawing=false);
- reset.addEventListener("click",()=>{marks=[];draw();win.hidden=true;msg.textContent=""});
- finished.addEventListener("click",()=>{msg.textContent="Wonderful! JESUS LOVES YOU !";win.hidden=false;win.classList.remove("flash");void win.offsetWidth;win.classList.add("flash")});
- img.addEventListener("load",size);window.addEventListener("resize",size);if(img.complete)size();
+(function(){
+  var gridData=[
+    "GZBFHCTLXEYODCMAUCOKK",
+    "HPDULEKHXBFWOHREOEINN",
+    "HEAISJKZFIPDKIOPDEQBU",
+    "ZVGRPJDIYGLNILHHDMJNF",
+    "NEDRAGYROTSSADNILAMBX",
+    "JEUAOZUQKQEOARZQJFLNP",
+    "BNGISFEOFQYHWEFGSTCHC",
+    "TXPYIFGEYTVWUNZGNSYJG",
+    "SAMARITANSPURSEAOSCWX",
+    "QNXBQZLKJUEPCBANIYPEV",
+    "IHFSLBFWLSTVAILCTBQOQ",
+    "CDLWHKYWMSYBOBAJPIDXP",
+    "OQAQZREASMETILATIGIDH",
+    "CHTWELVESTORIESTRBFFD",
+    "JIRAADCOWXGTISAUCLTUG",
+    "SOQHWIEODLEDWTFBSUIAD",
+    "OPSQVDYIDMDDMOERBEMSH",
+    "SHARINGHSEVSORXMUEJFA",
+    "UMEVWNTTQBMBYILKSYMHK",
+    "WSNSZKMRBKQEVELHNEVUA",
+    "JESUSLOVESYOUSLDQSFCK"
+  ];
+
+  var words=["JESUS LOVES YOU","BIG BLUE EYES","CHILDRENS BIBLE STORIES","MALINDAS STORY GARDEN","TWELVE STORIES","SERVICES","DIGITAL ITEMS","PHYSICAL ITEMS","SUBSCRIPTIONS","SAMARITANS PURSE","GAMES","VIDEOS","SHARING"];
+
+  var paths={"17,18;16,17;15,16;14,15;13,14;12,13;11,12;10,11;9,10;8,9;7,8;6,7;5,6":"JESUS LOVES YOU","5,6;6,7;7,8;8,9;9,10;10,11;11,12;12,13;13,14;14,15;15,16;16,17;17,18":"JESUS LOVES YOU","10,17;11,17;12,17;13,17;14,17;15,17;16,17;17,17;18,17;19,17;20,17":"BIG BLUE EYES","20,17;19,17;18,17;17,17;16,17;15,17;14,17;13,17;12,17;11,17;10,17":"BIG BLUE EYES","0,13;1,13;2,13;3,13;4,13;5,13;6,13;7,13;8,13;9,13;10,13;11,13;12,13;13,13;14,13;15,13;16,13;17,13;18,13;19,13;20,13":"CHILDRENS BIBLE STORIES","20,13;19,13;18,13;17,13;16,13;15,13;14,13;13,13;12,13;11,13;10,13;9,13;8,13;7,13;6,13;5,13;4,13;3,13;2,13;1,13;0,13":"CHILDRENS BIBLE STORIES","4,18;4,17;4,16;4,15;4,14;4,13;4,12;4,11;4,10;4,9;4,8;4,7;4,6;4,5;4,4;4,3;4,2;4,1;4,0":"MALINDAS STORY GARDEN","4,0;4,1;4,2;4,3;4,4;4,5;4,6;4,7;4,8;4,9;4,10;4,11;4,12;4,13;4,14;4,15;4,16;4,17;4,18":"MALINDAS STORY GARDEN","13,2;13,3;13,4;13,5;13,6;13,7;13,8;13,9;13,10;13,11;13,12;13,13;13,14":"TWELVE STORIES","13,14;13,13;13,12;13,11;13,10;13,9;13,8;13,7;13,6;13,5;13,4;13,3;13,2":"TWELVE STORIES","19,1;18,2;17,3;16,4;15,5;14,6;13,7;12,8":"SERVICES","12,8;13,7;14,6;15,5;16,4;17,3;18,2;19,1":"SERVICES","12,19;12,18;12,17;12,16;12,15;12,14;12,13;12,12;12,11;12,10;12,9;12,8":"DIGITAL ITEMS","12,8;12,9;12,10;12,11;12,12;12,13;12,14;12,15;12,16;12,17;12,18;12,19":"DIGITAL ITEMS","5,20;6,19;7,18;8,17;9,16;10,15;11,14;12,13;13,12;14,11;15,10;16,9;17,8":"PHYSICAL ITEMS","17,8;16,9;15,10;14,11;13,12;12,13;11,14;10,15;9,16;8,17;7,18;6,19;5,20":"PHYSICAL ITEMS","18,16;17,16;16,16;15,16;14,16;13,16;12,16;11,16;10,16;9,16;8,16;7,16;6,16":"SUBSCRIPTIONS","6,16;7,16;8,16;9,16;10,16;11,16;12,16;13,16;14,16;15,16;16,16;17,16;18,16":"SUBSCRIPTIONS","8,0;8,1;8,2;8,3;8,4;8,5;8,6;8,7;8,8;8,9;8,10;8,11;8,12;8,13;8,14":"SAMARITANS PURSE","8,14;8,13;8,12;8,11;8,10;8,9;8,8;8,7;8,6;8,5;8,4;8,3;8,2;8,1;8,0":"SAMARITANS PURSE","14,20;15,19;16,18;17,17;18,16":"GAMES","18,16;17,17;16,18;15,19;14,20":"GAMES","18,3;17,4;16,5;15,6;14,7;13,8":"VIDEOS","13,8;14,7;15,6;16,5;17,4;18,3":"VIDEOS","17,0;17,1;17,2;17,3;17,4;17,5;17,6":"SHARING","17,6;17,5;17,4;17,3;17,2;17,1;17,0":"SHARING"};
+
+  var msgKeys=["20,0","20,1","20,2","20,3","20,4","20,5","20,6","20,7","20,8","20,9","20,10","20,11","20,12"];
+  var grid=document.getElementById("malindaWordGrid"),wordList=document.getElementById("malindaWordList"),message=document.getElementById("malindaWordMessage"),win=document.getElementById("malindaWordWin");
+  var found={},dragging=false,startCell=null,lastCell=null;
+
+  function cellId(r,c){return "mw_"+r+"_"+c;}
+  function build(){
+    var r,c,rowDiv,cell,sp;
+    grid.innerHTML="";wordList.innerHTML="";found={};win.hidden=true;win.className="malinda-wordsearch-win";message.innerHTML="";
+    for(r=0;r<gridData.length;r++){
+      rowDiv=document.createElement("div");rowDiv.className="malinda-wordsearch-row";
+      for(c=0;c<gridData[r].length;c++){
+        cell=document.createElement("div");cell.className="malinda-wordsearch-cell";cell.id=cellId(r,c);
+        cell.setAttribute("data-r",r);cell.setAttribute("data-c",c);cell.innerHTML=gridData[r].charAt(c);
+        cell.onmousedown=start;cell.onmouseenter=enter;rowDiv.appendChild(cell);
+      }
+      grid.appendChild(rowDiv);
+    }
+    for(r=0;r<words.length;r++){
+      sp=document.createElement("span");sp.className="malinda-word";sp.id="mw_word_"+r;sp.innerHTML=(r+1)+". "+words[r];wordList.appendChild(sp);
+    }
+    document.onmouseup=end;
+    grid.ontouchstart=function(e){var t=e.target||e.srcElement;if(t&&t.className.indexOf("malinda-wordsearch-cell")>=0){start.call(t,e);if(e.preventDefault)e.preventDefault();return false;}};
+    grid.ontouchmove=function(e){var t=e.touches&&e.touches[0];if(!t)return;var el=document.elementFromPoint(t.clientX,t.clientY);if(el&&el.className.indexOf("malinda-wordsearch-cell")>=0){lastCell=el;preview();}if(e.preventDefault)e.preventDefault();return false;};
+    grid.ontouchend=function(e){end();if(e&&e.preventDefault)e.preventDefault();return false;};
+  }
+  function start(e){dragging=true;startCell=this;lastCell=this;preview();if(e&&e.preventDefault)e.preventDefault();}
+  function enter(){if(dragging){lastCell=this;preview();}}
+  function straightCells(){
+    if(!startCell||!lastCell)return [];
+    var r1=parseInt(startCell.getAttribute("data-r"),10),c1=parseInt(startCell.getAttribute("data-c"),10),r2=parseInt(lastCell.getAttribute("data-r"),10),c2=parseInt(lastCell.getAttribute("data-c"),10);
+    var dr=r2-r1,dc=c2-c1,adr=Math.abs(dr),adc=Math.abs(dc),sr=dr===0?0:(dr>0?1:-1),sc=dc===0?0:(dc>0?1:-1),len,i,out=[];
+    if(!(dr===0||dc===0||adr===adc))return [];
+    len=Math.max(adr,adc)+1;
+    for(i=0;i<len;i++)out.push([r1+sr*i,c1+sc*i]);
+    return out;
+  }
+  function clearPreview(){
+    var cells=grid.getElementsByClassName("malinda-wordsearch-cell"),i;
+    for(i=0;i<cells.length;i++)cells[i].className=cells[i].className.replace(" preview","").replace(" start","");
+  }
+  function preview(){
+    clearPreview();
+    var a=straightCells(),i,el;
+    if(!a.length)return;
+    for(i=0;i<a.length;i++){el=document.getElementById(cellId(a[i][0],a[i][1]));if(el.className.indexOf(" found")<0)el.className+=" preview";}
+    startCell.className+=" start";
+  }
+  function end(){
+    if(!dragging)return;
+    dragging=false;
+    var a=straightCells(),key=[],i,word,el,idx=-1;
+    for(i=0;i<a.length;i++)key.push(a[i][0]+","+a[i][1]);
+    word=paths[key.join(";")];
+    clearPreview();
+    if(word&&!found[word]){
+      found[word]=true;
+      for(i=0;i<a.length;i++){el=document.getElementById(cellId(a[i][0],a[i][1]));if(el.className.indexOf(" found")<0)el.className+=" found";}
+      for(i=0;i<words.length;i++)if(words[i]===word){idx=i;break;}
+      if(idx>=0)document.getElementById("mw_word_"+idx).className="malinda-word done";
+      message.innerHTML="You found "+word+"!";
+      check();
+    }
+    startCell=null;lastCell=null;
+  }
+  function countFound(){var i,n=0;for(i=0;i<words.length;i++)if(found[words[i]])n++;return n;}
+  function revealMessage(){
+    var i,p,el;
+    for(i=0;i<msgKeys.length;i++){p=msgKeys[i].split(",");el=document.getElementById(cellId(parseInt(p[0],10),parseInt(p[1],10)));if(el.className.indexOf(" msg")<0)el.className+=" msg";}
+  }
+  function check(){
+    if(countFound()===words.length){
+      revealMessage();
+      message.innerHTML="Wonderful! The special message is JESUS LOVES YOU !";
+      win.hidden=false;win.className="malinda-wordsearch-win flash";
+    }
+  }
+  document.getElementById("malindaWordReset").onclick=build;
+  document.getElementById("malindaWordFinished").onclick=function(){var n=countFound();if(n===words.length)check();else message.innerHTML="You have found "+n+" of "+words.length+" phrases. Keep looking!";};
+  build();
 })();
 </script>
 
