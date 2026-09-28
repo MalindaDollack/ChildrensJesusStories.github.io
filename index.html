@@ -1635,10 +1635,13 @@ Malinda Dollack</p>
     </section>
 
 <div class="standalone-games" style="width:100%;clear:both;">
+
 <section class="story-match-section" aria-labelledby="story-match-title">
   <h3 id="story-match-title">Malinda's Story Garden Matching Game: Volumes 1-12</h3>
   <p>Turn over two purple tiles. Matching animals disappear!</p>
-  <div class="story-match-board" id="storyMatchBoard" aria-label="Animal matching game"></div>
+  <div class="story-match-board-wrap">
+    <div class="story-match-board" id="storyMatchBoard" aria-label="Animal matching game"></div>
+  </div>
   <div class="story-match-bottom">
     <p id="storyMatchMessage" aria-live="polite"></p>
     <button type="button" id="storyMatchReset">Start Again</button>
@@ -1646,54 +1649,144 @@ Malinda Dollack</p>
 </section>
 
 <style>
-  .story-match-section{width:min(100%,760px);margin:24px auto 0;padding:18px;border:4px solid #5b197d;border-radius:24px;background:#f8efff;box-shadow:0 10px 24px rgba(75,20,111,.18);text-align:center;color:#4b146f}
-  .story-match-section h3{margin:0 0 6px;font-size:clamp(1.35rem,4vw,1.8rem)}
-  .story-match-section>p{margin:0 0 14px;font-weight:700}
-  .story-match-board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;position:relative}\n  .story-match-win{position:absolute;inset:0;z-index:20;width:100%;height:100%;object-fit:contain;border-radius:14px;background:#fff;opacity:1;pointer-events:none}\n  .story-match-win.flash{animation:storyMatchWinFlash .55s ease-in-out 4}\n  @keyframes storyMatchWinFlash{0%,100%{opacity:1}50%{opacity:.12}}
-  .story-match-card{aspect-ratio:1/1;padding:0;border:3px solid #4b146f;border-radius:14px;overflow:hidden;cursor:pointer;background:linear-gradient(145deg,#8d48b2,#4b146f);color:white;font-size:clamp(1.9rem,6vw,3rem);box-shadow:0 4px 9px rgba(0,0,0,.16);display:flex;align-items:center;justify-content:center}
-  .story-match-card .white-heart{color:white;font-size:1.2em;line-height:1}
-  .story-match-card img{width:100%;height:100%;object-fit:cover;display:block}
-  .story-match-card.matched{opacity:0;pointer-events:none;transition:opacity .3s ease}
-  .story-match-bottom{min-height:62px;padding-top:12px}
-  #storyMatchMessage{min-height:22px;margin:0 0 8px;font-weight:900}
-  #storyMatchReset{border:0;border-radius:999px;background:#5b197d;color:white;font-weight:900;font-size:1rem;padding:10px 18px;cursor:pointer}
-  @media(max-width:430px){.story-match-section{padding:12px;border-radius:18px}.story-match-board{gap:6px}.story-match-card{border-width:2px;border-radius:11px}}
+.story-match-section{width:min(100%,760px);margin:24px auto 0;padding:18px;border:4px solid #5b197d;border-radius:24px;background:#f8efff;box-shadow:0 10px 24px rgba(75,20,111,.18);text-align:center;color:#4b146f}
+.story-match-section h3{margin:0 0 6px;font-size:clamp(1.35rem,4vw,1.8rem)}
+.story-match-section>p{margin:0 0 14px;font-weight:700}
+.story-match-board-wrap{position:relative}
+.story-match-board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;position:relative}
+.story-match-card{height:150px;padding:0;border:3px solid #4b146f;border-radius:14px;overflow:hidden;cursor:pointer;background:linear-gradient(145deg,#8d48b2,#4b146f);color:#fff;font-size:42px;box-shadow:0 4px 9px rgba(0,0,0,.16);display:flex;align-items:center;justify-content:center}
+.story-match-card img{width:100%;height:100%;object-fit:cover;display:block;background:#fff}
+.story-match-card.matched{opacity:0;pointer-events:none;transition:opacity .3s ease}
+.story-match-card .white-heart{color:#fff;font-size:1.2em;line-height:1}
+.story-match-bottom{min-height:62px;padding-top:12px}
+#storyMatchMessage{min-height:22px;margin:0 0 8px;font-weight:900}
+#storyMatchReset{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:900;font-size:1rem;padding:10px 18px;cursor:pointer}
+.story-match-win{position:absolute;top:0;left:0;right:0;bottom:0;z-index:20;width:100%;height:100%;object-fit:contain;border-radius:14px;background:#fff;opacity:1;pointer-events:none}
+.story-match-win.flash{animation:storyMatchFlash .55s ease-in-out 4}
+@keyframes storyMatchFlash{0%,100%{opacity:1}50%{opacity:.12}}
+@media(max-width:650px){.story-match-section{padding:12px}.story-match-board{gap:6px}.story-match-card{height:115px;border-width:2px;border-radius:11px}}
+@media(max-width:430px){.story-match-card{height:88px}}
 </style>
 
 <script>
-(() => {
-  const animals = [
-    { name: "Sarah", image: "web-images/sarah book cover for library.webp?v=1" },
-    { name: "Joy", image: "web-images/joy-new.webp?v=1" },
-    { name: "Wally", image: "web-images/wally-new.webp?v=1" },
-    { name: "Levi", image: "web-images/levi-new.webp?v=1" },
-    { name: "Freddy", image: "web-images/freddy-new.webp?v=1" },
-    { name: "Patsy", image: "web-images/patsy-new.webp?v=1" },
-    { name: "Davy", image: "web-images/davy-new.webp?v=1" },
-    { name: "Larry", image: "web-images/larry-new.webp?v=1" },
-    { name: "Francesco", image: "web-images/francesco-new.webp?v=1" },
-    { name: "Sweet-Pea", image: "web-images/sweetpea-new.webp?v=1" },
-    { name: "Willy", image: "web-images/willy-new.webp?v=1" },
-    { name: "Barry", image: "web-images/barry-new.webp?v=1" }
+(function(){
+  var animals = [
+    {name:"Sarah",image:"web-images/sarah book cover for library.webp?v=1"},
+    {name:"Joy",image:"web-images/joy-new.webp?v=1"},
+    {name:"Wally",image:"web-images/wally-new.webp?v=1"},
+    {name:"Levi",image:"web-images/levi-new.webp?v=1"},
+    {name:"Freddy",image:"web-images/freddy-new.webp?v=1"},
+    {name:"Patsy",image:"web-images/patsy-new.webp?v=1"},
+    {name:"Davy",image:"web-images/davy-new.webp?v=1"},
+    {name:"Larry",image:"web-images/larry-new.webp?v=1"},
+    {name:"Francesco",image:"web-images/francesco-new.webp?v=1"},
+    {name:"Sweet-Pea",image:"web-images/sweetpea-new.webp?v=1"},
+    {name:"Willy",image:"web-images/willy-new.webp?v=1"},
+    {name:"Barry",image:"web-images/barry-new.webp?v=1"}
   ];
-  const board=document.getElementById("storyMatchBoard"),message=document.getElementById("storyMatchMessage"),reset=document.getElementById("storyMatchReset");
-  let firstCard=null,secondCard=null,locked=false,matchedPairs=0;\n  let celebrating=false,celebrationTimer=null;
-  function shuffle(items){for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]]}return items}
-  function makeDeck(){const deck=[];animals.forEach(animal=>{deck.push({name:animal.name,image:animal.image,pair:animal.name});deck.push({name:animal.name,image:animal.image,pair:animal.name})});return shuffle(deck)}
-  function coverCard(card){card.innerHTML='<span class="white-heart">♥</span>';card.dataset.revealed="false";card.setAttribute("aria-label","Face-down animal tile")}
-  function revealImage(card,animal){card.innerHTML=`<img loading="lazy" decoding="async" src="${animal.image}" alt="${animal.name}">`;card.dataset.revealed="true";card.setAttribute("aria-label",animal.name)}
-  function clearCelebration(){const old=board.querySelector(".story-match-win");if(old&&old.parentNode)old.parentNode.removeChild(old);if(celebrationTimer)window.clearTimeout(celebrationTimer);celebrationTimer=null;celebrating=false}\n  function showWinCelebration(){if(celebrating)return;celebrating=true;const winner=document.createElement("img");winner.className="story-match-win flash";winner.src="web-images/matching-win-malinda.webp?v=1";winner.alt="Malinda - You Won! JESUS LOVES YOU!";board.appendChild(winner);message.textContent="Wonderful! You matched all 12 animal friends! JESUS LOVES YOU!";celebrationTimer=window.setTimeout(()=>{clearCelebration();startGame()},3000)}\n  function startGame(){clearCelebration();board.innerHTML="";message.textContent="";firstCard=null;secondCard=null;locked=false;matchedPairs=0;const deck=makeDeck();deck.forEach(animal=>{const card=document.createElement("button");card.type="button";card.className="story-match-card";card.dataset.pair=animal.pair;coverCard(card);card.addEventListener("click",()=>{if(locked||card.classList.contains("matched")||card.dataset.revealed==="true")return;revealImage(card,animal);if(!firstCard){firstCard=card;return}secondCard=card;locked=true;if(firstCard.dataset.pair===secondCard.dataset.pair){setTimeout(()=>{firstCard.classList.add("matched");secondCard.classList.add("matched");matchedPairs++;firstCard=null;secondCard=null;locked=false;if(matchedPairs===12)showWinCelebration()},500)}else{setTimeout(()=>{coverCard(firstCard);coverCard(secondCard);firstCard=null;secondCard=null;locked=false},900)}});board.appendChild(card)})}
-  reset.addEventListener("click",startGame);startGame();
+  var board=document.getElementById("storyMatchBoard");
+  var message=document.getElementById("storyMatchMessage");
+  var reset=document.getElementById("storyMatchReset");
+  var firstCard=null,secondCard=null,locked=false,matchedPairs=0;
+  var celebrating=false,celebrationTimer=null;
+
+  function shuffle(items){
+    var i,j,t;
+    for(i=items.length-1;i>0;i--){
+      j=Math.floor(Math.random()*(i+1));
+      t=items[i];items[i]=items[j];items[j]=t;
+    }
+    return items;
+  }
+  function makeDeck(){
+    var deck=[],i,a;
+    for(i=0;i<animals.length;i++){
+      a=animals[i];
+      deck.push({name:a.name,image:a.image,pair:a.name});
+      deck.push({name:a.name,image:a.image,pair:a.name});
+    }
+    return shuffle(deck);
+  }
+  function coverCard(card){
+    card.innerHTML='<span class="white-heart">&#9829;</span>';
+    card.setAttribute("data-revealed","false");
+    card.setAttribute("aria-label","Face-down animal tile");
+  }
+  function revealImage(card,animal){
+    card.innerHTML='<img loading="lazy" decoding="async" src="'+animal.image+'" alt="'+animal.name+'">';
+    card.setAttribute("data-revealed","true");
+    card.setAttribute("aria-label",animal.name);
+  }
+  function clearCelebration(){
+    var oldWin=board.querySelector?board.querySelector(".story-match-win"):null;
+    if(oldWin&&oldWin.parentNode)oldWin.parentNode.removeChild(oldWin);
+    if(celebrationTimer)window.clearTimeout(celebrationTimer);
+    celebrationTimer=null;
+    celebrating=false;
+  }
+  function showWinCelebration(){
+    var winner;
+    if(celebrating)return;
+    celebrating=true;
+    winner=document.createElement("img");
+    winner.className="story-match-win flash";
+    winner.src="web-images/matching-win-malinda.webp?v=1";
+    winner.alt="Malinda - You Won! JESUS LOVES YOU!";
+    board.appendChild(winner);
+    message.innerHTML="Wonderful! You matched all 12 animal friends! JESUS LOVES YOU!";
+    celebrationTimer=window.setTimeout(function(){
+      clearCelebration();
+      startGame();
+    },3000);
+  }
+  function startGame(){
+    var deck,i;
+    clearCelebration();
+    board.innerHTML="";
+    message.innerHTML="";
+    firstCard=null;secondCard=null;locked=false;matchedPairs=0;
+    deck=makeDeck();
+    for(i=0;i<deck.length;i++){
+      (function(animal){
+        var card=document.createElement("button");
+        card.type="button";
+        card.className="story-match-card";
+        card.setAttribute("data-pair",animal.pair);
+        coverCard(card);
+        card.onclick=function(){
+          if(locked||card.className.indexOf("matched")>=0||card.getAttribute("data-revealed")==="true")return;
+          revealImage(card,animal);
+          if(!firstCard){firstCard=card;return;}
+          secondCard=card;locked=true;
+          if(firstCard.getAttribute("data-pair")===secondCard.getAttribute("data-pair")){
+            window.setTimeout(function(){
+              firstCard.className+=" matched";
+              secondCard.className+=" matched";
+              matchedPairs++;
+              firstCard=null;secondCard=null;locked=false;
+              if(matchedPairs===12)showWinCelebration();
+            },500);
+          }else{
+            window.setTimeout(function(){
+              coverCard(firstCard);coverCard(secondCard);
+              firstCard=null;secondCard=null;locked=false;
+            },900);
+          }
+        };
+        board.appendChild(card);
+      })(deck[i]);
+    }
+  }
+  reset.onclick=startGame;
+  startGame();
 })();
 </script>
-
-
 
 <section class="malinda-sudoku-section" aria-labelledby="malinda-sudoku-title">
   <h3 id="malinda-sudoku-title">Malinda's Story Garden Sudoku Game</h3>
   <div class="malinda-sudoku-instructions">
-    <p><strong>How to Play:</strong> Fill every empty square so that each row, each column, and each 3×3 box contains each picture 1 through 9 one time.</p>
-    <p>Drag a picture from the chooser onto an empty square, or click a picture and then click an empty square. There are 12 easy puzzle variations.</p>
+    <p><strong>How to Play:</strong> Fill every empty square so each row, each column, and each 3×3 box contains each picture 1 through 9 one time.</p>
+    <p>Drag a picture from the chooser onto an empty square. You can also click a picture, then click an empty square. There are 12 easy puzzle variations.</p>
   </div>
   <div class="malinda-sudoku-play">
     <div class="malinda-sudoku-board" id="malindaSudokuBoard" aria-label="Malinda's Story Garden Sudoku board"></div>
@@ -1719,23 +1812,30 @@ Malinda Dollack</p>
 .malinda-sudoku-section h3{margin:0 0 10px;font-size:clamp(1.35rem,4vw,2rem);color:#5b197d}
 .malinda-sudoku-instructions{max-width:780px;margin:10px auto;text-align:left;font-weight:700}
 .malinda-sudoku-play{display:flex;gap:14px;justify-content:center;align-items:flex-start;margin:14px auto;max-width:850px}
-.malinda-sudoku-board{display:grid;grid-template-columns:repeat(9,1fr);width:min(75vw,540px);aspect-ratio:1;border:4px solid #4b146f;background:#fff}
-.malinda-sudoku-cell{border:0;border-right:1px solid #a881bd;border-bottom:1px solid #a881bd;background:#fff;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;min-width:0;box-sizing:border-box;overflow:hidden}
+.malinda-sudoku-board{display:grid;grid-template-columns:repeat(9,56px);grid-auto-rows:56px;border:4px solid #4b146f;background:#fff}
+.malinda-sudoku-cell{width:56px;height:56px;border:0;border-right:1px solid #a881bd;border-bottom:1px solid #a881bd;background:#fff;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;overflow:hidden}
 .malinda-sudoku-cell:nth-child(9n){border-right:0}
 .malinda-sudoku-cell:nth-last-child(-n+9){border-bottom:0}
 .malinda-sudoku-cell:nth-child(9n+3),.malinda-sudoku-cell:nth-child(9n+6){border-right:4px solid #4b146f}
 .malinda-sudoku-cell.box-bottom{border-bottom:4px solid #4b146f}
 .malinda-sudoku-cell.given{background:#fbf7ff;cursor:default}
 .malinda-sudoku-cell.wrong{background:#ffe0ef}
-.malinda-sudoku-picker{width:270px;max-width:34vw;border:2px solid #e15aa5;border-radius:18px;padding:8px;background:#fff8fc;box-sizing:border-box}
+.malinda-sudoku-picker{width:270px;border:2px solid #e15aa5;border-radius:18px;padding:8px;background:#fff8fc;box-sizing:border-box}
 .malinda-sudoku-picker h4{margin:0 0 8px;font-size:1.1rem;color:#5b197d}
 .malinda-sudoku-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.malinda-sudoku-tile{aspect-ratio:1/1;border:2px solid #e15aa5;border-radius:12px;background:#fff;padding:0;cursor:grab;overflow:hidden}
+.malinda-sudoku-tile{width:78px;height:78px;border:2px solid #e15aa5;border-radius:12px;background:#fff;padding:0;cursor:grab;overflow:hidden}
 .malinda-sudoku-tile.selected{outline:4px solid #5b197d;outline-offset:-4px}
-.malinda-sudoku-icon{display:block;width:100%;height:100%;background-image:url("data:image/webp;base64,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");background-size:300% 300%;background-repeat:no-repeat;background-color:#fff}
-.malinda-sudoku-icon.i1{background-position:0% 0%}.malinda-sudoku-icon.i2{background-position:50% 0%}.malinda-sudoku-icon.i3{background-position:100% 0%}
-.malinda-sudoku-icon.i4{background-position:0% 50%}.malinda-sudoku-icon.i5{background-position:50% 50%}.malinda-sudoku-icon.i6{background-position:100% 50%}
-.malinda-sudoku-icon.i7{background-position:0% 100%}.malinda-sudoku-icon.i8{background-position:50% 100%}.malinda-sudoku-icon.i9{background-position:100% 100%}
+.malinda-sudoku-icon{position:relative;display:block;width:100%;height:100%;overflow:hidden;background:#fff}
+.malinda-sudoku-icon img{position:absolute;display:block;width:300%;height:300%;max-width:none!important}
+.malinda-sudoku-icon.i1 img{left:0;top:0}
+.malinda-sudoku-icon.i2 img{left:-100%;top:0}
+.malinda-sudoku-icon.i3 img{left:-200%;top:0}
+.malinda-sudoku-icon.i4 img{left:0;top:-100%}
+.malinda-sudoku-icon.i5 img{left:-100%;top:-100%}
+.malinda-sudoku-icon.i6 img{left:-200%;top:-100%}
+.malinda-sudoku-icon.i7 img{left:0;top:-200%}
+.malinda-sudoku-icon.i8 img{left:-100%;top:-200%}
+.malinda-sudoku-icon.i9 img{left:-200%;top:-200%}
 .malinda-sudoku-controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px auto}
 .malinda-sudoku-controls button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:900;font-size:1rem;padding:10px 18px;cursor:pointer}
 #malindaSudokuCheck{background:#e43f91}
@@ -1745,11 +1845,18 @@ Malinda Dollack</p>
 .malinda-sudoku-win img{width:100%;height:auto;border-radius:18px}
 .malinda-sudoku-win.flash{animation:malindaSudokuFlash .7s ease-in-out 8}
 @keyframes malindaSudokuFlash{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(1.02)}}
-@media(max-width:700px){.malinda-sudoku-section{padding:10px}.malinda-sudoku-play{display:block}.malinda-sudoku-board{width:min(94vw,540px);margin:0 auto}.malinda-sudoku-picker{width:min(94vw,420px);max-width:none;margin:12px auto}.malinda-sudoku-tiles{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){
+  .malinda-sudoku-section{padding:10px}
+  .malinda-sudoku-play{display:block}
+  .malinda-sudoku-board{grid-template-columns:repeat(9,38px);grid-auto-rows:38px;width:342px;max-width:96vw;margin:0 auto}
+  .malinda-sudoku-cell{width:38px;height:38px}
+  .malinda-sudoku-picker{width:270px;max-width:94vw;margin:12px auto}
+}
 </style>
 
 <script>
 (function(){
+  var sprite="data:image/webp;base64,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";
   var baseSolution=[
     [5,3,4,6,7,8,9,1,2],[6,7,2,1,9,5,3,4,8],[1,9,8,3,4,2,5,6,7],
     [8,5,9,7,6,1,4,2,3],[4,2,6,8,5,3,7,9,1],[7,1,3,9,2,4,8,5,6],
@@ -1783,55 +1890,106 @@ Malinda Dollack</p>
   var reset=document.getElementById("malindaSudokuReset");
   var checkBtn=document.getElementById("malindaSudokuCheck");
   var nextBtn=document.getElementById("malindaSudokuNext");
-  var current=-1,selected=1,solution=[],puzzle=[],givens=[],won=false;
+  var current=0,selected=1,solution=[],puzzle=[],givens=[],won=false;
 
-  function copyGrid(g){var out=[],r;for(r=0;r<g.length;r++)out.push(g[r].slice());return out}
-  function iconHTML(n){return '<span class="malinda-sudoku-icon i'+n+'" aria-hidden="true"></span>'}
+  function copyGrid(g){var out=[],r;for(r=0;r<g.length;r++)out.push(g[r].slice());return out;}
+  function iconHTML(n){
+    return '<span class="malinda-sudoku-icon i'+n+'"><img src="'+sprite+'" alt="'+labels[n-1]+'"></span>';
+  }
   function mappedSolution(index){
     var out=[],r,c,map=maps[index];
-    for(r=0;r<9;r++){out[r]=[];for(c=0;c<9;c++)out[r][c]=map[baseSolution[r][c]-1]}
-    return out
+    for(r=0;r<9;r++){out[r]=[];for(c=0;c<9;c++)out[r][c]=map[baseSolution[r][c]-1];}
+    return out;
   }
   function makePuzzle(index){
     var r,c,i,pos;
-    solution=mappedSolution(index);puzzle=copyGrid(solution);givens=[];
-    for(r=0;r<9;r++){givens[r]=[];for(c=0;c<9;c++)givens[r][c]=true}
-    for(i=0;i<masks[index].length;i++){pos=masks[index][i];puzzle[pos[0]][pos[1]]=0;givens[pos[0]][pos[1]]=false}
+    solution=mappedSolution(index);
+    puzzle=copyGrid(solution);
+    givens=[];
+    for(r=0;r<9;r++){givens[r]=[];for(c=0;c<9;c++)givens[r][c]=true;}
+    for(i=0;i<masks[index].length;i++){
+      pos=masks[index][i];
+      puzzle[pos[0]][pos[1]]=0;
+      givens[pos[0]][pos[1]]=false;
+    }
   }
   function render(){
     var r,c,b,n;
     board.innerHTML="";
-    for(r=0;r<9;r++)for(c=0;c<9;c++){
-      b=document.createElement("button");b.type="button";
-      b.className="malinda-sudoku-cell"+(givens[r][c]?" given":"")+((r===2||r===5)?" box-bottom":"");
-      b.setAttribute("data-r",r);b.setAttribute("data-c",c);n=puzzle[r][c];
-      b.setAttribute("data-value",n||"");
-      if(n)b.innerHTML=iconHTML(n);
-      b.setAttribute("aria-label",n?(givens[r][c]?"Given ":"Placed ")+labels[n-1]:"Empty Sudoku square");
-      if(!givens[r][c]){
-        b.ondragover=function(e){e.preventDefault();if(e.dataTransfer)e.dataTransfer.dropEffect="copy"};
-        b.ondrop=function(e){var n;e.preventDefault();n=parseInt(e.dataTransfer?e.dataTransfer.getData("text/plain"):"",10);place(this,n)};
-        b.onclick=function(){var v=parseInt(this.getAttribute("data-value"),10)||0;if(v){this.setAttribute("data-value","");this.innerHTML="";this.className=this.className.replace(" wrong","");puzzle[+this.getAttribute("data-r")][+this.getAttribute("data-c")]=0;check(false)}else if(selected)place(this,selected)};
+    for(r=0;r<9;r++){
+      for(c=0;c<9;c++){
+        b=document.createElement("button");
+        b.type="button";
+        b.className="malinda-sudoku-cell"+(givens[r][c]?" given":"")+((r===2||r===5)?" box-bottom":"");
+        b.setAttribute("data-r",r);
+        b.setAttribute("data-c",c);
+        n=puzzle[r][c];
+        b.setAttribute("data-value",n||"");
+        if(n)b.innerHTML=iconHTML(n);
+        b.setAttribute("aria-label",n?(givens[r][c]?"Given ":"Placed ")+labels[n-1]:"Empty Sudoku square");
+        if(!givens[r][c]){
+          b.ondragover=function(e){e.preventDefault();if(e.dataTransfer)e.dataTransfer.dropEffect="copy";};
+          b.ondrop=function(e){
+            var v;
+            e.preventDefault();
+            v=parseInt(e.dataTransfer?e.dataTransfer.getData("text/plain"):"",10);
+            place(this,v);
+          };
+          b.onclick=function(){
+            var v=parseInt(this.getAttribute("data-value"),10)||0;
+            var rr=+this.getAttribute("data-r");
+            var cc=+this.getAttribute("data-c");
+            if(v){
+              this.setAttribute("data-value","");
+              this.innerHTML="";
+              this.className=this.className.replace(" wrong","");
+              puzzle[rr][cc]=0;
+              check(false);
+            }else if(selected){
+              place(this,selected);
+            }
+          };
+        }
+        board.appendChild(b);
       }
-      board.appendChild(b);
     }
   }
   function makeTiles(){
     var n,t;
     tiles.innerHTML="";
     for(n=1;n<=9;n++){
-      t=document.createElement("button");t.type="button";t.className="malinda-sudoku-tile"+(selected===n?" selected":"");
-      t.draggable=true;t.setAttribute("data-icon",n);t.setAttribute("aria-label",n+". "+labels[n-1]);t.title=n+". "+labels[n-1];t.innerHTML=iconHTML(n);
-      t.ondragstart=function(e){if(e.dataTransfer){e.dataTransfer.setData("text/plain",this.getAttribute("data-icon"));e.dataTransfer.effectAllowed="copy"}};
-      t.onclick=function(){var j,all=tiles.getElementsByTagName("button");selected=parseInt(this.getAttribute("data-icon"),10);for(j=0;j<all.length;j++)all[j].className="malinda-sudoku-tile"+(all[j]===this?" selected":"")};
+      t=document.createElement("button");
+      t.type="button";
+      t.className="malinda-sudoku-tile"+(selected===n?" selected":"");
+      t.setAttribute("draggable","true");
+      t.setAttribute("data-icon",n);
+      t.setAttribute("aria-label",n+". "+labels[n-1]);
+      t.title=n+". "+labels[n-1];
+      t.innerHTML=iconHTML(n);
+      t.ondragstart=function(e){
+        if(e.dataTransfer){
+          e.dataTransfer.setData("text/plain",this.getAttribute("data-icon"));
+          e.dataTransfer.effectAllowed="copy";
+        }
+      };
+      t.onclick=function(){
+        var j,all=tiles.getElementsByTagName("button");
+        selected=parseInt(this.getAttribute("data-icon"),10);
+        for(j=0;j<all.length;j++){
+          all[j].className="malinda-sudoku-tile"+(all[j]===this?" selected":"");
+        }
+      };
       tiles.appendChild(t);
     }
   }
   function place(cell,n){
     var r,c;
     if(!n||won)return;
-    r=+cell.getAttribute("data-r");c=+cell.getAttribute("data-c");
-    puzzle[r][c]=n;cell.setAttribute("data-value",n);cell.innerHTML=iconHTML(n);
+    r=+cell.getAttribute("data-r");
+    c=+cell.getAttribute("data-c");
+    puzzle[r][c]=n;
+    cell.setAttribute("data-value",n);
+    cell.innerHTML=iconHTML(n);
     cell.className=cell.className.replace(" wrong","");
     if(solution[r][c]!==n)cell.className+=" wrong";
     check(false);
@@ -1839,30 +1997,38 @@ Malinda Dollack</p>
   function check(showMessage){
     var cells=board.children,i,r,c,v,complete=true,correct=true;
     for(i=0;i<cells.length;i++){
-      r=Math.floor(i/9);c=i%9;v=parseInt(cells[i].getAttribute("data-value"),10)||0;
+      r=Math.floor(i/9);c=i%9;
+      v=parseInt(cells[i].getAttribute("data-value"),10)||0;
       if(!v)complete=false;
       if(v&&v!==solution[r][c])correct=false;
     }
     if(complete&&correct&&!won){
-      won=true;msg.innerHTML="Wonderful! You solved Malinda's Story Garden Sudoku! JESUS LOVES YOU !";
-      win.hidden=false;win.className="malinda-sudoku-win flash";
+      won=true;
+      msg.innerHTML="Wonderful! You solved Malinda's Story Garden Sudoku! JESUS LOVES YOU !";
+      win.hidden=false;
+      win.className="malinda-sudoku-win flash";
     }else if(showMessage){
       if(correct)msg.innerHTML="So far so good! Keep going.";
       else msg.innerHTML="Some pictures are in the wrong squares. Pink squares need to be moved.";
     }
   }
   function start(index){
-    current=index;if(current<0)current=11;if(current>11)current=0;
-    selected=1;won=false;win.hidden=true;win.className="malinda-sudoku-win";msg.innerHTML="";
-    makePuzzle(current);render();makeTiles();
+    current=index;
+    if(current<0)current=11;
+    if(current>11)current=0;
+    selected=1;won=false;
+    win.hidden=true;win.className="malinda-sudoku-win";
+    msg.innerHTML="";
+    makePuzzle(current);
+    render();
+    makeTiles();
   }
-  reset.onclick=function(){start(current)};
-  checkBtn.onclick=function(){check(true)};
-  nextBtn.onclick=function(){start(current+1)};
+  reset.onclick=function(){start(current);};
+  checkBtn.onclick=function(){check(true);};
+  nextBtn.onclick=function(){start(current+1);};
   start(Math.floor(Math.random()*12));
 })();
 </script>
-
 
 <section class="sarah-wordsearch-section" aria-labelledby="sarah-wordsearch-title">
   <h3 id="sarah-wordsearch-title">Sarah the Sheep: My Shepherd, Jesus’s Birth. The Christmas Story Find-a-Word</h3>
