@@ -2239,7 +2239,7 @@ Malinda Dollack</p>
     clearPreview();
     var a=straightCells(),i,el;
     if(!a.length)return;
-    for(i=0;i<a.length;i++){el=document.getElementById(cellId(a[i][0],a[i][1]));if(el.className.indexOf(" found")<0)el.className+=" preview";}
+    for(i=0;i<a.length;i++){el=document.getElementById(cellId(a[i][0],a[i][1]));if(el.getAttribute("data-found")!=="1"&&el.className.indexOf(" found")<0)el.className+=" preview";}
     startCell.className+=" start";
   }
   function end(){
@@ -2251,7 +2251,7 @@ Malinda Dollack</p>
     clearPreview();
     if(word&&!found[word]){
       found[word]=true;
-      for(i=0;i<a.length;i++){el=document.getElementById(cellId(a[i][0],a[i][1]));if(el.className.indexOf(" found")<0)el.className+=" found";}
+      for(i=0;i<a.length;i++){el=document.getElementById(cellId(a[i][0],a[i][1]));el.setAttribute("data-found","1");if(el.className.indexOf(" found")<0)el.className+=" found";el.style.backgroundColor="#dfb4ff";el.style.color="#2f153f";}
       for(i=0;i<words.length;i++)if(words[i]===word){idx=i;break;}
       if(idx>=0)document.getElementById("mw_word_"+idx).className="malinda-word done";
       message.innerHTML="You found "+word+"!";
