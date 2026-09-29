@@ -2197,12 +2197,12 @@ Malinda Dollack</p>
 
   var msgKeys=["20,0","20,1","20,2","20,3","20,4","20,5","20,6","20,7","20,8","20,9","20,10","20,11","20,12"];
   var grid=document.getElementById("malindaWordGrid"),wordList=document.getElementById("malindaWordList"),message=document.getElementById("malindaWordMessage"),win=document.getElementById("malindaWordWin");
-  var found={},dragging=false,startCell=null,lastCell=null;
+  var found={},foundCells={},dragging=false,startCell=null,lastCell=null;
 
   function cellId(r,c){return "mw_"+r+"_"+c;}
   function build(){
     var r,c,rowDiv,cell,sp;
-    grid.innerHTML="";wordList.innerHTML="";found={};win.hidden=true;win.className="malinda-wordsearch-win";message.innerHTML="";
+    grid.innerHTML="";wordList.innerHTML="";found={};foundCells={};win.hidden=true;win.className="malinda-wordsearch-win";message.innerHTML="";
     for(r=0;r<gridData.length;r++){
       rowDiv=document.createElement("div");rowDiv.className="malinda-wordsearch-row";
       for(c=0;c<gridData[r].length;c++){
@@ -2215,7 +2215,7 @@ Malinda Dollack</p>
     for(r=0;r<words.length;r++){
       sp=document.createElement("span");sp.className="malinda-word";sp.id="mw_word_"+r;sp.innerHTML=(r+1)+". "+words[r];wordList.appendChild(sp);
     }
-    document.onmouseup=end;
+    if(document.addEventListener){document.addEventListener("mouseup",end,false);}else{document.onmouseup=end;}grid.onmouseup=end;
     grid.ontouchstart=function(e){var t=e.target||e.srcElement;if(t&&t.className.indexOf("malinda-wordsearch-cell")>=0){start.call(t,e);if(e.preventDefault)e.preventDefault();return false;}};
     grid.ontouchmove=function(e){var t=e.touches&&e.touches[0];if(!t)return;var el=document.elementFromPoint(t.clientX,t.clientY);if(el&&el.className.indexOf("malinda-wordsearch-cell")>=0){lastCell=el;preview();}if(e.preventDefault)e.preventDefault();return false;};
     grid.ontouchend=function(e){end();if(e&&e.preventDefault)e.preventDefault();return false;};
@@ -2231,9 +2231,25 @@ Malinda Dollack</p>
     for(i=0;i<len;i++)out.push([r1+sr*i,c1+sc*i]);
     return out;
   }
+  function paintFound(){
+    var k,p,el;
+    for(k in foundCells){
+      if(foundCells.hasOwnProperty(k)&&foundCells[k]){
+        p=k.split(",");
+        el=document.getElementById(cellId(parseInt(p[0],10),parseInt(p[1],10)));
+        if(el){
+          el.setAttribute("data-found","1");
+          if(el.className.indexOf(" found")<0)el.className+=" found";
+          el.style.backgroundColor="#dfb4ff";
+          el.style.color="#2f153f";
+        }
+      }
+    }
+  }
   function clearPreview(){
     var cells=grid.getElementsByClassName("malinda-wordsearch-cell"),i;
     for(i=0;i<cells.length;i++)cells[i].className=cells[i].className.replace(" preview","").replace(" start","");
+    paintFound();
   }
   function preview(){
     clearPreview();
@@ -2251,7 +2267,7 @@ Malinda Dollack</p>
     clearPreview();
     if(word&&!found[word]){
       found[word]=true;
-      for(i=0;i<a.length;i++){el=document.getElementById(cellId(a[i][0],a[i][1]));el.setAttribute("data-found","1");if(el.className.indexOf(" found")<0)el.className+=" found";el.style.backgroundColor="#dfb4ff";el.style.color="#2f153f";}
+      for(i=0;i<a.length;i++){foundCells[a[i][0]+","+a[i][1]]=true;}paintFound();
       for(i=0;i<words.length;i++)if(words[i]===word){idx=i;break;}
       if(idx>=0)document.getElementById("mw_word_"+idx).className="malinda-word done";
       message.innerHTML="You found "+word+"!";
