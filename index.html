@@ -2261,19 +2261,32 @@ Malinda Dollack</p>
   function end(){
     if(!dragging)return;
     dragging=false;
-    var a=straightCells(),i,word="",idx=-1,letters="",norm="",rev="";
+    var a=straightCells(),matchedCells=[],i,j,word="",idx=-1,letters="",norm="",rev="",pos=-1,startAt=0,endAt=0;
     for(i=0;i<a.length;i++){
       letters+=gridData[a[i][0]].charAt(a[i][1]);
     }
     rev=letters.split("").reverse().join("");
     for(i=0;i<words.length;i++){
       norm=words[i].replace(/ /g,"");
-      if(letters===norm||rev===norm){word=words[i];idx=i;break;}
+      pos=letters.indexOf(norm);
+      if(pos>=0){
+        word=words[i];idx=i;
+        for(j=pos;j<pos+norm.length;j++)matchedCells.push(a[j]);
+        break;
+      }
+      pos=rev.indexOf(norm);
+      if(pos>=0){
+        word=words[i];idx=i;
+        startAt=a.length-(pos+norm.length);
+        endAt=a.length-pos;
+        for(j=startAt;j<endAt;j++)matchedCells.push(a[j]);
+        break;
+      }
     }
     clearPreview();
     if(word&&!found[word]){
       found[word]=true;
-      for(i=0;i<a.length;i++){foundCells[a[i][0]+","+a[i][1]]=true;}
+      for(i=0;i<matchedCells.length;i++){foundCells[matchedCells[i][0]+","+matchedCells[i][1]]=true;}
       paintFound();
       if(idx>=0)document.getElementById("mw_word_"+idx).className="malinda-word done";
       message.innerHTML="You found "+word+"!";
