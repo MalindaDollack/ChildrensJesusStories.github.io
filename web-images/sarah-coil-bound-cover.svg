@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff"/>
+    <stop offset="1" stop-color="#f4eef9"/>
+  </linearGradient>
+  <linearGradient id="coilGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.92"/>
+    <stop offset="0.45" stop-color="#d9e0e8" stop-opacity="0.62"/>
+    <stop offset="0.72" stop-color="#ffffff" stop-opacity="0.88"/>
+    <stop offset="1" stop-color="#a9b4c2" stop-opacity="0.50"/>
+  </linearGradient>
+  <filter id="bookShadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="10" dy="14" stdDeviation="14" flood-color="#3a2450" flood-opacity="0.30"/>
+  </filter>
+  <filter id="coilShadow" x="-60%" y="-60%" width="220%" height="220%">
+    <feDropShadow dx="2" dy="3" stdDeviation="2.2" flood-color="#65707d" flood-opacity="0.45"/>
+  </filter>
+</defs>
+<rect width="1000" height="1000" rx="32" fill="url(#bg)"/>
+<g filter="url(#bookShadow)">
+  <rect x="105" y="35" width="845" height="930" rx="18" fill="#fff" stroke="#4b146f" stroke-width="4"/>
+  <image href="sarah book cover for library.webp" x="120" y="50" width="815" height="900" preserveAspectRatio="xMidYMid meet"/>
+</g>
+<g filter="url(#coilShadow)">
+<path d="M92 50 C34 50 34 78 92 78 C150 78 150 50 92 50" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 95 C34 95 34 123 92 123 C150 123 150 95 92 95" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 140 C34 140 34 168 92 168 C150 168 150 140 92 140" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 185 C34 185 34 213 92 213 C150 213 150 185 92 185" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 230 C34 230 34 258 92 258 C150 258 150 230 92 230" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 275 C34 275 34 303 92 303 C150 303 150 275 92 275" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 320 C34 320 34 348 92 348 C150 348 150 320 92 320" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 365 C34 365 34 393 92 393 C150 393 150 365 92 365" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 410 C34 410 34 438 92 438 C150 438 150 410 92 410" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 455 C34 455 34 483 92 483 C150 483 150 455 92 455" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 500 C34 500 34 528 92 528 C150 528 150 500 92 500" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 545 C34 545 34 573 92 573 C150 573 150 545 92 545" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 590 C34 590 34 618 92 618 C150 618 150 590 92 590" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 635 C34 635 34 663 92 663 C150 663 150 635 92 635" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 680 C34 680 34 708 92 708 C150 708 150 680 92 680" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 725 C34 725 34 753 92 753 C150 753 150 725 92 725" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 770 C34 770 34 798 92 798 C150 798 150 770 92 770" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 815 C34 815 34 843 92 843 C150 843 150 815 92 815" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 860 C34 860 34 888 92 888 C150 888 150 860 92 860" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 905 C34 905 34 933 92 933 C150 933 150 905 92 905" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<path d="M92 950 C34 950 34 978 92 978 C150 978 150 950 92 950" fill="none" stroke="url(#coilGrad)" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+
+</g>
+<text x="525" y="988" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="25" font-weight="700" fill="#4b146f">CLEAR COIL-BINDING</text>
+</svg>
