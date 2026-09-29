@@ -95,13 +95,13 @@ cards.append(card(
     physical=True
 ))
 cards.append(card(
-    'Hand-made Perfect Binding Soft Cover Edition',
+    'Hand-made Coil-Binding Soft Cover Edition',
     'C$27.88',
     'Size: 11 inches tall × 8.5 inches wide. Allow 3 days processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. Shipping is extra. E-mail dollackj316@gmail.com for the exact shipping cost to your location.',
     physical=True
 ))
 cards.append(card(
-    'Hand-made Perfect Binding Hard Cover Edition',
+    'Hand-made Coil-Binding Hard Cover Edition',
     'C$29.88',
     'Size: 11 inches tall × 8.5 inches wide. Allow 3 days processing time. Shipped by Malinda using Canada Post after the e-Transfer is received and processing is complete. Shipping is extra. E-mail dollackj316@gmail.com for the exact shipping cost to your location.',
     physical=True
