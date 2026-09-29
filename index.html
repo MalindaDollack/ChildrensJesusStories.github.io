@@ -2132,7 +2132,7 @@ Malinda Dollack</p>
   </div>
   <div class="malinda-wordsearch-flowers" aria-hidden="true">✿ ✿ ✿ ✿ ✿</div>
   <h3 id="malinda-wordsearch-title">Malinda's Story Garden Find-a-Word Game</h3>
-  <p class="malinda-wordsearch-intro">Find all 13 hidden phrases in the square letter grid. Hold down your mouse button and drag in a straight line across a phrase. Words may go across, down, up, backward, or diagonally.</p>
+  <p class="malinda-wordsearch-intro">Find all 12 hidden phrases in the letter grid. Hold down your mouse button and drag in a straight line across a phrase. Words may go across, down, up, backward, or diagonally.</p>
 
   <div class="malinda-wordsearch-gridwrap">
     <div id="malindaWordGrid" class="malinda-wordsearch-grid" aria-label="Malinda's Story Garden Find-a-Word puzzle"></div>
@@ -2143,7 +2143,7 @@ Malinda Dollack</p>
     <div id="malindaWordList"></div>
   </div>
 
-  <p class="malinda-wordsearch-note"><strong>Special message: JESUS LOVES YOU !</strong></p>
+  <p class="malinda-wordsearch-note"><strong>After all 12 phrases are found, exactly 13 letters will be left. They spell: JESUS LOVES YOU !</strong></p>
   <p id="malindaWordMessage" class="malinda-wordsearch-message" aria-live="polite"></p>
   <button type="button" id="malindaWordReset">New Game / Clear Highlights</button>
   <button type="button" id="malindaWordFinished">I Found All The Words!</button>
@@ -2224,34 +2224,19 @@ Malinda Dollack</p>
 <script>
 (function(){
   var gridData=[
-    "GZBFHCTLXEYODCMAUCOKK",
-    "HPDULEKHXBFWOHREOEINN",
-    "HEAISJKZFIPDKIOPDEQBU",
-    "ZVGRPJDIYGLNILHHDMJNF",
-    "NEDRAGYROTSSADNILAMBX",
-    "JEUAOZUQKQEOARZQJFLNP",
-    "BNGISFEOFQYHWEFGSTCHC",
-    "TXPYIFGEYTVWUNZGNSYJG",
-    "SAMARITANSPURSEAOSCWX",
-    "QNXBQZLKJUEPCBANIYPEV",
-    "IHFSLBFWLSTVAILCTBQOQ",
-    "CDLWHKYWMSYBOBAJPIDXP",
-    "OQAQZREASMETILATIGIDH",
-    "CHTWELVESTORIESTRBFFD",
-    "JIRAADCOWXGTISAUCLTUG",
-    "SOQHWIEODLEDWTFBSUIAD",
-    "OPSQVDYIDMDDMOERBEMSH",
-    "SHARINGHSEVSORXMUEJFA",
-    "UMEVWNTTQBMBYILKSYMHK",
-    "WSNSZKMRBKQEVELHNEVUA",
-    "JESUSLOVESYOUSLDQSFCK"
+    "CHILDRENSBIBLESTORIESSEMAG",
+    "NEDRAGYROTSSADNILAMSHARING",
+    "SAMARITANSPURSESEYEEULBGIB",
+    "TWELVESTORIESSMETILACISYHP",
+    "SUBSCRIPTIONSDIGITALITEMSJ",
+    "SERVICESSOEDIVESUSLOVESYOU"
   ];
 
-  var words=["JESUS LOVES YOU","BIG BLUE EYES","CHILDRENS BIBLE STORIES","MALINDAS STORY GARDEN","TWELVE STORIES","SERVICES","DIGITAL ITEMS","PHYSICAL ITEMS","SUBSCRIPTIONS","SAMARITANS PURSE","GAMES","VIDEOS","SHARING"];
+  var words=["BIG BLUE EYES","CHILDRENS BIBLE STORIES","MALINDAS STORY GARDEN","TWELVE STORIES","SERVICES","DIGITAL ITEMS","PHYSICAL ITEMS","SUBSCRIPTIONS","SAMARITANS PURSE","GAMES","VIDEOS","SHARING"];
 
   var paths={"17,18;16,17;15,16;14,15;13,14;12,13;11,12;10,11;9,10;8,9;7,8;6,7;5,6":"JESUS LOVES YOU","5,6;6,7;7,8;8,9;9,10;10,11;11,12;12,13;13,14;14,15;15,16;16,17;17,18":"JESUS LOVES YOU","10,17;11,17;12,17;13,17;14,17;15,17;16,17;17,17;18,17;19,17;20,17":"BIG BLUE EYES","20,17;19,17;18,17;17,17;16,17;15,17;14,17;13,17;12,17;11,17;10,17":"BIG BLUE EYES","0,13;1,13;2,13;3,13;4,13;5,13;6,13;7,13;8,13;9,13;10,13;11,13;12,13;13,13;14,13;15,13;16,13;17,13;18,13;19,13;20,13":"CHILDRENS BIBLE STORIES","20,13;19,13;18,13;17,13;16,13;15,13;14,13;13,13;12,13;11,13;10,13;9,13;8,13;7,13;6,13;5,13;4,13;3,13;2,13;1,13;0,13":"CHILDRENS BIBLE STORIES","4,18;4,17;4,16;4,15;4,14;4,13;4,12;4,11;4,10;4,9;4,8;4,7;4,6;4,5;4,4;4,3;4,2;4,1;4,0":"MALINDAS STORY GARDEN","4,0;4,1;4,2;4,3;4,4;4,5;4,6;4,7;4,8;4,9;4,10;4,11;4,12;4,13;4,14;4,15;4,16;4,17;4,18":"MALINDAS STORY GARDEN","13,2;13,3;13,4;13,5;13,6;13,7;13,8;13,9;13,10;13,11;13,12;13,13;13,14":"TWELVE STORIES","13,14;13,13;13,12;13,11;13,10;13,9;13,8;13,7;13,6;13,5;13,4;13,3;13,2":"TWELVE STORIES","19,1;18,2;17,3;16,4;15,5;14,6;13,7;12,8":"SERVICES","12,8;13,7;14,6;15,5;16,4;17,3;18,2;19,1":"SERVICES","12,19;12,18;12,17;12,16;12,15;12,14;12,13;12,12;12,11;12,10;12,9;12,8":"DIGITAL ITEMS","12,8;12,9;12,10;12,11;12,12;12,13;12,14;12,15;12,16;12,17;12,18;12,19":"DIGITAL ITEMS","5,20;6,19;7,18;8,17;9,16;10,15;11,14;12,13;13,12;14,11;15,10;16,9;17,8":"PHYSICAL ITEMS","17,8;16,9;15,10;14,11;13,12;12,13;11,14;10,15;9,16;8,17;7,18;6,19;5,20":"PHYSICAL ITEMS","18,16;17,16;16,16;15,16;14,16;13,16;12,16;11,16;10,16;9,16;8,16;7,16;6,16":"SUBSCRIPTIONS","6,16;7,16;8,16;9,16;10,16;11,16;12,16;13,16;14,16;15,16;16,16;17,16;18,16":"SUBSCRIPTIONS","8,0;8,1;8,2;8,3;8,4;8,5;8,6;8,7;8,8;8,9;8,10;8,11;8,12;8,13;8,14":"SAMARITANS PURSE","8,14;8,13;8,12;8,11;8,10;8,9;8,8;8,7;8,6;8,5;8,4;8,3;8,2;8,1;8,0":"SAMARITANS PURSE","14,20;15,19;16,18;17,17;18,16":"GAMES","18,16;17,17;16,18;15,19;14,20":"GAMES","18,3;17,4;16,5;15,6;14,7;13,8":"VIDEOS","13,8;14,7;15,6;16,5;17,4;18,3":"VIDEOS","17,0;17,1;17,2;17,3;17,4;17,5;17,6":"SHARING","17,6;17,5;17,4;17,3;17,2;17,1;17,0":"SHARING"};
 
-  var msgKeys=["20,0","20,1","20,2","20,3","20,4","20,5","20,6","20,7","20,8","20,9","20,10","20,11","20,12"];
+  var msgKeys=["4,25","5,14","5,15","5,16","5,17","5,18","5,19","5,20","5,21","5,22","5,23","5,24","5,25"];
   var grid=document.getElementById("malindaWordGrid"),wordList=document.getElementById("malindaWordList"),message=document.getElementById("malindaWordMessage"),win=document.getElementById("malindaWordWin");
   var found={},foundCells={},dragging=false,startCell=null,lastCell=null;
 
