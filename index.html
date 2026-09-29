@@ -2261,17 +2261,25 @@ Malinda Dollack</p>
   function end(){
     if(!dragging)return;
     dragging=false;
-    var a=straightCells(),key=[],i,word,el,idx=-1;
-    for(i=0;i<a.length;i++)key.push(a[i][0]+","+a[i][1]);
-    word=paths[key.join(";")];
+    var a=straightCells(),i,word="",idx=-1,letters="",norm="",rev="";
+    for(i=0;i<a.length;i++){
+      letters+=gridData[a[i][0]].charAt(a[i][1]);
+    }
+    rev=letters.split("").reverse().join("");
+    for(i=0;i<words.length;i++){
+      norm=words[i].replace(/ /g,"");
+      if(letters===norm||rev===norm){word=words[i];idx=i;break;}
+    }
     clearPreview();
     if(word&&!found[word]){
       found[word]=true;
-      for(i=0;i<a.length;i++){foundCells[a[i][0]+","+a[i][1]]=true;}paintFound();
-      for(i=0;i<words.length;i++)if(words[i]===word){idx=i;break;}
+      for(i=0;i<a.length;i++){foundCells[a[i][0]+","+a[i][1]]=true;}
+      paintFound();
       if(idx>=0)document.getElementById("mw_word_"+idx).className="malinda-word done";
       message.innerHTML="You found "+word+"!";
       check();
+    }else if(!word){
+      message.innerHTML="That line is not one of the listed phrases. Try again.";
     }
     startCell=null;lastCell=null;
   }
