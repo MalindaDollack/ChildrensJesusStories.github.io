@@ -5,11 +5,11 @@
     <stop offset="1" stop-color="#f4eef9"/>
   </linearGradient>
   <linearGradient id="coilGrad" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#ffffff" stop-opacity="0.98"/>
-    <stop offset="0.28" stop-color="#edf2f7" stop-opacity="0.92"/>
-    <stop offset="0.58" stop-color="#c3ccd7" stop-opacity="0.82"/>
-    <stop offset="0.78" stop-color="#ffffff" stop-opacity="0.98"/>
-    <stop offset="1" stop-color="#8d98a6" stop-opacity="0.78"/>
+    <stop offset="0" stop-color="#ffffff" stop-opacity="1"/>
+    <stop offset="0.28" stop-color="#ffffff" stop-opacity="1"/>
+    <stop offset="0.58" stop-color="#fafafa" stop-opacity="1"/>
+    <stop offset="0.78" stop-color="#ffffff" stop-opacity="1"/>
+    <stop offset="1" stop-color="#f4f4f4" stop-opacity="1"/>
   </linearGradient>
   <filter id="bookShadow" x="-20%" y="-20%" width="140%" height="140%">
     <feDropShadow dx="10" dy="14" stdDeviation="14" flood-color="#3a2450" flood-opacity="0.30"/>
@@ -47,27 +47,27 @@
 <ellipse cx="118" cy="964" rx="9" ry="6" fill="#313944" opacity="0.82"/>
 </g>
 <g filter="url(#coilShadow)" opacity="0.82">
-<path d="M92 50 C34 50 34 78 92 78 C150 78 150 50 92 50" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 95 C34 95 34 123 92 123 C150 123 150 95 92 95" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 140 C34 140 34 168 92 168 C150 168 150 140 92 140" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 185 C34 185 34 213 92 213 C150 213 150 185 92 185" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 230 C34 230 34 258 92 258 C150 258 150 230 92 230" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 275 C34 275 34 303 92 303 C150 303 150 275 92 275" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 320 C34 320 34 348 92 348 C150 348 150 320 92 320" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 365 C34 365 34 393 92 393 C150 393 150 365 92 365" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 410 C34 410 34 438 92 438 C150 438 150 410 92 410" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 455 C34 455 34 483 92 483 C150 483 150 455 92 455" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 500 C34 500 34 528 92 528 C150 528 150 500 92 500" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 545 C34 545 34 573 92 573 C150 573 150 545 92 545" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 590 C34 590 34 618 92 618 C150 618 150 590 92 590" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 635 C34 635 34 663 92 663 C150 663 150 635 92 635" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 680 C34 680 34 708 92 708 C150 708 150 680 92 680" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 725 C34 725 34 753 92 753 C150 753 150 725 92 725" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 770 C34 770 34 798 92 798 C150 798 150 770 92 770" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 815 C34 815 34 843 92 843 C150 843 150 815 92 815" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 860 C34 860 34 888 92 888 C150 888 150 860 92 860" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 905 C34 905 34 933 92 933 C150 933 150 905 92 905" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
-<path d="M92 950 C34 950 34 978 92 978 C150 978 150 950 92 950" fill="none" stroke="#5e6976" stroke-width="18" stroke-linecap="round" opacity="0.62"/>
+<path d="M92 50 C34 50 34 78 92 78 C150 78 150 50 92 50" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 95 C34 95 34 123 92 123 C150 123 150 95 92 95" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 140 C34 140 34 168 92 168 C150 168 150 140 92 140" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 185 C34 185 34 213 92 213 C150 213 150 185 92 185" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 230 C34 230 34 258 92 258 C150 258 150 230 92 230" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 275 C34 275 34 303 92 303 C150 303 150 275 92 275" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 320 C34 320 34 348 92 348 C150 348 150 320 92 320" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 365 C34 365 34 393 92 393 C150 393 150 365 92 365" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 410 C34 410 34 438 92 438 C150 438 150 410 92 410" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 455 C34 455 34 483 92 483 C150 483 150 455 92 455" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 500 C34 500 34 528 92 528 C150 528 150 500 92 500" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 545 C34 545 34 573 92 573 C150 573 150 545 92 545" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 590 C34 590 34 618 92 618 C150 618 150 590 92 590" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 635 C34 635 34 663 92 663 C150 663 150 635 92 635" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 680 C34 680 34 708 92 708 C150 708 150 680 92 680" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 725 C34 725 34 753 92 753 C150 753 150 725 92 725" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 770 C34 770 34 798 92 798 C150 798 150 770 92 770" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 815 C34 815 34 843 92 843 C150 843 150 815 92 815" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 860 C34 860 34 888 92 888 C150 888 150 860 92 860" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 905 C34 905 34 933 92 933 C150 933 150 905 92 905" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+<path d="M92 950 C34 950 34 978 92 978 C150 978 150 950 92 950" fill="none" stroke="#d5d5d5" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
 </g>
 <g filter="url(#coilShadow)">
 <path d="M92 50 C34 50 34 78 92 78 C150 78 150 50 92 50" fill="none" stroke="url(#coilGrad)" stroke-width="11" stroke-linecap="round" opacity="0.98"/>
