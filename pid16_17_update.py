@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# One-time scoped update for PID16 and PID17 only.
 path = Path('index.html')
 html = path.read_text(encoding='utf-8')
 
