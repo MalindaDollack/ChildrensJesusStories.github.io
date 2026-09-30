@@ -1,7 +1,10 @@
 name: Update Store Catalog
 
 on:
-  workflow_dispatch:
+  push:
+    paths:
+      - 'remove_pid15_main_caption.py'
+      - '.github/workflows/update-store.yml'
 
 permissions:
   contents: write
@@ -11,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply catalog update
-        run: python update_catalog.py
+      - name: Remove PID15 main-picture caption
+        run: python remove_pid15_main_caption.py
       - name: Commit updated website
         run: |
           git config user.name "github-actions[bot]"
@@ -21,6 +24,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No website changes needed."
           else
-            git commit -m "Update store prices and product details"
+            git commit -m "Remove PID15 main picture caption"
             git push
           fi
