@@ -59,17 +59,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Keep the three physical bookmark ad pictures the same displayed size.
+  // Keep the three physical bookmark ad main pictures the same displayed size.
   // PID1 had an inline height:auto override; removing these inline dimensions
   // lets PID1, PID2 and PID3 all use the same store-card image sizing rules.
   ['store-PID1', 'store-PID2', 'store-PID3'].forEach(id => {
     const card = document.getElementById(id);
     if (!card) return;
     const image = card.querySelector('img');
-    if (!image) return;
-    image.style.removeProperty('width');
-    image.style.removeProperty('height');
-    image.style.removeProperty('aspect-ratio');
-    image.style.removeProperty('object-fit');
+    if (image) {
+      image.style.removeProperty('width');
+      image.style.removeProperty('height');
+      image.style.removeProperty('aspect-ratio');
+      image.style.removeProperty('object-fit');
+    }
+
+    // Keep every photograph inside these three bookmark descriptions the same size.
+    // The full picture remains visible inside an equal 260px-high photo area.
+    card.querySelectorAll('.store-details figure img').forEach(photo => {
+      photo.style.setProperty('width', '100%', 'important');
+      photo.style.setProperty('height', '260px', 'important');
+      photo.style.setProperty('object-fit', 'contain', 'important');
+      photo.style.setProperty('background', '#ffffff', 'important');
+    });
   });
 });
