@@ -1,4 +1,4 @@
-name: Repair Services and Digital layout
+name: Repair SO7 service artwork
 
 on:
   push:
@@ -11,79 +11,50 @@ permissions:
   contents: write
 
 jobs:
-  repair:
+  repair-so7:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Repair only Services pictures and Digital Items card grid
+      - name: Install Pillow
+        run: python3 -m pip install pillow
+
+      - name: Convert the exact SO7 artwork to PNG and switch only SO7 to it
         run: |
           python3 <<'PY'
           from pathlib import Path
+          from PIL import Image
           import re
+
+          src = Path('web-images/so7-christian-digital-beginner-coding-services.webp')
+          dst = Path('web-images/so7-christian-digital-beginner-coding-services.png')
+
+          # Preserve the exact existing SO7 artwork, only changing the file format
+          # to PNG for maximum compatibility with older browsers/computers.
+          with Image.open(src) as im:
+              im.convert('RGB').save(dst, 'PNG', optimize=True)
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Give the Digital Items heading a stable hook without changing its text.
-          old_heading = '<h2 class="special-store-heading">Digital Items</h2>'
-          new_heading = '<h2 class="special-store-heading" id="digital-items-heading">Digital Items</h2>'
-          if old_heading in s:
-              s = s.replace(old_heading, new_heading, 1)
-
-          # Force only the Digital Items cards back to the site's normal responsive card grid,
-          # even if another store rule would otherwise make this grid a vertical list.
-          style = '''<style id="services-digital-display-fix">
-          #digital-items-heading + .store-intro + .store-grid{
-            display:grid!important;
-            grid-template-columns:repeat(auto-fit,minmax(245px,1fr))!important;
-            gap:20px!important;
-            width:min(1220px,96vw)!important;
-            margin:24px auto!important;
-            flex-direction:initial!important;
-          }
-          #services-offered .store-card > img{
-            display:block!important;
-            width:100%!important;
-            height:250px!important;
-            object-fit:contain!important;
-            background:#fff!important;
-            visibility:visible!important;
-            opacity:1!important;
-          }
-          @media(max-width:560px){
-            #services-offered .store-card > img{height:210px!important}
-          }
-          </style>'''
-          style_pat = re.compile(r'<style id="services-digital-display-fix">.*?</style>', re.S)
-          if style_pat.search(s):
-              s = style_pat.sub(style, s, count=1)
-          else:
-              s = s.replace('</head>', style + '\n</head>', 1)
-
-          # The service picture files are still present. Make just these seven pictures load
-          # eagerly and refresh their URLs so older browsers do not keep a stale blank image.
-          start = s.find('<section id="services-offered">')
-          if start != -1:
-              end = s.find('</section>', start)
-              if end != -1:
-                  end += len('</section>')
-                  section = s[start:end]
-                  section = section.replace('loading="lazy"', 'loading="eager"')
-                  section = re.sub(r'(src="web-images/[^"]+?\.webp)\?v=\d+"', r'\1?v=20261001"', section)
-                  s = s[:start] + section + s[end:]
+          # Change only the SO7 card image source. Do not alter any other service,
+          # store card, game, price, description, email form, or layout.
+          pat = re.compile(
+              r'(<article class="store-card" id="store-SO7">\s*<img[^>]*?src=")web-images/so7-christian-digital-beginner-coding-services\.webp\?v=[^"]+("[^>]*>)',
+              re.S
+          )
+          replacement = r'\1web-images/so7-christian-digital-beginner-coding-services.png?v=20261001b\2'
+          s, count = pat.subn(replacement, s, count=1)
+          if count != 1:
+              raise SystemExit('SO7 image tag was not found exactly once; no website change made.')
 
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Commit repair
+      - name: Commit SO7 repair
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          if git diff --cached --quiet; then
-            echo "No repair change needed."
-          else
-            git commit -m "Fix Services pictures and restore Digital Items card grid"
-            git push
-          fi
+          git add index.html web-images/so7-christian-digital-beginner-coding-services.png
+          git commit -m "Fix SO7 service picture with PNG copy"
+          git push
