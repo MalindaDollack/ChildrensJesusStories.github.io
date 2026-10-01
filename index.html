@@ -467,6 +467,28 @@
 }
 </style>
 <style id="win7-store-picture-fix">#store-PID1 img,#store-PID2 img,#store-PID3 img,#store-PID16 img,#store-PID17 img{width:250px!important;max-width:100%!important;height:250px!important;object-fit:contain!important;object-position:center!important;background:#fff!important;margin-left:auto!important;margin-right:auto!important}</style>
+<style id="services-digital-display-fix">
+#digital-items-heading + .store-intro + .store-grid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(245px,1fr))!important;
+  gap:20px!important;
+  width:min(1220px,96vw)!important;
+  margin:24px auto!important;
+  flex-direction:initial!important;
+}
+#services-offered .store-card > img{
+  display:block!important;
+  width:100%!important;
+  height:250px!important;
+  object-fit:contain!important;
+  background:#fff!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+@media(max-width:560px){
+  #services-offered .store-card > img{height:210px!important}
+}
+</style>
 </head>
 <body>
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
@@ -539,7 +561,7 @@
 <h2 class="special-store-heading">Services Offered</h2>
 <p class="service-notice-always"><strong>I am invoking the right to not involve myself with activities outside of my personal comfort zone for any reason I choose. As a 60 year old Spirit - Filled follower of Jesus, there are Websites, Books, other issues that go beyond my personal comfort zone, that I may feel uncomfortable being hired to help a person with, this is not discrimination, but stating simply I have the right to refuse service to anyone for whatever reasons I have, service will not be open to all ideas. Helping to make Websites or Books related to Guns, Violence, Pornography, Bullying, Non-Traditional Christian Values, etc. will not be accepted. - Thank you for understanding - Malinda Dollack</strong></p>
 <div class="services-grid"><article class="store-card" id="store-SO1">
-<img loading="lazy" decoding="async" src="web-images/christian website services.webp?v=2" alt="Christian Website Services">
+<img loading="eager" decoding="async" src="web-images/christian website services.webp?v=20261001" alt="Christian Website Services">
 <h3>SO1 — Christian Website Services</h3>
 <p class="price">C$20.00 per hour</p>
 <p class="product-available">AVAILABLE</p>
@@ -549,7 +571,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com" data-email-form="m1" onclick="return openPreparedEmail('m1');">E-mail Malinda to Request This Service</a></div>
 </div>
 </article><article class="store-card" id="store-SO2">
-<img loading="lazy" decoding="async" src="web-images/christian author services.webp?v=2" alt="Christian Author Services">
+<img loading="eager" decoding="async" src="web-images/christian author services.webp?v=20261001" alt="Christian Author Services">
 <h3>SO2 — Christian Author Services</h3>
 <p class="price">C$20.00 per hour</p>
 <p class="product-available">AVAILABLE</p>
@@ -559,7 +581,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com" data-email-form="m2" onclick="return openPreparedEmail('m2');">E-mail Malinda to Request This Service</a></div>
 </div>
 </article><article class="store-card" id="store-SO3">
-<img loading="lazy" decoding="async" src="web-images/christian education services chat gpt.webp?v=2" alt="Christian Education Services Chat GPT">
+<img loading="eager" decoding="async" src="web-images/christian education services chat gpt.webp?v=20261001" alt="Christian Education Services Chat GPT">
 <h3>SO3 — Christian Education Services Chat GPT</h3>
 <p class="price">C$20.00 per hour</p>
 <p class="product-available">AVAILABLE</p>
@@ -569,7 +591,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com" data-email-form="m3" onclick="return openPreparedEmail('m3');">E-mail Malinda to Request This Service</a></div>
 </div>
 </article><article class="store-card" id="store-SO4">
-<img loading="lazy" decoding="async" src="web-images/christian education services github.webp?v=2" alt="Christian Education Services GitHub">
+<img loading="eager" decoding="async" src="web-images/christian education services github.webp?v=20261001" alt="Christian Education Services GitHub">
 <h3>SO4 — Christian Education Services GitHub</h3>
 <p class="price">C$20.00 per hour</p>
 <p class="product-available">AVAILABLE</p>
@@ -579,7 +601,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com" data-email-form="m4" onclick="return openPreparedEmail('m4');">E-mail Malinda to Request This Service</a></div>
 </div>
 </article><article class="store-card" id="store-SO5">
-<img loading="lazy" decoding="async" src="web-images/christian games services.webp?v=1" alt="Christian Games Services">
+<img loading="eager" decoding="async" src="web-images/christian games services.webp?v=20261001" alt="Christian Games Services">
 <h3>SO5 — Christian Games Services</h3>
 <p class="price">C$20.00 per hour</p>
 <p class="product-available">AVAILABLE</p>
@@ -589,7 +611,7 @@
 <div class="store-order"><a href="mailto:berachahdirector@gmail.com" data-email-form="m5" onclick="return openPreparedEmail('m5');">E-mail Malinda to Request This Service</a></div>
 </div>
 </article><article class="store-card" id="store-SO6">
-<img loading="lazy" decoding="async" src="web-images/christian digital games services.webp?v=1" alt="Christian Digital Games Services">
+<img loading="eager" decoding="async" src="web-images/christian digital games services.webp?v=20261001" alt="Christian Digital Games Services">
 <h3>SO6 — Christian Digital Games Services</h3>
 <p class="price">C$20.00 per hour</p>
 <p class="product-available">AVAILABLE</p>
@@ -600,7 +622,7 @@
 </div>
 </article>
 <article class="store-card" id="store-SO7">
-<img loading="lazy" decoding="async" src="web-images/so7-christian-digital-beginner-coding-services.webp?v=1" alt="Christian Digital Beginner Coding Services">
+<img loading="eager" decoding="async" src="web-images/so7-christian-digital-beginner-coding-services.webp?v=20261001" alt="Christian Digital Beginner Coding Services">
 <h3>SO7 — Christian Digital Beginner Coding Services</h3>
 <p class="price">C$20.00 per hour</p>
 <p class="product-available">AVAILABLE</p>
@@ -611,7 +633,7 @@
 </div>
 </article></div>
 </section>
-<h2 class="special-store-heading">Digital Items</h2>
+<h2 class="special-store-heading" id="digital-items-heading">Digital Items</h2>
 <p class="store-intro"><strong>No Refunds on Digital Items</strong></p>
 <div class="store-grid"><article class="store-card">
 <img loading="lazy" decoding="async" src="1%20bm%20corrected.png?v=3" alt="JESUS LOVES YOU ! Book Mark: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
