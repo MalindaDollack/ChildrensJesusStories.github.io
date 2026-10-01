@@ -1,5 +1,5 @@
 // Stable website enhancements loader - August 31, 2026.
-document.write('<script src="script-enhancements.js?v=4"><\/script>');
+document.write('<script src="script-enhancements.js?v=5"><\/script>');
 document.write('<script src="game-win-celebration.js?v=6"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
