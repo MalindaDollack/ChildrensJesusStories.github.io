@@ -1,4 +1,4 @@
-name: Repair SO7 service artwork
+name: Update DID7 description wording
 
 on:
   push:
@@ -11,39 +11,38 @@ permissions:
   contents: write
 
 jobs:
-  repair-so7:
+  update-did7:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
 
-      - name: Switch only SO7 to coding services.png
+      - name: Replace DID7 paragraph with clearer wording
         run: |
           python3 <<'PY'
           from pathlib import Path
-          import re
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          pat = re.compile(
-              r'(<article class="store-card" id="store-SO7">\s*<img[^>]*?src=")[^"]+("[^>]*>)',
-              re.S
-          )
-          replacement = r'\1coding%20services.png?v=20261001d\2'
-          s, count = pat.subn(replacement, s, count=1)
-          if count != 1:
-              raise SystemExit('SO7 image tag was not found exactly once; no website change made.')
+          old = '<p>The Perfect 77 Page Manual for Coders / Computer Geeks who Love JESUS ! &quot;BASIC&quot; is the language &quot;Elon Musk&quot;, according to Google, his first game &quot;Blastar&quot;, writen as a child, was written in. Many other Languages available - see description.</p>'
+          new = '<p><strong>The Perfect 77-Page Manual for Coders and Computer Geeks Who Love JESUS!</strong></p>\n<p><strong>BASIC</strong> is the programming language Elon Musk used to create his first game, <strong>&quot;Blastar,&quot;</strong> when he was a child, according to information available through Google.</p>\n<p>Many other programming-language manuals are also available — <strong>see the description for the full list.</strong></p>'
 
+          if new in s:
+              raise SystemExit('DID7 wording is already updated; no change needed.')
+          if old not in s:
+              raise SystemExit('Existing DID7 paragraph not found exactly; no website change made.')
+
+          s = s.replace(old, new, 1)
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Commit SO7 picture repair
+      - name: Commit DID7 wording update
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Use coding services image for SO7"
+          git commit -m "Clarify DID7 BASIC manual description"
           git pull --rebase origin main
           git push origin main
