@@ -1,4 +1,4 @@
-name: Reorder store sections
+name: Repair Services and Digital layout
 
 on:
   push:
@@ -11,18 +11,79 @@ permissions:
   contents: write
 
 jobs:
-  reorder:
+  repair:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Put only Physical Items first
+
+      - name: Repair only Services pictures and Digital Items card grid
         run: |
-          python3 -c "from pathlib import Path; import base64,re; p=Path('index.html'); s=p.read_text(encoding='utf-8'); x=base64.b64decode('PHNjcmlwdCBpZD0ic3RvcmUtc2VjdGlvbi1vcmRlci1maXgiPgooZnVuY3Rpb24gKCkgewogIGZ1bmN0aW9uIGZpbmRTdG9yZUhlYWRpbmcobGFiZWwpIHsKICAgIHZhciBoZWFkaW5ncyA9IGRvY3VtZW50LmdldEVsZW1lbnRzQnlUYWdOYW1lKCdoMicpOwogICAgdmFyIGksIHRleHQ7CiAgICBmb3IgKGkgPSAwOyBpIDwgaGVhZGluZ3MubGVuZ3RoOyBpICs9IDEpIHsKICAgICAgaWYgKCgnICcgKyBoZWFkaW5nc1tpXS5jbGFzc05hbWUgKyAnICcpLmluZGV4T2YoJyBzcGVjaWFsLXN0b3JlLWhlYWRpbmcgJykgPT09IC0xKSB7CiAgICAgICAgY29udGludWU7CiAgICAgIH0KICAgICAgdGV4dCA9IGhlYWRpbmdzW2ldLnRleHRDb250ZW50IHx8IGhlYWRpbmdzW2ldLmlubmVyVGV4dCB8fCAnJzsKICAgICAgdGV4dCA9IHRleHQucmVwbGFjZSgvXlxzK3xccyskL2csICcnKS5yZXBsYWNlKC9ccysvZywgJyAnKTsKICAgICAgaWYgKHRleHQgPT09IGxhYmVsKSB7CiAgICAgICAgcmV0dXJuIGhlYWRpbmdzW2ldOwogICAgICB9CiAgICB9CiAgICByZXR1cm4gbnVsbDsKICB9CgogIGZ1bmN0aW9uIHJlb3JkZXJTdG9yZVNlY3Rpb25zKCkgewogICAgdmFyIHBoeXNpY2FsID0gZmluZFN0b3JlSGVhZGluZygnUGh5c2ljYWwgSXRlbXMnKTsKICAgIHZhciBzZXJ2aWNlcyA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdzZXJ2aWNlcy1vZmZlcmVkJyk7CiAgICB2YXIgc3Vic2NyaXB0aW9ucyA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdwaHlzaWNhbC1zdWJzY3JpcHRpb25zJyk7CiAgICB2YXIgcGFyZW50LCBub2Rlcywgbm9kZSwgbmV4dE5vZGUsIGk7CgogICAgaWYgKCFwaHlzaWNhbCB8fCAhc2VydmljZXMgfHwgIXN1YnNjcmlwdGlvbnMpIHsKICAgICAgcmV0dXJuOwogICAgfQoKICAgIHBhcmVudCA9IHNlcnZpY2VzLnBhcmVudE5vZGU7CiAgICBpZiAoIXBhcmVudCB8fCBwaHlzaWNhbC5wYXJlbnROb2RlICE9PSBwYXJlbnQgfHwgc3Vic2NyaXB0aW9ucy5wYXJlbnROb2RlICE9PSBwYXJlbnQpIHsKICAgICAgcmV0dXJuOwogICAgfQoKICAgIG5vZGVzID0gW107CiAgICBub2RlID0gcGh5c2ljYWw7CiAgICB3aGlsZSAobm9kZSAmJiBub2RlICE9PSBzdWJzY3JpcHRpb25zKSB7CiAgICAgIG5leHROb2RlID0gbm9kZS5uZXh0U2libGluZzsKICAgICAgbm9kZXMucHVzaChub2RlKTsKICAgICAgbm9kZSA9IG5leHROb2RlOwogICAgfQoKICAgIGlmICghbm9kZXMubGVuZ3RoIHx8IG5vZGUgIT09IHN1YnNjcmlwdGlvbnMpIHsKICAgICAgcmV0dXJuOwogICAgfQoKICAgIGZvciAoaSA9IDA7IGkgPCBub2Rlcy5sZW5ndGg7IGkgKz0gMSkgewogICAgICBwYXJlbnQuaW5zZXJ0QmVmb3JlKG5vZGVzW2ldLCBzZXJ2aWNlcyk7CiAgICB9CiAgfQoKICBpZiAoZG9jdW1lbnQucmVhZHlTdGF0ZSA9PT0gJ2xvYWRpbmcnKSB7CiAgICBpZiAoZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcikgewogICAgICBkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCdET01Db250ZW50TG9hZGVkJywgcmVvcmRlclN0b3JlU2VjdGlvbnMsIGZhbHNlKTsKICAgIH0gZWxzZSBpZiAod2luZG93LmF0dGFjaEV2ZW50KSB7CiAgICAgIHdpbmRvdy5hdHRhY2hFdmVudCgnb25sb2FkJywgcmVvcmRlclN0b3JlU2VjdGlvbnMpOwogICAgfQogIH0gZWxzZSB7CiAgICByZW9yZGVyU3RvcmVTZWN0aW9ucygpOwogIH0KfSgpKTsKPC9zY3JpcHQ+').decode('utf-8'); pat=re.compile(r'<script id=\"store-section-order-fix\">.*?</script>',re.S); s=pat.sub(lambda m:x,s,count=1) if pat.search(s) else s.replace('</body>',x+'\\n</body>',1); p.write_text(s,encoding='utf-8')"
-      - name: Commit corrected section order
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          # Give the Digital Items heading a stable hook without changing its text.
+          old_heading = '<h2 class="special-store-heading">Digital Items</h2>'
+          new_heading = '<h2 class="special-store-heading" id="digital-items-heading">Digital Items</h2>'
+          if old_heading in s:
+              s = s.replace(old_heading, new_heading, 1)
+
+          # Force only the Digital Items cards back to the site's normal responsive card grid,
+          # even if another store rule would otherwise make this grid a vertical list.
+          style = '''<style id="services-digital-display-fix">
+          #digital-items-heading + .store-intro + .store-grid{
+            display:grid!important;
+            grid-template-columns:repeat(auto-fit,minmax(245px,1fr))!important;
+            gap:20px!important;
+            width:min(1220px,96vw)!important;
+            margin:24px auto!important;
+            flex-direction:initial!important;
+          }
+          #services-offered .store-card > img{
+            display:block!important;
+            width:100%!important;
+            height:250px!important;
+            object-fit:contain!important;
+            background:#fff!important;
+            visibility:visible!important;
+            opacity:1!important;
+          }
+          @media(max-width:560px){
+            #services-offered .store-card > img{height:210px!important}
+          }
+          </style>'''
+          style_pat = re.compile(r'<style id="services-digital-display-fix">.*?</style>', re.S)
+          if style_pat.search(s):
+              s = style_pat.sub(style, s, count=1)
+          else:
+              s = s.replace('</head>', style + '\n</head>', 1)
+
+          # The service picture files are still present. Make just these seven pictures load
+          # eagerly and refresh their URLs so older browsers do not keep a stale blank image.
+          start = s.find('<section id="services-offered">')
+          if start != -1:
+              end = s.find('</section>', start)
+              if end != -1:
+                  end += len('</section>')
+                  section = s[start:end]
+                  section = section.replace('loading="lazy"', 'loading="eager"')
+                  section = re.sub(r'(src="web-images/[^"]+?\.webp)\?v=\d+"', r'\1?v=20261001"', section)
+                  s = s[:start] + section + s[end:]
+
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit repair
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet && exit 0
-          git commit -m "Restore Services and Digital layouts while keeping Physical Items first"
-          git push
+          if git diff --cached --quiet; then
+            echo "No repair change needed."
+          else
+            git commit -m "Fix Services pictures and restore Digital Items card grid"
+            git push
+          fi
