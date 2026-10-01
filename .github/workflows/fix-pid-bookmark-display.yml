@@ -2,10 +2,8 @@ name: Fix bookmark pictures
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/fix-pid-bookmark-display.yml
+    branches: [main]
+    paths: [.github/workflows/fix-pid-bookmark-display.yml]
 
 permissions:
   contents: write
@@ -15,66 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Fix bookmark pictures directly
-        shell: bash
-        run: |
-          python3 <<'PY'
-          from pathlib import Path
-          import re
-
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-
-          # Remove any older copy of this bookmark-only hotfix.
-          s = re.sub(r'\n?<script id="win7-bookmark-inline-fix">.*?</script>\n?', '\n', s, flags=re.S)
-
-          hotfix = r'''
-<script id="win7-bookmark-inline-fix">
-(function () {
-  function fixBookmarkPictures() {
-    var ids = ['store-PID1', 'store-PID2', 'store-PID3'];
-    var i, j, card, pictures;
-    for (i = 0; i < ids.length; i += 1) {
-      card = document.getElementById(ids[i]);
-      if (!card) { continue; }
-      pictures = card.getElementsByTagName('img');
-      for (j = 0; j < pictures.length; j += 1) {
-        pictures[j].style.setProperty('width', '100%', 'important');
-        pictures[j].style.setProperty('max-width', '250px', 'important');
-        pictures[j].style.setProperty('height', '250px', 'important');
-        pictures[j].style.setProperty('aspect-ratio', 'auto', 'important');
-        pictures[j].style.setProperty('object-fit', 'contain', 'important');
-        pictures[j].style.setProperty('object-position', 'center', 'important');
-        pictures[j].style.setProperty('background', '#ffffff', 'important');
-        pictures[j].style.setProperty('margin-left', 'auto', 'important');
-        pictures[j].style.setProperty('margin-right', 'auto', 'important');
-      }
-    }
-  }
-
-  if (document.readyState === 'complete') {
-    fixBookmarkPictures();
-  } else if (window.addEventListener) {
-    window.addEventListener('load', fixBookmarkPictures, false);
-  } else if (window.attachEvent) {
-    window.attachEvent('onload', fixBookmarkPictures);
-  }
-}());
-</script>
-'''
-
-          if '</body>' not in s:
-              raise SystemExit('Could not find closing body tag.')
-          s = s.replace('</body>', hotfix + '\n</body>', 1)
-          p.write_text(s, encoding='utf-8')
-          PY
-
+      - name: Apply bookmark sizing fix
+        run: python3 -c "from pathlib import Path; import re,base64; p=Path('index.html'); s=p.read_text(encoding='utf-8'); s=re.sub(r'\\n?<script id=\\\"win7-bookmark-inline-fix\\\">.*?</script>\\n?', '\\n', s, flags=re.S); h=base64.b64decode('PHNjcmlwdCBpZD0id2luNy1ib29rbWFyay1pbmxpbmUtZml4Ij4KKGZ1bmN0aW9uICgpIHsKICBmdW5jdGlvbiBmaXhCb29rbWFya1BpY3R1cmVzKCkgewogICAgdmFyIGlkcyA9IFsnc3RvcmUtUElEMScsICdzdG9yZS1QSUQyJywgJ3N0b3JlLVBJRDMnXTsKICAgIHZhciBpLCBqLCBjYXJkLCBwaWN0dXJlczsKICAgIGZvciAoaSA9IDA7IGkgPCBpZHMubGVuZ3RoOyBpICs9IDEpIHsKICAgICAgY2FyZCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGlkc1tpXSk7CiAgICAgIGlmICghY2FyZCkgeyBjb250aW51ZTsgfQogICAgICBwaWN0dXJlcyA9IGNhcmQuZ2V0RWxlbWVudHNCeVRhZ05hbWUoJ2ltZycpOwogICAgICBmb3IgKGogPSAwOyBqIDwgcGljdHVyZXMubGVuZ3RoOyBqICs9IDEpIHsKICAgICAgICBwaWN0dXJlc1tqXS5zdHlsZS5zZXRQcm9wZXJ0eSgnd2lkdGgnLCAnMTAwJScsICdpbXBvcnRhbnQnKTsKICAgICAgICBwaWN0dXJlc1tqXS5zdHlsZS5zZXRQcm9wZXJ0eSgnbWF4LXdpZHRoJywgJzI1MHB4JywgJ2ltcG9ydGFudCcpOwogICAgICAgIHBpY3R1cmVzW2pdLnN0eWxlLnNldFByb3BlcnR5KCdoZWlnaHQnLCAnMjUwcHgnLCAnaW1wb3J0YW50Jyk7CiAgICAgICAgcGljdHVyZXNbal0uc3R5bGUuc2V0UHJvcGVydHkoJ2FzcGVjdC1yYXRpbycsICdhdXRvJywgJ2ltcG9ydGFudCcpOwogICAgICAgIHBpY3R1cmVzW2pdLnN0eWxlLnNldFByb3BlcnR5KCdvYmplY3QtZml0JywgJ2NvbnRhaW4nLCAnaW1wb3J0YW50Jyk7CiAgICAgICAgcGljdHVyZXNbal0uc3R5bGUuc2V0UHJvcGVydHkoJ29iamVjdC1wb3NpdGlvbicsICdjZW50ZXInLCAnaW1wb3J0YW50Jyk7CiAgICAgICAgcGljdHVyZXNbal0uc3R5bGUuc2V0UHJvcGVydHkoJ2JhY2tncm91bmQnLCAnI2ZmZmZmZicsICdpbXBvcnRhbnQnKTsKICAgICAgICBwaWN0dXJlc1tqXS5zdHlsZS5zZXRQcm9wZXJ0eSgnbWFyZ2luLWxlZnQnLCAnYXV0bycsICdpbXBvcnRhbnQnKTsKICAgICAgICBwaWN0dXJlc1tqXS5zdHlsZS5zZXRQcm9wZXJ0eSgnbWFyZ2luLXJpZ2h0JywgJ2F1dG8nLCAnaW1wb3J0YW50Jyk7CiAgICAgIH0KICAgIH0KICB9CiAgaWYgKGRvY3VtZW50LnJlYWR5U3RhdGUgPT09ICdjb21wbGV0ZScpIHsKICAgIGZpeEJvb2ttYXJrUGljdHVyZXMoKTsKICB9IGVsc2UgaWYgKHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKSB7CiAgICB3aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcignbG9hZCcsIGZpeEJvb2ttYXJrUGljdHVyZXMsIGZhbHNlKTsKICB9IGVsc2UgaWYgKHdpbmRvdy5hdHRhY2hFdmVudCkgewogICAgd2luZG93LmF0dGFjaEV2ZW50KCdvbmxvYWQnLCBmaXhCb29rbWFya1BpY3R1cmVzKTsKICB9Cn0oKSk7Cjwvc2NyaXB0Pg==').decode('utf-8'); s=s.replace('</body>', h+'\\n</body>', 1); p.write_text(s, encoding='utf-8')"
       - name: Commit bookmark fix
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Fix PID1 PID2 PID3 bookmark picture sizing"
+          git commit -m "Force PID1 PID2 PID3 bookmark image sizing"
           git push
