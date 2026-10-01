@@ -18,7 +18,7 @@ jobs:
         with:
           ref: main
 
-      - name: Switch only SO7 to the repaired Windows 7 friendly JPG
+      - name: Switch only SO7 to coding services.png
         run: |
           python3 <<'PY'
           from pathlib import Path
@@ -28,10 +28,10 @@ jobs:
           s = p.read_text(encoding='utf-8')
 
           pat = re.compile(
-              r'(<article class="store-card" id="store-SO7">\s*<img[^>]*?src=")web-images/so7-christian-digital-beginner-coding-services\.webp\?v=[^"]+("[^>]*>)',
+              r'(<article class="store-card" id="store-SO7">\s*<img[^>]*?src=")[^"]+("[^>]*>)',
               re.S
           )
-          replacement = r'\1web-images/so7-christian-digital-beginner-coding-services.jpg?v=20261001c\2'
+          replacement = r'\1coding%20services.png?v=20261001d\2'
           s, count = pat.subn(replacement, s, count=1)
           if count != 1:
               raise SystemExit('SO7 image tag was not found exactly once; no website change made.')
@@ -44,6 +44,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Fix SO7 service picture" 
+          git commit -m "Use coding services image for SO7"
           git pull --rebase origin main
           git push origin main
