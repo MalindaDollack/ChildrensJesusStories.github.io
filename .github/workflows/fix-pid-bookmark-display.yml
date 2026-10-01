@@ -1,0 +1,108 @@
+name: Fix PID bookmark and saddle book display
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - '.github/workflows/fix-pid-bookmark-display.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-display:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply exact display fixes
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          # Force a fresh script.js load on older Windows browsers.
+          text = text.replace('script.js?v=12', 'script.js?v=13')
+
+          # Put the correct photographed cover directly into PID16 and PID17.
+          p16 = re.compile(r'(<article class="store-card portrait-product" id="store-PID16">\s*<div class="product-gallery collapsible-gallery"><img\b[^>]*?\bsrc=")[^"]+("[^>]*>)', re.S)
+          text, c16 = p16.subn(r'\1saddle book main 28 lbs.jpg?v=20261001b\2', text, count=1)
+
+          p17 = re.compile(r'(<article class="store-card portrait-product" id="store-PID17">\s*<div class="product-gallery collapsible-gallery"><img\b[^>]*?\bsrc=")[^"]+("[^>]*>)', re.S)
+          text, c17 = p17.subn(r'\1saddle book main 20lbs.jpg?v=20261001b\2', text, count=1)
+
+          if c16 != 1 or c17 != 1:
+              raise SystemExit('Could not locate PID16/PID17 main pictures exactly once.')
+
+          # Direct, Windows-7-safe fallback. Runs after everything else has loaded,
+          # so old cached scripts and inline !important rules cannot undo it.
+          hotfix = r'''
+<script id="pid-bookmark-display-hotfix">
+(function () {
+  function setPictures(id, mainSrc) {
+    var card = document.getElementById(id);
+    if (!card) return;
+
+    if (mainSrc) {
+      var mainPicture = card.querySelector('.product-gallery > img');
+      if (mainPicture) mainPicture.src = mainSrc;
+    }
+
+    var pictures = card.getElementsByTagName('img');
+    var i;
+    for (i = 0; i < pictures.length; i += 1) {
+      pictures[i].style.setProperty('width', '250px', 'important');
+      pictures[i].style.setProperty('max-width', '100%', 'important');
+      pictures[i].style.setProperty('height', '250px', 'important');
+      pictures[i].style.setProperty('aspect-ratio', 'auto', 'important');
+      pictures[i].style.setProperty('object-fit', 'contain', 'important');
+      pictures[i].style.setProperty('object-position', 'center', 'important');
+      pictures[i].style.setProperty('background', '#ffffff', 'important');
+      pictures[i].style.setProperty('margin-left', 'auto', 'important');
+      pictures[i].style.setProperty('margin-right', 'auto', 'important');
+    }
+  }
+
+  function applyStorePictureFixes() {
+    setPictures('store-PID1', null);
+    setPictures('store-PID2', null);
+    setPictures('store-PID3', null);
+    setPictures('store-PID16', 'saddle book main 28 lbs.jpg?v=20261001b');
+    setPictures('store-PID17', 'saddle book main 20lbs.jpg?v=20261001b');
+  }
+
+  if (document.readyState === 'complete') {
+    applyStorePictureFixes();
+  } else if (window.addEventListener) {
+    window.addEventListener('load', applyStorePictureFixes, false);
+  } else if (window.attachEvent) {
+    window.attachEvent('onload', applyStorePictureFixes);
+  }
+}());
+</script>
+'''
+
+          text = re.sub(r'\n?<script id="pid-bookmark-display-hotfix">.*?</script>\n?', '\n', text, flags=re.S)
+          if '</body>' not in text:
+              raise SystemExit('Could not find closing body tag.')
+          text = text.replace('</body>', hotfix + '\n</body>', 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit corrected live page
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No display changes needed."
+          else
+            git commit -m "Fix bookmark and PID16 PID17 pictures on live page"
+            git push
+          fi
