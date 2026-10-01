@@ -3049,34 +3049,26 @@ document.addEventListener('DOMContentLoaded', function () {
     var physical = findStoreHeading('Physical Items');
     var services = document.getElementById('services-offered');
     var subscriptions = document.getElementById('physical-subscriptions');
-    var endNode, parent, nodes, node, nextNode, i;
+    var parent, nodes, node, nextNode, i;
 
     if (!physical || !services || !subscriptions) {
       return;
     }
 
-    endNode = subscriptions.nextElementSibling;
-    if (!endNode || (' ' + endNode.className + ' ').indexOf(' subscription-overview ') === -1) {
-      return;
-    }
-
     parent = services.parentNode;
-    if (!parent || physical.parentNode !== parent || endNode.parentNode !== parent) {
+    if (!parent || physical.parentNode !== parent || subscriptions.parentNode !== parent) {
       return;
     }
 
     nodes = [];
     node = physical;
-    while (node) {
+    while (node && node !== subscriptions) {
       nextNode = node.nextSibling;
       nodes.push(node);
-      if (node === endNode) {
-        break;
-      }
       node = nextNode;
     }
 
-    if (!nodes.length || nodes[nodes.length - 1] !== endNode) {
+    if (!nodes.length || node !== subscriptions) {
       return;
     }
 
@@ -3086,7 +3078,11 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', reorderStoreSections, false);
+    if (document.addEventListener) {
+      document.addEventListener('DOMContentLoaded', reorderStoreSections, false);
+    } else if (window.attachEvent) {
+      window.attachEvent('onload', reorderStoreSections);
+    }
   } else {
     reorderStoreSections();
   }
