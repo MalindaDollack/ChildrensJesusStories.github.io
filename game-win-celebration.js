@@ -58,3 +58,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// PID15 large laminated tile area note — October 1, 2026.
+document.addEventListener('DOMContentLoaded', () => {
+  const card = document.getElementById('store-PID15');
+  if (!card || card.querySelector('.pid15-large-layout-note')) return;
+
+  const price = card.querySelector('.price');
+  if (!price || !price.parentNode) return;
+
+  const spaceBefore = document.createElement('div');
+  spaceBefore.setAttribute('aria-hidden', 'true');
+  spaceBefore.style.height = '14px';
+
+  const note = document.createElement('p');
+  note.className = 'pid15-large-layout-note';
+  note.innerHTML = '<strong>Extremely Large</strong> Laminated Tile Area Lay-Out . Each tile is 5.5" X 4.25". They cover over <strong>5 feet</strong> when placed in a double matching row lay-out or over 2 Ft Square when placed in a 6 Tile lay-out.';
+
+  const spaceAfter = document.createElement('div');
+  spaceAfter.setAttribute('aria-hidden', 'true');
+  spaceAfter.style.height = '14px';
+
+  price.parentNode.insertBefore(spaceBefore, price);
+  price.parentNode.insertBefore(note, price);
+  price.parentNode.insertBefore(spaceAfter, price);
+});
