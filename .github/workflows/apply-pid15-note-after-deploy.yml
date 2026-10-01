@@ -1,0 +1,62 @@
+name: Apply PID15 note after deploy
+
+on:
+  workflow_run:
+    workflows: ["Deploy website to GitHub Pages"]
+    types: [completed]
+
+permissions:
+  contents: write
+
+jobs:
+  update-pid15:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Add PID15 large tile layout note
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          article_marker = '<article class="store-card portrait-product" id="store-PID15">'
+          start = html.find(article_marker)
+          if start == -1:
+              raise SystemExit('PID15 article not found; no changes made.')
+          end = html.find('</article>', start)
+          if end == -1:
+              raise SystemExit('PID15 article closing tag not found; no changes made.')
+
+          block = html[start:end]
+          if 'pid15-large-layout-note' in block:
+              print('PID15 note already present; no change needed.')
+              raise SystemExit(0)
+
+          price_marker = '<p class="price">C$24.00</p>'
+          if price_marker not in block:
+              raise SystemExit('PID15 price marker not found; no changes made.')
+
+          addition = '''<div aria-hidden="true" style="height:14px;"></div>
+<p class="pid15-large-layout-note"><strong>Extremely Large</strong> Laminated Tile Area Lay-Out . Each tile is 5.5" X 4.25". They cover over <strong>5 feet</strong> when placed in a double matching row lay-out or over 2 Ft Square when placed in a 6 Tile lay-out.</p>
+<div aria-hidden="true" style="height:14px;"></div>
+'''
+          block = block.replace(price_marker, addition + price_marker, 1)
+          html = html[:start] + block + html[end:]
+          path.write_text(html, encoding='utf-8')
+          print('PID15 note added directly to index.html.')
+          PY
+      - name: Commit PID15 page update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No website changes needed."
+          else
+            git commit -m "Add PID15 large tile layout description"
+            git push origin main
+          fi
