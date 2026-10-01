@@ -1,4 +1,4 @@
-name: Fix store pictures
+name: Fix bookmark pictures
 
 on:
   push:
@@ -16,15 +16,65 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fix live index
+      - name: Fix bookmark pictures directly
+        shell: bash
         run: |
-          python3 -c "from pathlib import Path; p=Path('index.html'); s=p.read_text(encoding='utf-8'); s=s.replace('script.js?v=12','script.js?v=13'); s=s.replace('id=\"store-PID16\">\n<div class=\"product-gallery collapsible-gallery\"><img loading=\"lazy\" decoding=\"async\" src=\"saddle book main picture.jpg?v=1\"','id=\"store-PID16\">\n<div class=\"product-gallery collapsible-gallery\"><img loading=\"lazy\" decoding=\"async\" src=\"saddle book main 28 lbs.jpg?v=2\"'); s=s.replace('id=\"store-PID17\">\n<div class=\"product-gallery collapsible-gallery\"><img loading=\"lazy\" decoding=\"async\" src=\"saddle book main picture.jpg?v=1\"','id=\"store-PID17\">\n<div class=\"product-gallery collapsible-gallery\"><img loading=\"lazy\" decoding=\"async\" src=\"saddle book main 20lbs.jpg?v=2\"'); marker='</head>'; css='''<style id=\"win7-store-picture-fix\">#store-PID1 img,#store-PID2 img,#store-PID3 img,#store-PID16 img,#store-PID17 img{width:250px!important;max-width:100%!important;height:250px!important;object-fit:contain!important;object-position:center!important;background:#fff!important;margin-left:auto!important;margin-right:auto!important}</style>'''; s=s.replace(css,''); s=s.replace(marker,css+'\n'+marker,1); p.write_text(s,encoding='utf-8')"
+          python3 <<'PY'
+          from pathlib import Path
+          import re
 
-      - name: Commit fix
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          # Remove any older copy of this bookmark-only hotfix.
+          s = re.sub(r'\n?<script id="win7-bookmark-inline-fix">.*?</script>\n?', '\n', s, flags=re.S)
+
+          hotfix = r'''
+<script id="win7-bookmark-inline-fix">
+(function () {
+  function fixBookmarkPictures() {
+    var ids = ['store-PID1', 'store-PID2', 'store-PID3'];
+    var i, j, card, pictures;
+    for (i = 0; i < ids.length; i += 1) {
+      card = document.getElementById(ids[i]);
+      if (!card) { continue; }
+      pictures = card.getElementsByTagName('img');
+      for (j = 0; j < pictures.length; j += 1) {
+        pictures[j].style.setProperty('width', '100%', 'important');
+        pictures[j].style.setProperty('max-width', '250px', 'important');
+        pictures[j].style.setProperty('height', '250px', 'important');
+        pictures[j].style.setProperty('aspect-ratio', 'auto', 'important');
+        pictures[j].style.setProperty('object-fit', 'contain', 'important');
+        pictures[j].style.setProperty('object-position', 'center', 'important');
+        pictures[j].style.setProperty('background', '#ffffff', 'important');
+        pictures[j].style.setProperty('margin-left', 'auto', 'important');
+        pictures[j].style.setProperty('margin-right', 'auto', 'important');
+      }
+    }
+  }
+
+  if (document.readyState === 'complete') {
+    fixBookmarkPictures();
+  } else if (window.addEventListener) {
+    window.addEventListener('load', fixBookmarkPictures, false);
+  } else if (window.attachEvent) {
+    window.attachEvent('onload', fixBookmarkPictures);
+  }
+}());
+</script>
+'''
+
+          if '</body>' not in s:
+              raise SystemExit('Could not find closing body tag.')
+          s = s.replace('</body>', hotfix + '\n</body>', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit bookmark fix
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Fix bookmark and PID16 PID17 display"
+          git commit -m "Fix PID1 PID2 PID3 bookmark picture sizing"
           git push
