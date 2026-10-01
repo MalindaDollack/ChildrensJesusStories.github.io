@@ -1,9 +1,7 @@
 name: Update Store Catalog
 
 on:
-  push:
-    paths:
-      - 'bookmark_uniform_size_update.py'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply uniform bookmark picture sizing
-        run: python bookmark_uniform_size_update.py
+      - name: Apply catalog update
+        run: python update_catalog.py
       - name: Commit updated website
         run: |
           git config user.name "github-actions[bot]"
@@ -23,6 +21,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No website changes needed."
           else
-            git commit -m "Make bookmark pictures display the same size"
+            git commit -m "Update store prices and product details"
             git push
           fi
