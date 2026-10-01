@@ -58,4 +58,18 @@ document.addEventListener('DOMContentLoaded', () => {
       flipButton.onclick = () => window.open('flip-book-preview.html?v=33', '_blank', 'noopener');
     }
   }
+
+  // Keep the three physical bookmark ad pictures the same displayed size.
+  // PID1 had an inline height:auto override; removing these inline dimensions
+  // lets PID1, PID2 and PID3 all use the same store-card image sizing rules.
+  ['store-PID1', 'store-PID2', 'store-PID3'].forEach(id => {
+    const card = document.getElementById(id);
+    if (!card) return;
+    const image = card.querySelector('img');
+    if (!image) return;
+    image.style.removeProperty('width');
+    image.style.removeProperty('height');
+    image.style.removeProperty('aspect-ratio');
+    image.style.removeProperty('object-fit');
+  });
 });
