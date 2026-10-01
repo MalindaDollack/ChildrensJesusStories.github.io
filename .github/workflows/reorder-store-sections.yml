@@ -15,35 +15,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
-      - name: Install Pillow
-        run: python3 -m pip install pillow
-
-      - name: Convert the exact SO7 artwork to PNG and switch only SO7 to it
+      - name: Switch only SO7 to the repaired Windows 7 friendly JPG
         run: |
           python3 <<'PY'
           from pathlib import Path
-          from PIL import Image
           import re
-
-          src = Path('web-images/so7-christian-digital-beginner-coding-services.webp')
-          dst = Path('web-images/so7-christian-digital-beginner-coding-services.png')
-
-          # Preserve the exact existing SO7 artwork, only changing the file format
-          # to PNG for maximum compatibility with older browsers/computers.
-          with Image.open(src) as im:
-              im.convert('RGB').save(dst, 'PNG', optimize=True)
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Change only the SO7 card image source. Do not alter any other service,
-          # store card, game, price, description, email form, or layout.
           pat = re.compile(
               r'(<article class="store-card" id="store-SO7">\s*<img[^>]*?src=")web-images/so7-christian-digital-beginner-coding-services\.webp\?v=[^"]+("[^>]*>)',
               re.S
           )
-          replacement = r'\1web-images/so7-christian-digital-beginner-coding-services.png?v=20261001b\2'
+          replacement = r'\1web-images/so7-christian-digital-beginner-coding-services.jpg?v=20261001c\2'
           s, count = pat.subn(replacement, s, count=1)
           if count != 1:
               raise SystemExit('SO7 image tag was not found exactly once; no website change made.')
@@ -51,10 +39,11 @@ jobs:
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Commit SO7 repair
+      - name: Commit SO7 picture repair
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html web-images/so7-christian-digital-beginner-coding-services.png
-          git commit -m "Fix SO7 service picture with PNG copy"
-          git push
+          git add index.html
+          git commit -m "Fix SO7 service picture" 
+          git pull --rebase origin main
+          git push origin main
