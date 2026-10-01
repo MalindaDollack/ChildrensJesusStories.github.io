@@ -2,10 +2,6 @@ name: Update Store Catalog
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'add_pid16_17_frog_photo.py'
-      - '.github/workflows/update-store.yml'
 
 permissions:
   contents: write
@@ -15,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add PID16 and PID17 frog photo
-        run: python add_pid16_17_frog_photo.py
+      - name: Apply catalog update
+        run: python update_catalog.py
       - name: Commit updated website
         run: |
           git config user.name "github-actions[bot]"
@@ -25,6 +21,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No website changes needed."
           else
-            git commit -m "Add missing saddle book photo to PID16 and PID17"
+            git commit -m "Update store prices and product details"
             git push
           fi
