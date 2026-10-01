@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# trigger
 p = Path('index.html')
 text = p.read_text(encoding='utf-8')
 marker = '<style id="uniform-bookmark-picture-size">'
