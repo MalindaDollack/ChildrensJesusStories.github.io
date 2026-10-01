@@ -1,0 +1,65 @@
+name: Fix PID15 visible note
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-pid15-visible-note.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Move PID15 note above price
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          marker = '<article class="store-card portrait-product" id="store-PID15">'
+          start = html.find(marker)
+          if start == -1:
+              raise SystemExit('PID15 article not found')
+          end = html.find('</article>', start)
+          if end == -1:
+              raise SystemExit('PID15 article closing tag not found')
+
+          block = html[start:end]
+
+          # Remove any earlier copy of this note and its spacer, wherever it was placed.
+          block = re.sub(
+              r'\s*<div aria-hidden="true" style="height:14px;"></div>\s*<p class="pid15-large-layout-note">.*?</p>',
+              '',
+              block,
+              flags=re.S
+          )
+
+          price = '<p class="price">C$24.00</p>'
+          if price not in block:
+              raise SystemExit('PID15 price not found')
+
+          note = '''<div aria-hidden="true" style="height:14px;"></div>\n<p class="pid15-large-layout-note"><strong>Extremely Large</strong> Laminated Tile Area Lay-Out . Each tile is 5.5" X 4.25". They cover over <strong>5 feet</strong> when placed in a double matching row lay-out or over 2 Ft Square when placed in a 6 Tile lay-out.</p>\n'''
+          block = block.replace(price, note + price, 1)
+          html = html[:start] + block + html[end:]
+          path.write_text(html, encoding='utf-8')
+          print('PID15 note is now permanently above the C$24.00 price.')
+          PY
+      - name: Commit website fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No change needed"
+          else
+            git commit -m "Place PID15 large layout note above price"
+            git push origin main
+          fi
