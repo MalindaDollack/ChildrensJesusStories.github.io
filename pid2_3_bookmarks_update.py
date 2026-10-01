@@ -1,6 +1,7 @@
 from pathlib import Path
 import re
 
+# trigger
 INDEX = Path("index.html")
 text = INDEX.read_text(encoding="utf-8")
 
@@ -33,7 +34,6 @@ def update_card(pid, main_src, supports):
         print(f"{pid} already updated; no duplicate insertion")
         return
 
-    # Change only the source of the card's first/main image. Keep its existing alt text and all other attributes.
     main_re = re.compile(rf'(<article class="store-card" id="store-{pid}">\s*<img\b[^>]*?\bsrc=")[^"]+("[^>]*>)', re.S)
     block, n = main_re.subn(lambda m: m.group(1) + main_src + '?v=1' + m.group(2), block, count=1)
     if n != 1:
@@ -52,7 +52,6 @@ def update_card(pid, main_src, supports):
     )
     block = block.replace(marker, marker + injection, 1)
 
-    # The original description and everything after it remain untouched because the new material is only prepended.
     start, end = matches[0].span()
     text = text[:start] + block + text[end:]
     print(f"Updated {pid}")
