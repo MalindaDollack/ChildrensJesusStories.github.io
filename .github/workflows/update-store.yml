@@ -1,9 +1,7 @@
 name: Update Store Catalog
 
 on:
-  push:
-    paths:
-      - '.github/workflows/update-store.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Update PID1 bookmark pictures
-        run: python pid1_bookmark_update.py
+      - name: Apply catalog update
+        run: python update_catalog.py
       - name: Commit updated website
         run: |
           git config user.name "github-actions[bot]"
@@ -23,6 +21,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No website changes needed."
           else
-            git commit -m "Update PID1 bookmark pictures"
+            git commit -m "Update store prices and product details"
             git push
           fi
