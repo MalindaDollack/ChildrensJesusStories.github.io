@@ -3027,5 +3027,70 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 }());
 </script>
+<script id="store-section-order-fix">
+(function () {
+  function findStoreHeading(label) {
+    var headings = document.getElementsByTagName('h2');
+    var i, text;
+    for (i = 0; i < headings.length; i += 1) {
+      if ((' ' + headings[i].className + ' ').indexOf(' special-store-heading ') === -1) {
+        continue;
+      }
+      text = headings[i].textContent || headings[i].innerText || '';
+      text = text.replace(/^\s+|\s+$/g, '').replace(/\s+/g, ' ');
+      if (text === label) {
+        return headings[i];
+      }
+    }
+    return null;
+  }
+
+  function reorderStoreSections() {
+    var physical = findStoreHeading('Physical Items');
+    var services = document.getElementById('services-offered');
+    var subscriptions = document.getElementById('physical-subscriptions');
+    var endNode, parent, nodes, node, nextNode, i;
+
+    if (!physical || !services || !subscriptions) {
+      return;
+    }
+
+    endNode = subscriptions.nextElementSibling;
+    if (!endNode || (' ' + endNode.className + ' ').indexOf(' subscription-overview ') === -1) {
+      return;
+    }
+
+    parent = services.parentNode;
+    if (!parent || physical.parentNode !== parent || endNode.parentNode !== parent) {
+      return;
+    }
+
+    nodes = [];
+    node = physical;
+    while (node) {
+      nextNode = node.nextSibling;
+      nodes.push(node);
+      if (node === endNode) {
+        break;
+      }
+      node = nextNode;
+    }
+
+    if (!nodes.length || nodes[nodes.length - 1] !== endNode) {
+      return;
+    }
+
+    for (i = 0; i < nodes.length; i += 1) {
+      parent.insertBefore(nodes[i], services);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', reorderStoreSections, false);
+  } else {
+    reorderStoreSections();
+  }
+}());
+</script>
 </body>
 </html>
