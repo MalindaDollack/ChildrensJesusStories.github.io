@@ -2996,5 +2996,36 @@ document.addEventListener('DOMContentLoaded', function () {
   updateTotal();
 })();
 </script>
+<script id="win7-bookmark-inline-fix">
+(function () {
+  function fixBookmarkPictures() {
+    var ids = ['store-PID1', 'store-PID2', 'store-PID3'];
+    var i, j, card, pictures;
+    for (i = 0; i < ids.length; i += 1) {
+      card = document.getElementById(ids[i]);
+      if (!card) { continue; }
+      pictures = card.getElementsByTagName('img');
+      for (j = 0; j < pictures.length; j += 1) {
+        pictures[j].style.setProperty('width', '100%', 'important');
+        pictures[j].style.setProperty('max-width', '250px', 'important');
+        pictures[j].style.setProperty('height', '250px', 'important');
+        pictures[j].style.setProperty('aspect-ratio', 'auto', 'important');
+        pictures[j].style.setProperty('object-fit', 'contain', 'important');
+        pictures[j].style.setProperty('object-position', 'center', 'important');
+        pictures[j].style.setProperty('background', '#ffffff', 'important');
+        pictures[j].style.setProperty('margin-left', 'auto', 'important');
+        pictures[j].style.setProperty('margin-right', 'auto', 'important');
+      }
+    }
+  }
+  if (document.readyState === 'complete') {
+    fixBookmarkPictures();
+  } else if (window.addEventListener) {
+    window.addEventListener('load', fixBookmarkPictures, false);
+  } else if (window.attachEvent) {
+    window.attachEvent('onload', fixBookmarkPictures);
+  }
+}());
+</script>
 </body>
 </html>
