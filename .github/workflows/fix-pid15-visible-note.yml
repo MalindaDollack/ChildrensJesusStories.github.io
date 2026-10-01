@@ -34,7 +34,6 @@ jobs:
 
           block = html[start:end]
 
-          # Remove any earlier copy of this note and its spacer, wherever it was placed.
           block = re.sub(
               r'\s*<div aria-hidden="true" style="height:14px;"></div>\s*<p class="pid15-large-layout-note">.*?</p>',
               '',
@@ -63,3 +62,5 @@ jobs:
             git commit -m "Place PID15 large layout note above price"
             git push origin main
           fi
+
+# trigger move above price
