@@ -1,4 +1,4 @@
-name: Repair SO7 service artwork
+name: Update DID7 BASIC manual description
 
 on:
   push:
@@ -11,39 +11,38 @@ permissions:
   contents: write
 
 jobs:
-  repair-so7:
+  update-did7:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
 
-      - name: Switch only SO7 to coding services.png
+      - name: Insert DID7 description text
         run: |
           python3 <<'PY'
           from pathlib import Path
-          import re
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          pat = re.compile(
-              r'(<article class="store-card" id="store-SO7">\s*<img[^>]*?src=")[^"]+("[^>]*>)',
-              re.S
-          )
-          replacement = r'\1coding%20services.png?v=20261001d\2'
-          s, count = pat.subn(replacement, s, count=1)
-          if count != 1:
-              raise SystemExit('SO7 image tag was not found exactly once; no website change made.')
+          marker = '<p><strong>Digital Book Series</strong></p>\n<p class="price">C$0.77 per manual</p>'
+          replacement = '<p><strong>Digital Book Series</strong></p>\n<p>The Perfect 77 Page Manual for Coders / Computer Geeks who Love JESUS ! &quot;BASIC&quot; is the language &quot;Elon Musk&quot;, according to Google, his first game &quot;Blastar&quot;, writen as a child, was written in. Many other Languages available - see description.</p>\n<p class="price">C$0.77 per manual</p>'
 
+          if replacement in s:
+              raise SystemExit('DID7 description is already updated; no change needed.')
+          if marker not in s:
+              raise SystemExit('Exact DID7 insertion point not found; no website change made.')
+
+          s = s.replace(marker, replacement, 1)
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Commit SO7 picture repair
+      - name: Commit DID7 description update
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Use coding services image for SO7"
+          git commit -m "Add DID7 BASIC manual description"
           git pull --rebase origin main
           git push origin main
