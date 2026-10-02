@@ -85,6 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
   ].forEach(item => {
     const card = document.getElementById(item.id);
     if (!card) return;
+    if (item.id === 'store-PID16') {
+      const price = card.querySelector('.price');
+      if (price) price.textContent = 'C$12.00';
+    }
     const mainPicture = card.querySelector('.product-gallery > img') || card.querySelector('img');
     if (mainPicture) {
       mainPicture.src = item.src;
