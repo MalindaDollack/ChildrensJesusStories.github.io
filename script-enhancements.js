@@ -77,6 +77,85 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // PID4, PID5 and PID6: use the new sticker photographs.
+  // The "alone" photo is the main ad photo with no caption. The other three photos
+  // appear at the start of the expanded description with their exact file-name captions.
+  const stickerPhotoNote = `Please note these Stickers looks much better in real life. I am using very old equipment to produce these ads the blurriness and sometimes lack of definition are caused by my camera. I wanted to give you the most accurate representation of these Stickers. I have included photos with rulers. The Stickers are all of Sarah the Baby Sheep: Jesus Loves You ! from the Children's Bible Story Book, Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. All Avery Paper Stickers are reusable. I have tried it and you can "carefully" remove them and place them again somewhere else. JESUS LOVES YOU !`;
+  [
+    {
+      id: 'store-PID4',
+      main: { src: 'stickers 20 small alone.jpg?v=20261002', alt: 'stickers 20 small alone' },
+      detail: [
+        { src: 'stickers 20 small horizontal.jpg?v=20261002', label: 'stickers 20 small horizontal' },
+        { src: 'stickers 20 small vertical.jpg?v=20261002', label: 'stickers 20 small vertical' },
+        { src: 'stickers 20 small envelope.jpg?v=20261002', label: 'stickers 20 small envelope' }
+      ]
+    },
+    {
+      id: 'store-PID5',
+      main: { src: 'stickers 4 medium alone.jpg?v=20261002', alt: 'stickers 4 medium alone' },
+      detail: [
+        { src: 'stickers 4 medium horizontal.jpg?v=20261002', label: 'stickers 4 medium horizontal' },
+        { src: 'stickers 4 medium vertical.jpg?v=20261002', label: 'stickers 4 medium vertical' },
+        { src: 'stickers 4 medium envelope.jpg?v=20261002', label: 'stickers 4 medium envelope' }
+      ]
+    },
+    {
+      id: 'store-PID6',
+      main: { src: 'sticker lg alone.jpg?v=20261002', alt: 'sticker lg alone' },
+      detail: [
+        { src: 'sticker lg horizontal.jpg?v=20261002', label: 'sticker lg horizontal' },
+        { src: 'sticker lg vertical.jpg?v=20261002', label: 'sticker lg vertical' },
+        { src: 'sticker lg mailing.jpg?v=20261002', label: 'sticker lg mailing' }
+      ]
+    }
+  ].forEach(item => {
+    const card = document.getElementById(item.id);
+    if (!card) return;
+
+    const mainPicture = card.querySelector('img');
+    if (mainPicture) {
+      mainPicture.src = item.main.src;
+      mainPicture.alt = item.main.alt;
+    }
+
+    const details = card.querySelector('.store-details');
+    if (!details) return;
+    details.querySelectorAll('.pid-sticker-photo-note, .pid-sticker-photo-gallery').forEach(el => el.remove());
+
+    const note = document.createElement('p');
+    note.className = 'pid-sticker-photo-note';
+    const strong = document.createElement('strong');
+    strong.textContent = stickerPhotoNote;
+    note.appendChild(strong);
+
+    const gallery = document.createElement('div');
+    gallery.className = 'pid-sticker-photo-gallery';
+    gallery.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:18px 0 22px;';
+
+    item.detail.forEach(photoData => {
+      const figure = document.createElement('figure');
+      figure.style.cssText = 'margin:0;text-align:center;';
+
+      const photo = document.createElement('img');
+      photo.loading = 'lazy';
+      photo.decoding = 'async';
+      photo.src = photoData.src;
+      photo.alt = photoData.label;
+      photo.style.cssText = 'display:block;width:100%;height:250px;object-fit:contain;object-position:center;background:#fff;margin:0 auto;';
+
+      const caption = document.createElement('figcaption');
+      caption.textContent = photoData.label;
+      caption.style.cssText = 'margin-top:6px;color:#4b146f;font-weight:800;line-height:1.25;';
+
+      figure.append(photo, caption);
+      gallery.appendChild(figure);
+    });
+
+    details.insertBefore(note, details.firstChild);
+    details.insertBefore(gallery, note.nextSibling);
+  });
+
   // PID16 and PID17: use the correct photographed covers and keep every picture
   // in both the main ads and their expanded descriptions the same displayed size.
   [
