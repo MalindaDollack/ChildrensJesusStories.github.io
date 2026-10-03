@@ -191,7 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // Run after the older store cleanup so those routines cannot overwrite these ISBN titles/subtitles.
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
-    const subtitle = "Jesus's birth through the eyes of Sarah the baby Sheep !";
+    const subtitle = "Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !";
+    const subtitleHtml = "Jesus's Birth through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !";
     const listings = {
       SESB1: {
         title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition."
@@ -254,8 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (heading) {
         const subtitleLine = document.createElement('p');
         subtitleLine.className = 'isbn-product-subtitle';
-        subtitleLine.textContent = subtitle;
-        subtitleLine.style.cssText = 'font-weight:800;color:#4b146f;margin:4px 0 8px;line-height:1.3;';
+        subtitleLine.innerHTML = 'Subtitle: ' + subtitleHtml;
+        subtitleLine.style.cssText = 'font-weight:400;color:#00008B;margin:4px 0 8px;line-height:1.3;';
         heading.insertAdjacentElement('afterend', subtitleLine);
       }
 
@@ -272,9 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
       titleLine.appendChild(titleStrong);
 
       const descriptionSubtitle = document.createElement('p');
-      const subtitleStrong = document.createElement('strong');
-      subtitleStrong.textContent = subtitle;
-      descriptionSubtitle.appendChild(subtitleStrong);
+      descriptionSubtitle.innerHTML = 'Subtitle: ' + subtitleHtml;
+      descriptionSubtitle.style.cssText = 'font-weight:400;color:#00008B;line-height:1.3;';
 
       descriptionTitle.append(titleLine, descriptionSubtitle);
 
