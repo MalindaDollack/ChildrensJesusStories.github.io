@@ -188,94 +188,103 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ISBN-matching Sarah book listing wording — October 2026.
-// This is intentionally a separate listener so it runs after the existing store enhancements.
+// Run after the older store cleanup so those routines cannot overwrite these ISBN titles/subtitles.
 document.addEventListener('DOMContentLoaded', () => {
-  const subtitle = "Jesus's birth through the eyes of Sarah the baby sheep !";
-  const listings = {
-    SESB1: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition."
-    },
-    PID8: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition."
-    },
-    PID7: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition."
-    },
-    PID11: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition.",
-      suffix: " Shipping Included"
-    },
-    PID16: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Saddle Book Regular 20 lb Paper Edition."
-    },
-    PID17: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV)Color Saddle Book Regular 28 lb Paper Edition."
-    },
-    PID10: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Soft Cover Book Edition."
-    },
-    PID13: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition."
-    },
-    PID9: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Fully Laminated Soft Cover Edition."
-    },
-    PID12: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition."
-    },
-    DID3: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Standard E-Book Edition."
-    },
-    DID4: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Flip E-Book Edition."
-    },
-    PID14: {
-      title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition.",
-      suffix: " Pick up at Local Staples"
-    }
-  };
+  setTimeout(() => {
+    const subtitle = "Jesus's birth through the eyes of Sarah the baby sheep !";
+    const listings = {
+      SESB1: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition."
+      },
+      PID8: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition."
+      },
+      PID7: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition."
+      },
+      PID11: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition.",
+        suffix: " Shipping Included"
+      },
+      PID16: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Saddle Book Regular 20 lb Paper Edition."
+      },
+      PID17: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV)Color Saddle Book Regular 28 lb Paper Edition."
+      },
+      PID10: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Soft Cover Book Edition."
+      },
+      PID13: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition."
+      },
+      PID9: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Fully Laminated Soft Cover Edition."
+      },
+      PID12: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition."
+      },
+      DID3: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Standard E-Book Edition."
+      },
+      DID4: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Flip E-Book Edition."
+      },
+      PID14: {
+        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition.",
+        suffix: " Pick up at Local Staples"
+      }
+    };
 
-  const allCards = [...document.querySelectorAll('#store .store-card')];
-  const escapeForRegex = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const allCards = [...document.querySelectorAll('#store .store-card')];
+    const escapeForRegex = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-  Object.entries(listings).forEach(([code, info]) => {
-    const card = document.getElementById(`store-${code}`) || allCards.find(candidate => {
-      const heading = candidate.querySelector('h3');
-      return heading && new RegExp('^\\s*' + escapeForRegex(code) + '\\s*(?:—|-)','i').test(heading.textContent);
+    Object.entries(listings).forEach(([code, info]) => {
+      const card = document.getElementById(`store-${code}`) || allCards.find(candidate => {
+        const heading = candidate.querySelector('h3');
+        return heading && new RegExp('^\\s*' + escapeForRegex(code) + '\\s*(?:—|-)','i').test(heading.textContent);
+      });
+      if (!card) return;
+
+      const displayTitle = info.title + (info.suffix || '');
+      const heading = card.querySelector('h3');
+      if (heading) heading.textContent = `${code} — ${displayTitle}`;
+
+      card.querySelectorAll('.isbn-product-subtitle').forEach(el => el.remove());
+      if (heading) {
+        const subtitleLine = document.createElement('p');
+        subtitleLine.className = 'isbn-product-subtitle';
+        subtitleLine.textContent = subtitle;
+        subtitleLine.style.cssText = 'font-weight:800;color:#4b146f;margin:4px 0 8px;line-height:1.3;';
+        heading.insertAdjacentElement('afterend', subtitleLine);
+      }
+
+      const details = card.querySelector('.store-details');
+      if (!details) return;
+      details.querySelectorAll('.isbn-title-description').forEach(el => el.remove());
+
+      const descriptionTitle = document.createElement('div');
+      descriptionTitle.className = 'isbn-title-description';
+
+      const titleLine = document.createElement('p');
+      const titleStrong = document.createElement('strong');
+      titleStrong.textContent = displayTitle;
+      titleLine.appendChild(titleStrong);
+
+      const descriptionSubtitle = document.createElement('p');
+      const subtitleStrong = document.createElement('strong');
+      subtitleStrong.textContent = subtitle;
+      descriptionSubtitle.appendChild(subtitleStrong);
+
+      descriptionTitle.append(titleLine, descriptionSubtitle);
+
+      if (code === 'PID11' || code === 'PID14') {
+        const noteEnd = [...details.childNodes].find(node => node.nodeType === Node.COMMENT_NODE && /PID-STAPLES-NOTE-END/.test(node.nodeValue || ''));
+        if (noteEnd) details.insertBefore(descriptionTitle, noteEnd.nextSibling);
+        else details.insertBefore(descriptionTitle, details.firstChild);
+      } else {
+        details.insertBefore(descriptionTitle, details.firstChild);
+      }
     });
-    if (!card) return;
-
-    const displayTitle = info.title + (info.suffix || '');
-    const heading = card.querySelector('h3');
-    if (heading) heading.textContent = `${code} — ${displayTitle}`;
-
-    card.querySelectorAll('.isbn-product-subtitle').forEach(el => el.remove());
-    if (heading) {
-      const subtitleLine = document.createElement('p');
-      subtitleLine.className = 'isbn-product-subtitle';
-      subtitleLine.textContent = subtitle;
-      subtitleLine.style.cssText = 'font-weight:800;color:#4b146f;margin:4px 0 8px;line-height:1.3;';
-      heading.insertAdjacentElement('afterend', subtitleLine);
-    }
-
-    const details = card.querySelector('.store-details');
-    if (!details) return;
-    details.querySelectorAll('.isbn-title-description').forEach(el => el.remove());
-
-    const descriptionTitle = document.createElement('div');
-    descriptionTitle.className = 'isbn-title-description';
-
-    const titleLine = document.createElement('p');
-    const titleStrong = document.createElement('strong');
-    titleStrong.textContent = displayTitle;
-    titleLine.appendChild(titleStrong);
-
-    const descriptionSubtitle = document.createElement('p');
-    const subtitleStrong = document.createElement('strong');
-    subtitleStrong.textContent = subtitle;
-    descriptionSubtitle.appendChild(subtitleStrong);
-
-    descriptionTitle.append(titleLine, descriptionSubtitle);
-    details.insertBefore(descriptionTitle, details.firstChild);
-  });
+  }, 0);
 });
