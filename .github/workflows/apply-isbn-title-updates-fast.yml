@@ -1,0 +1,93 @@
+name: Apply ISBN Store Titles Fast
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-isbn-title-updates-fast.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Patch index.html through GitHub API
+        shell: python
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          import os, re, html, json, base64, urllib.request
+
+          token = os.environ['GH_TOKEN']
+          repo = os.environ['REPO']
+          api = f'https://api.github.com/repos/{repo}/contents/index.html'
+          headers = {
+              'Authorization': f'Bearer {token}',
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'isbn-title-updater'
+          }
+
+          req = urllib.request.Request(api, headers=headers)
+          with urllib.request.urlopen(req) as r:
+              data = json.load(r)
+
+          sha = data['sha']
+          text = base64.b64decode(data['content']).decode('utf-8')
+          subtitle = "Jesus's birth through the eyes of Sarah the baby sheep !"
+          listings = {
+              'SESB1': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition.",
+              'PID8': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition.",
+              'PID7': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition.",
+              'PID11': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition. Shipping Included",
+              'PID16': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Saddle Book Regular 20 lb Paper Edition.",
+              'PID17': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV)Color Saddle Book Regular 28 lb Paper Edition.",
+              'PID10': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Soft Cover Book Edition.",
+              'PID13': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition.",
+              'PID9': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Fully Laminated Soft Cover Edition.",
+              'PID12': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition.",
+              'DID3': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Standard E-Book Edition.",
+              'DID4': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Flip E-Book Edition.",
+              'PID14': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition. Pick up at Local Staples",
+          }
+
+          text = re.sub(r'\n?<p class="isbn-product-subtitle">.*?</p>', '', text, flags=re.S)
+          text = re.sub(r'\n?<div class="isbn-title-description">.*?</div>', '', text, flags=re.S)
+
+          for code, display in listings.items():
+              safe_display = html.escape(display, quote=False)
+              safe_subtitle = html.escape(subtitle, quote=False)
+              heading_pattern = re.compile(r'<h3([^>]*)>\s*' + re.escape(code) + r'\s*—\s*.*?</h3>', re.S)
+              heading_replacement = f'<h3\\1>{code} — {safe_display}</h3>\n<p class="isbn-product-subtitle"><strong>{safe_subtitle}</strong></p>'
+              text, count = heading_pattern.subn(heading_replacement, text, count=1)
+              if count != 1:
+                  raise SystemExit(f'Heading update failed for {code}: {count}')
+
+              article_pattern = re.compile(r'(<article\b[^>]*>.*?<h3[^>]*>\s*' + re.escape(code) + r'\s*—.*?</h3>.*?</article>)', re.S)
+              m = article_pattern.search(text)
+              if not m:
+                  raise SystemExit(f'Article not found for {code}')
+              article = m.group(1)
+              block = '<div class="isbn-title-description"><p><strong>' + safe_display + '</strong></p><p><strong>' + safe_subtitle + '</strong></p></div>\n'
+              if code in {'PID11','PID14'} and '<!-- PID-STAPLES-NOTE-END -->' in article:
+                  article = article.replace('<!-- PID-STAPLES-NOTE-END -->', '<!-- PID-STAPLES-NOTE-END -->\n' + block, 1)
+              else:
+                  marker = '<div class="store-details" hidden>'
+                  if marker not in article:
+                      raise SystemExit(f'Store details marker missing for {code}')
+                  article = article.replace(marker, marker + '\n' + block, 1)
+              text = text[:m.start(1)] + article + text[m.end(1):]
+
+          payload = json.dumps({
+              'message': 'Write ISBN-matching titles directly into live index.html',
+              'content': base64.b64encode(text.encode('utf-8')).decode('ascii'),
+              'sha': sha,
+              'branch': 'main'
+          }).encode('utf-8')
+          put = urllib.request.Request(api, data=payload, headers=headers, method='PUT')
+          with urllib.request.urlopen(put) as r:
+              result = json.load(r)
+          print(result['commit']['sha'])
