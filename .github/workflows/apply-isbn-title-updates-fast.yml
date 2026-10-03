@@ -1,4 +1,4 @@
-name: Restore Comb-Bound Cover Photos
+name: Remove Comb-Bound Product Pictures
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Put real Sarah cover under each colored comb binding
+      - name: Remove pictures from PID9 PID10 PID12 PID13
         shell: python
         run: |
           from pathlib import Path
@@ -22,33 +22,8 @@ jobs:
 
           path = Path('index.html')
           text = path.read_text(encoding='utf-8')
-
-          colors = {
-              'PID9':  '#8B0000',
-              'PID10': '#006400',
-              'PID12': '#00008B',
-              'PID13': '#B8860B',
-          }
-          cover = 'web-images/sarah%20book%20cover%20for%20library.webp?v=20261003j'
+          targets = {'PID9', 'PID10', 'PID12', 'PID13'}
           article_re = re.compile(r'<article\b[^>]*>.*?</article>', re.S)
-
-          def make_gallery(code):
-              color = colors[code]
-              teeth = ''.join(
-                  f'<span style="position:absolute;left:7.8%;top:{6.1 + i*4.5:.1f}%;width:6.8%;height:1.6%;background:{color};border-radius:8px;z-index:3;"></span>'
-                  for i in range(20)
-              )
-              return (
-                  '<div class="product-gallery comb-bound-cover" '
-                  'style="position:relative;width:100%;max-width:420px;aspect-ratio:1/1;margin:0 auto;background:#fff;overflow:hidden;">'
-                  '<div style="position:absolute;left:10.5%;top:3.5%;width:85%;height:93%;background:#fff;border:4px solid #4b146f;border-radius:18px;box-sizing:border-box;z-index:1;"></div>'
-                  f'<img loading="lazy" decoding="async" src="{cover}" alt="{code} Sarah book cover" '
-                  'style="position:absolute;left:12%;top:5%;width:81.5%;height:90%;object-fit:contain;background:#fff;z-index:2;">'
-                  f'<div style="position:absolute;left:4.8%;top:4.8%;width:4.2%;height:90.2%;background:{color};border-radius:12px;z-index:3;"></div>'
-                  + teeth +
-                  f'<div style="position:absolute;left:0;right:0;bottom:0.3%;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;color:{color};z-index:4;">COMB-BINDING</div>'
-                  '</div>'
-              )
 
           def patch_article(match):
               article = match.group(0)
@@ -56,27 +31,37 @@ jobs:
               if not hm:
                   return article
               code = hm.group(1)
-              before_heading = article[:hm.start()]
-              after_heading = article[hm.start():]
-              gallery_start = before_heading.rfind('<div class="product-gallery')
-              if gallery_start != -1:
-                  before_heading = before_heading[:gallery_start]
-              else:
-                  image_start = before_heading.rfind('<img')
-                  if image_start != -1:
-                      before_heading = before_heading[:image_start]
-              return before_heading + make_gallery(code) + '\n' + after_heading
+              if code not in targets:
+                  return article
+
+              opening = re.match(r'<article\b[^>]*>', article, re.S).group(0)
+              rest = article[hm.start():]
+
+              # Remove any remaining image tags anywhere in these four ads.
+              rest = re.sub(r'<img\b[^>]*>', '', rest, flags=re.S | re.I)
+              rest = re.sub(r'<picture\b[^>]*>.*?</picture>', '', rest, flags=re.S | re.I)
+
+              # Avoid a duplicate lower "COMING SOON" line; the replacement below is the visible placeholder.
+              rest = re.sub(r'<p\s+class="product-available">\s*COMING SOON\s*</p>', '', rest, count=1, flags=re.S | re.I)
+
+              coming = (
+                  '<div class="product-coming-soon" '
+                  'style="display:flex;align-items:center;justify-content:center;min-height:220px;'
+                  'background:#fff;color:#4b146f;font-family:Arial,Helvetica,sans-serif;'
+                  'font-size:32px;font-weight:700;text-align:center;">COMING SOON</div>\n'
+              )
+              return opening + '\n' + coming + rest
 
           new_text = article_re.sub(patch_article, text)
           if new_text == text:
-              raise SystemExit('No comb-bound product listings were changed.')
+              raise SystemExit('No targeted product ads were changed.')
           path.write_text(new_text, encoding='utf-8')
 
-      - name: Commit visible comb-bound covers
+      - name: Commit Coming Soon placeholders
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Harden comb-bound Sarah cover image URLs"
+          git commit -m "Remove pictures from four comb-bound ads and show Coming Soon"
           git push
