@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Run after the older store cleanup so those routines cannot overwrite these ISBN titles/subtitles.
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
-    const subtitle = "Jesus's birth through the eyes of Sarah the baby sheep !";
+    const subtitle = "Jesus's birth through the eyes of Sarah the baby Sheep !";
     const listings = {
       SESB1: {
         title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition."
