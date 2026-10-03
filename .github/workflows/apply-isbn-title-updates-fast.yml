@@ -24,12 +24,12 @@ jobs:
           text = path.read_text(encoding='utf-8')
 
           pictures = {
-              'PID9':  'web-images/pid9-comb-bound-dark-red.svg?v=20261003d',
-              'PID10': 'web-images/pid10-comb-bound-dark-green.svg?v=20261003d',
-              'PID12': 'web-images/pid12-comb-bound-dark-blue.svg?v=20261003d',
-              'PID13': 'web-images/pid13-comb-bound-dark-yellow.svg?v=20261003d',
+              'PID9':  'web-images/pid9-comb-bound-dark-red.svg?v=20261003e',
+              'PID10': 'web-images/pid10-comb-bound-dark-green.svg?v=20261003e',
+              'PID12': 'web-images/pid12-comb-bound-dark-blue.svg?v=20261003e',
+              'PID13': 'web-images/pid13-comb-bound-dark-yellow.svg?v=20261003e',
           }
-          cover = 'web-images/sarah-coil-bound-cover-photo.webp?v=20261003d'
+          cover = 'web-images/sarah-coil-bound-cover-photo.webp?v=20261003e'
 
           article_re = re.compile(r'<article\b[^>]*>.*?</article>', re.S)
 
@@ -50,7 +50,6 @@ jobs:
                   '</div>'
               )
 
-              # Remove the current main picture/gallery before the product heading, then add the two-picture gallery.
               before_heading = article[:hm.start()]
               after_heading = article[hm.start():]
               before_heading = re.sub(
