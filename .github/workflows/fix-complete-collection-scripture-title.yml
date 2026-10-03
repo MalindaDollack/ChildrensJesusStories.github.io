@@ -13,48 +13,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Correct Complete Collection scripture/title display only
+      - name: Correct Complete Collection scripture title display only
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-
-          old_book1 = '{name:"Sweet-Pea", title:"Sweet-Pea the baby Sparrow: Don\'t Be Afraid! God Cares! Even the Feathers on your head are all numbered. Matthew 10:29-31 (NIV)", subtitle:"God\'s Message of Caring told through the Eyes of Sweet-Pea the Baby Sparrow!", ref:"Matthew 10:29–31 NIV", img:"web-images/sweet-pea book cover for library.webp?v=1", release:"Coming November 1, 2026"}'
-          new_book1 = '{name:"Sweet-Pea", title:"Sweet-Pea the baby Sparrow: Don\'t Be Afraid! God Cares! Even the Feathers on your head are all numbered. Matthew 10:29-31 (NIV)", subtitle:"God\'s Message of Caring told through the Eyes of Sweet-Pea the Baby Sparrow!", ref:"Matthew 10:29–31 NIV", img:"web-images/sweet-pea book cover for library.webp?v=1", release:"Coming November 1, 2026"}'
-
           old_book2 = '{name:"Sarah", title:"Sarah the Baby Sheep: My Shepherd, Jesus\'s Birth. The Christmas Story. Luke 1-20 (NIV)", subtitle:"Jesus\'s birth through the eyes of Sarah the baby sheep !", ref:"Luke 2:1–20 NIV", img:"web-images/sarah book cover for library.webp?v=1", bookmark:"web-images/sarah-new.webp?v=1", release:"Available Now! • December 1, 2026", available:true}'
           new_book2 = '{name:"Sarah", title:"Sarah the Baby Sheep: My Shepherd, Jesus\'s Birth. The Christmas Story. Luke 2: 1-20 (NIV)", subtitle:"Jesus\'s birth through the eyes of Sarah the baby sheep !", ref:"Luke 2:1–20 NIV", img:"web-images/sarah book cover for library.webp?v=1", bookmark:"web-images/sarah-new.webp?v=1", release:"Available Now! • December 1, 2026", available:true}'
-
-          if old_book1 not in s:
-              raise SystemExit('Book 1 record not found exactly once')
-          if old_book2 not in s:
-              raise SystemExit('Book 2 record not found exactly once')
-          s = s.replace(old_book1, new_book1, 1)
+          if s.count(old_book2) != 1:
+              raise SystemExit(f'Book 2: expected 1 exact match, found {s.count(old_book2)}')
           s = s.replace(old_book2, new_book2, 1)
-
           old_render = 'card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${b.title}</h3>${b.subtitle?`<p class="reference">Subtitle: ${b.subtitle}</p>`:``}<p class="reference">${b.ref}</p><p class="reference"><strong>${b.release}</strong></p>${seoDescription}${availability}`;'
-          new_render = '''const shelfRef=b.ref.replace(/–/g,'-').replace(/\\s+NIV$/,' (NIV)');
-  const shelfTitle=/\\(NIV\\)\\s*$/.test(b.title)?b.title:`${b.title} ${shelfRef}`;
-  card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${shelfTitle}</h3>${i<2&&b.subtitle?`<p class="reference" style="margin-top:16px">Subtitle: ${b.subtitle}</p>`:``}<p class="reference"><strong>${b.release}</strong></p>${seoDescription}${availability}`;'''
-
-          count = s.count(old_render)
-          if count != 1:
-              raise SystemExit(f'Shelf renderer: expected 1 exact match, found {count}')
+          new_render = 'const shelfRef=b.ref.replace(/–/g,\'-\').replace(/\\s+NIV$/,\' (NIV)\').replace(/(\\d+)\\s+(\\d+(?:-\\d+)?)/,\'$1:$2\'); const shelfTitle=/\\(NIV\\)\\s*$/.test(b.title)?b.title:`${b.title} ${shelfRef}`; card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${shelfTitle}</h3>${i<2&&b.subtitle?`<p class="reference" style="margin-top:16px">Subtitle: ${b.subtitle}</p>`:``}<p class="reference"><strong>${b.release}</strong></p>${seoDescription}${availability}`;'
+          if s.count(old_render) != 1:
+              raise SystemExit(f'Shelf renderer: expected 1 exact match, found {s.count(old_render)}')
           s = s.replace(old_render, new_render, 1)
-
           p.write_text(s, encoding='utf-8')
           PY
-      - name: Commit Complete Collection scripture/title correction
+      - name: Commit Complete Collection scripture correction
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Correct Complete Collection scripture titles and subtitles"
+          git commit -m "Correct Complete Collection scripture titles and subtitle spacing"
           git push
-
-# triggered after workflow existed on main
