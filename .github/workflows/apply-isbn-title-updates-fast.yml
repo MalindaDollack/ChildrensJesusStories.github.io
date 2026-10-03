@@ -1,4 +1,4 @@
-name: Apply ISBN Store Titles Fast
+name: Apply Store Titles And Subtitles
 
 on:
   push:
@@ -13,32 +13,20 @@ jobs:
   update-index:
     runs-on: ubuntu-latest
     steps:
-      - name: Patch index.html through GitHub API
+      - uses: actions/checkout@v4
+      - name: Fix store titles and subtitles
         shell: python
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
         run: |
-          import os, re, html, json, base64, urllib.request
+          from pathlib import Path
+          import re
+          import html
 
-          token = os.environ['GH_TOKEN']
-          repo = os.environ['REPO']
-          api = f'https://api.github.com/repos/{repo}/contents/index.html'
-          headers = {
-              'Authorization': f'Bearer {token}',
-              'Accept': 'application/vnd.github+json',
-              'X-GitHub-Api-Version': '2022-11-28',
-              'User-Agent': 'isbn-title-updater'
-          }
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
 
-          req = urllib.request.Request(api, headers=headers)
-          with urllib.request.urlopen(req) as r:
-              data = json.load(r)
+          subtitle = "Subtitle: Jesus's birth through the eyes of Sarah the baby sheep !"
 
-          sha = data['sha']
-          text = base64.b64decode(data['content']).decode('utf-8')
-          subtitle = "Jesus's birth through the eyes of Sarah the baby sheep !"
-          listings = {
+          titles = {
               'SESB1': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition.",
               'PID8': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition.",
               'PID7': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition.",
@@ -54,40 +42,93 @@ jobs:
               'PID14': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition. Pick up at Local Staples",
           }
 
-          text = re.sub(r'\n?<p class="isbn-product-subtitle">.*?</p>', '', text, flags=re.S)
-          text = re.sub(r'\n?<div class="isbn-title-description">.*?</div>', '', text, flags=re.S)
+          product_code = re.compile(r'^\s*(SESB\d+|PID\d+|DID\d+)\s*—\s*', re.S)
+          article_re = re.compile(r'<article\b[^>]*>.*?</article>', re.S)
 
-          for code, display in listings.items():
-              safe_display = html.escape(display, quote=False)
-              safe_subtitle = html.escape(subtitle, quote=False)
-              heading_pattern = re.compile(r'<h3([^>]*)>\s*' + re.escape(code) + r'\s*—\s*.*?</h3>', re.S)
-              heading_replacement = f'<h3\\1>{code} — {safe_display}</h3>\n<p class="isbn-product-subtitle"><strong>{safe_subtitle}</strong></p>'
-              text, count = heading_pattern.subn(heading_replacement, text, count=1)
-              if count != 1:
-                  raise SystemExit(f'Heading update failed for {code}: {count}')
+          found_codes = []
 
-              article_pattern = re.compile(r'(<article\b[^>]*>.*?<h3[^>]*>\s*' + re.escape(code) + r'\s*—.*?</h3>.*?</article>)', re.S)
-              m = article_pattern.search(text)
-              if not m:
-                  raise SystemExit(f'Article not found for {code}')
-              article = m.group(1)
-              block = '<div class="isbn-title-description"><p><strong>' + safe_display + '</strong></p><p><strong>' + safe_subtitle + '</strong></p></div>\n'
-              if code in {'PID11','PID14'} and '<!-- PID-STAPLES-NOTE-END -->' in article:
-                  article = article.replace('<!-- PID-STAPLES-NOTE-END -->', '<!-- PID-STAPLES-NOTE-END -->\n' + block, 1)
-              else:
-                  marker = '<div class="store-details" hidden>'
-                  if marker not in article:
-                      raise SystemExit(f'Store details marker missing for {code}')
-                  article = article.replace(marker, marker + '\n' + block, 1)
-              text = text[:m.start(1)] + article + text[m.end(1):]
+          def patch_article(match):
+              article = match.group(0)
+              hm = re.search(r'<h3([^>]*)>(.*?)</h3>', article, flags=re.S)
+              if not hm:
+                  return article
 
-          payload = json.dumps({
-              'message': 'Write ISBN-matching titles directly into live index.html',
-              'content': base64.b64encode(text.encode('utf-8')).decode('ascii'),
-              'sha': sha,
-              'branch': 'main'
-          }).encode('utf-8')
-          put = urllib.request.Request(api, data=payload, headers=headers, method='PUT')
-          with urllib.request.urlopen(put) as r:
-              result = json.load(r)
-          print(result['commit']['sha'])
+              plain_heading = re.sub(r'<[^>]+>', '', hm.group(2))
+              cm = product_code.match(plain_heading)
+              if not cm:
+                  return article
+
+              code = cm.group(1)
+              found_codes.append(code)
+              attrs = hm.group(1)
+
+              if code in titles:
+                  safe_title = html.escape(titles[code], quote=False)
+                  new_heading = f'<h3{attrs}>{code} — {safe_title}</h3>'
+                  article = article[:hm.start()] + new_heading + article[hm.end():]
+
+              # Add one visible subtitle directly below the product heading.
+              # Remove any previous generated subtitle there first.
+              heading_pattern = re.compile(
+                  r'(<h3[^>]*>\s*' + re.escape(code) + r'\s*—.*?</h3>)'
+                  r'\s*(?:<p class="isbn-product-subtitle">.*?</p>\s*)*',
+                  re.S
+              )
+              article = heading_pattern.sub(
+                  r'\1\n<p class="isbn-product-subtitle">' + html.escape(subtitle, quote=False) + '</p>\n',
+                  article,
+                  count=1
+              )
+
+              # For the 13 ISBN-title listings, keep the same title/subtitle inside
+              # the hidden description as well. The title stays bold; subtitle is regular.
+              if code in titles:
+                  safe_title = html.escape(titles[code], quote=False)
+                  block = (
+                      '<div class="isbn-title-description">'
+                      f'<p><strong>{safe_title}</strong></p>'
+                      f'<p>{html.escape(subtitle, quote=False)}</p>'
+                      '</div>'
+                  )
+
+                  if re.search(r'<div class="isbn-title-description">.*?</div>', article, flags=re.S):
+                      article = re.sub(
+                          r'<div class="isbn-title-description">.*?</div>',
+                          block,
+                          article,
+                          count=1,
+                          flags=re.S
+                      )
+                  elif code in {'PID11', 'PID14'} and '<!-- PID-STAPLES-NOTE-END -->' in article:
+                      article = article.replace(
+                          '<!-- PID-STAPLES-NOTE-END -->',
+                          '<!-- PID-STAPLES-NOTE-END -->\n' + block,
+                          1
+                      )
+                  elif '<div class="store-details" hidden>' in article:
+                      article = article.replace(
+                          '<div class="store-details" hidden>',
+                          '<div class="store-details" hidden>\n' + block,
+                          1
+                      )
+
+              return article
+
+          text = article_re.sub(patch_article, text)
+
+          missing_titles = [code for code in titles if code not in found_codes]
+          if missing_titles:
+              raise SystemExit('Missing expected product headings: ' + ', '.join(missing_titles))
+
+          path.write_text(text, encoding='utf-8')
+          print('Product subtitles normalized for:', ', '.join(found_codes))
+          print('ISBN titles updated for:', ', '.join(titles))
+
+      - name: Commit corrected store page
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Correct store titles and add regular subtitles"
+          git push
