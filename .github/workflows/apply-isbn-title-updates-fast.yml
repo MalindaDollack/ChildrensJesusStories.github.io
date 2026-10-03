@@ -29,7 +29,7 @@ jobs:
               'PID12': '#00008B',
               'PID13': '#B8860B',
           }
-          cover = 'web-images/sarah book cover for library.webp?v=20261003i'
+          cover = 'web-images/sarah%20book%20cover%20for%20library.webp?v=20261003j'
           article_re = re.compile(r'<article\b[^>]*>.*?</article>', re.S)
 
           def make_gallery(code):
@@ -58,13 +58,13 @@ jobs:
               code = hm.group(1)
               before_heading = article[:hm.start()]
               after_heading = article[hm.start():]
-              before_heading = re.sub(
-                  r'(?:<div class="product-gallery[^>]*>.*?</div>|<img\b[^>]*>)\s*$',
-                  '',
-                  before_heading,
-                  count=1,
-                  flags=re.S
-              )
+              gallery_start = before_heading.rfind('<div class="product-gallery')
+              if gallery_start != -1:
+                  before_heading = before_heading[:gallery_start]
+              else:
+                  image_start = before_heading.rfind('<img')
+                  if image_start != -1:
+                      before_heading = before_heading[:image_start]
               return before_heading + make_gallery(code) + '\n' + after_heading
 
           new_text = article_re.sub(patch_article, text)
@@ -78,5 +78,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Fix blank comb-bound cover pictures"
+          git commit -m "Harden comb-bound Sarah cover image URLs"
           git push
