@@ -60,6 +60,30 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!store) return;
 
   const cards = [...store.querySelectorAll('.store-card')];
+
+  // DID7 - BASIC is the only language offered for this manual.
+  const did7 = document.getElementById('store-DID7');
+  if (did7) {
+    const did7Price = did7.querySelector('.price');
+    if (did7Price) did7Price.textContent = 'C$0.77';
+
+    [...did7.children].forEach(function(child) {
+      if (child.tagName === 'P' && /Many other programming-language manuals are also available/i.test(child.textContent || '')) {
+        child.remove();
+      }
+    });
+
+    const did7Details = did7.querySelector('.store-details');
+    if (did7Details) {
+      did7Details.innerHTML = `
+<p>This manual is 77 pages in length.</p>
+<p>Allow 24 hours for processing.</p>
+<p>This manual is written for a true beginner. You do not need to know any programming before you start. We will move one small step at a time, type short programs, run them, make mistakes, fix them, and gradually build a complete Baby Sheep game. The examples use Commodore BASIC V2 in the style of the Commodore VIC-20. That means line numbers, simple commands, short variable names, and programs that can be understood one line at a time. The VIC-20 normally shows 22 columns by 23 rows, so many of our screen messages are deliberately short. The manual also includes the exact phrases you asked to learn how to code: "JESUS LOVES YOU !" and "I LOVE YOU". Near the end, those lessons become part of a Baby Sheep game whose final message is always "JESUS LOVES YOU !". Beginner Promise: You are allowed to make mistakes. A programming error is simply information telling you what to fix next.</p>
+<p>BASIC is the only language this manual is written in.</p>
+<div class="store-order"><a href="mailto:berachahdirector@gmail.com">Buy Now</a></div>`;
+    }
+  }
+
   const findCard = pattern => cards.find(card => pattern.test(card.querySelector('h3')?.textContent.trim() || ''));
 
   function addAvailable(card) {
