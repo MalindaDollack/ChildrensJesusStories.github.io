@@ -1,0 +1,74 @@
+name: Fix PID16 Premium Saddle Book Price
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-pid16-price-12.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-price:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set PID16 price to C$12.00 everywhere in its listing
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          pattern = re.compile(r'(<article\b[^>]*id="store-PID16"[^>]*>.*?</article>)', re.S)
+          m = pattern.search(text)
+          if not m:
+              raise SystemExit('PID16 article not found')
+
+          article = m.group(1)
+
+          article, count = re.subn(
+              r'<p class="price">.*?</p>',
+              '<p class="price">C$12.00</p>',
+              article,
+              count=1,
+              flags=re.S
+          )
+          if count != 1:
+              raise SystemExit(f'PID16 main price update failed: {count}')
+
+          # Replace any old PID16 price wording that may already exist inside the expanded description.
+          article = article.replace('C$18.00', 'C$12.00')
+          article = article.replace('$18.00', '$12.00')
+
+          # Ensure the expanded description explicitly shows the new price.
+          if 'Price: C$12.00' not in article:
+              marker = '</div>'
+              title_block = article.find('<div class="isbn-title-description">')
+              if title_block != -1:
+                  marker_pos = article.find(marker, title_block)
+                  if marker_pos != -1:
+                      marker_pos += len(marker)
+                      article = article[:marker_pos] + '\n<p><strong>Price: C$12.00</strong></p>' + article[marker_pos:]
+                  else:
+                      raise SystemExit('PID16 title description closing div not found')
+              else:
+                  details_marker = '<div class="store-details" hidden>'
+                  if details_marker not in article:
+                      raise SystemExit('PID16 store-details marker not found')
+                  article = article.replace(details_marker, details_marker + '\n<p><strong>Price: C$12.00</strong></p>', 1)
+
+          text = text[:m.start(1)] + article + text[m.end(1):]
+          path.write_text(text, encoding='utf-8')
+
+      - name: Commit corrected PID16 price
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Set PID16 premium saddle book price to C$12.00"
+          git push
