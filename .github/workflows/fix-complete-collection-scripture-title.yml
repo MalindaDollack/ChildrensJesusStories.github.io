@@ -56,3 +56,5 @@ jobs:
           git diff --cached --quiet && exit 0
           git commit -m "Correct Complete Collection scripture titles and subtitles"
           git push
+
+# triggered after workflow existed on main
