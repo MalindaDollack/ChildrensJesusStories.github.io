@@ -191,50 +191,22 @@ document.addEventListener('DOMContentLoaded', () => {
 // Run after the older store cleanup so those routines cannot overwrite these ISBN titles/subtitles.
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
-    const subtitle = "Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !";
-    const subtitleHtml = "Jesus's Birth through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !";
+    const subtitle = "Jesus\'s Birth through the BIG BLUE EYES of Sarah the Baby Sheep !";
+    const subtitleHtml = "Jesus\'s Birth through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !";
     const listings = {
-      SESB1: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition."
-      },
-      PID8: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition."
-      },
-      PID7: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition."
-      },
-      PID11: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition.",
-        suffix: " Shipping Included"
-      },
-      PID16: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Saddle Book Regular 20 lb Paper Edition."
-      },
-      PID17: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV)Color Saddle Book Regular 28 lb Paper Edition."
-      },
-      PID10: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Soft Cover Book Edition."
-      },
-      PID13: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition."
-      },
-      PID9: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Fully Laminated Soft Cover Edition."
-      },
-      PID12: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition."
-      },
-      DID3: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Standard E-Book Edition."
-      },
-      DID4: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Flip E-Book Edition."
-      },
-      PID14: {
-        title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition.",
-        suffix: " Pick up at Local Staples"
-      }
+      SESB1: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition." },
+      PID8: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition." },
+      PID7: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition." },
+      PID11: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Staples Photo Book Edition. Shipping Included" },
+      PID16: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Saddle Book Regular 20 lb Paper Edition." },
+      PID17: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Saddle Book Regular 28 lb Paper Edition." },
+      PID10: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Soft Cover Book Edition." },
+      PID13: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition." },
+      PID9: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Fully Laminated Soft Cover Edition." },
+      PID12: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition." },
+      DID3: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Standard E-Book Edition." },
+      DID4: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Flip E-Book Edition." },
+      PID14: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Staples Photo Book Edition. Pick up at Local Staples" },
     };
 
     const allCards = [...document.querySelectorAll('#store .store-card')];
