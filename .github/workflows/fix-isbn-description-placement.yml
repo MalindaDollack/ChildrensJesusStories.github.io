@@ -1,0 +1,123 @@
+name: Fix ISBN Description Placement
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-isbn-description-placement.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Correct all 13 listing titles and description title blocks
+        shell: python
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          import os, re, html, json, base64, urllib.request
+
+          token = os.environ['GH_TOKEN']
+          repo = os.environ['REPO']
+          api = f'https://api.github.com/repos/{repo}/contents/index.html'
+          headers = {
+              'Authorization': f'Bearer {token}',
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'isbn-description-fixer'
+          }
+
+          with urllib.request.urlopen(urllib.request.Request(api, headers=headers)) as r:
+              data = json.load(r)
+
+          sha = data['sha']
+          text = base64.b64decode(data['content']).decode('utf-8')
+          subtitle = "Jesus's birth through the eyes of Sarah the baby sheep !"
+          listings = {
+              'SESB1': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition.",
+              'PID8': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition.",
+              'PID7': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition.",
+              'PID11': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition. Shipping Included",
+              'PID16': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Saddle Book Regular 20 lb Paper Edition.",
+              'PID17': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV)Color Saddle Book Regular 28 lb Paper Edition.",
+              'PID10': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Soft Cover Book Edition.",
+              'PID13': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition.",
+              'PID9': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Fully Laminated Soft Cover Edition.",
+              'PID12': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition.",
+              'DID3': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Standard E-Book Edition.",
+              'DID4': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Flip E-Book Edition.",
+              'PID14': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition. Pick up at Local Staples",
+          }
+
+          # Remove every generated copy before rebuilding each product card cleanly.
+          text = re.sub(r'\s*<p class="isbn-product-subtitle">.*?</p>', '', text, flags=re.S)
+          text = re.sub(r'\s*<div class="isbn-title-description">.*?</div>', '', text, flags=re.S)
+
+          for code, display in listings.items():
+              safe_display = html.escape(display, quote=False)
+              safe_subtitle = html.escape(subtitle, quote=False)
+
+              heading_re = re.compile(r'<h3([^>]*)>\s*' + re.escape(code) + r'\s*—\s*.*?</h3>', re.S)
+              hm = heading_re.search(text)
+              if not hm:
+                  raise SystemExit(f'Heading not found for {code}')
+
+              article_start = text.rfind('<article', 0, hm.start())
+              article_close = text.find('</article>', hm.end())
+              if article_start < 0 or article_close < 0:
+                  raise SystemExit(f'Article boundaries not found for {code}')
+              article_end = article_close + len('</article>')
+              card = text[article_start:article_end]
+
+              # Rewrite the visible heading exactly and add the common subtitle directly below it.
+              card, count = heading_re.subn(
+                  lambda m: f'<h3{m.group(1)}>{code} — {safe_display}</h3>',
+                  card,
+                  count=1
+              )
+              if count != 1:
+                  raise SystemExit(f'Heading rewrite failed inside card for {code}')
+              local_h = re.search(r'<h3[^>]*>\s*' + re.escape(code) + r'\s*—.*?</h3>', card, re.S)
+              subtitle_html = f'\n<p class="isbn-product-subtitle"><strong>{safe_subtitle}</strong></p>'
+              card = card[:local_h.end()] + subtitle_html + card[local_h.end():]
+
+              details_marker = '<div class="store-details" hidden>'
+              if details_marker not in card:
+                  raise SystemExit(f'Description area not found for {code}')
+
+              desc_html = (
+                  '<div class="isbn-title-description">'
+                  f'<p><strong>{safe_display}</strong></p>'
+                  f'<p><strong>{safe_subtitle}</strong></p>'
+                  '</div>\n'
+              )
+
+              if code in {'PID11', 'PID14'}:
+                  note_end = '<!-- PID-STAPLES-NOTE-END -->'
+                  if note_end not in card:
+                      raise SystemExit(f'Staples note marker missing for {code}')
+                  card = card.replace(note_end, note_end + '\n' + desc_html, 1)
+              else:
+                  card = card.replace(details_marker, details_marker + '\n' + desc_html, 1)
+
+              text = text[:article_start] + card + text[article_end:]
+
+          # Verify exactly one heading, one visible subtitle, and one description title block per product.
+          for code in listings:
+              if len(re.findall(r'<h3[^>]*>\s*' + re.escape(code) + r'\s*—', text)) < 1:
+                  raise SystemExit(f'Final heading verification failed for {code}')
+
+          payload = json.dumps({
+              'message': 'Correct ISBN titles and description placement for all 13 listings',
+              'content': base64.b64encode(text.encode('utf-8')).decode('ascii'),
+              'sha': sha,
+              'branch': 'main'
+          }).encode('utf-8')
+          req = urllib.request.Request(api, data=payload, headers=headers, method='PUT')
+          with urllib.request.urlopen(req) as r:
+              result = json.load(r)
+          print(result['commit']['sha'])
