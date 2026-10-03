@@ -646,7 +646,7 @@
 </article></div>
 </section>
 <h2 class="special-store-heading" id="digital-items-heading">Digital Items</h2>
-<p class="store-intro"><strong>No Refunds on Digital Items</strong></p>
+<p class="store-intro"><strong>Each Month a new set of 5 Digital Items will be Available.</strong><br><strong>No Refunds on Digital Items</strong></p>
 <div class="store-grid"><article class="store-card">
 <img loading="lazy" decoding="async" src="1%20bm%20corrected.png?v=3" alt="JESUS LOVES YOU ! Book Mark: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition">
 <h3>DID1 — JESUS LOVES YOU ! Book Mark: Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition</h3>
@@ -2856,7 +2856,7 @@ books.forEach((b,i)=>{
   const card=document.createElement('article');
   card.className='book-card';
   const media=b.img?`<img loading="lazy" decoding="async" src="${b.img}" alt="${b.title} book cover">`:`<div class="placeholder"><span>📖</span><b>${b.name}</b><small>Cover artwork coming soon</small></div>`;
-  const availability=b.available?`<div class="book-actions"><a class="soon physical-item-link" href="#store">21 Items Available</a></div>`:`<div class="book-actions"><button class="soon coming-soon-book" type="button">COMING SOON</button></div>`;
+  const availability=b.available?`<div class="book-actions"><a class="soon physical-item-link" href="#store">23 Items Available</a></div>`:`<div class="book-actions"><button class="soon coming-soon-book" type="button">COMING SOON</button></div>`;
   const seoDescription=b.available?`<p class="book-description">A joyful Christmas Bible story for kids about the birth of Jesus, the Nativity, and Luke 2, told through the eyes of Sarah the Baby Sheep.</p>`:``;
   const shelfRef=b.ref.replace(/–/g,'-').replace(/\s+NIV$/,' (NIV)').replace(/(\d+)\s+(\d+(?:-\d+)?)/,'$1:$2'); const shelfTitle=/\(NIV\)\s*$/.test(b.title)?b.title:`${b.title} ${shelfRef}`; card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${shelfTitle}</h3>${i<2&&b.subtitle?`<p class="reference" style="margin-top:16px">Subtitle: ${b.subtitle}</p>`:``}<p class="reference"><strong>${b.release}</strong></p>${seoDescription}${availability}`;
   const cover=card.querySelector('.cover-button');
