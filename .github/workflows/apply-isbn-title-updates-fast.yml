@@ -1,4 +1,4 @@
-name: Remove Comb-Bound Product Pictures
+name: Correct Sarah Luke Titles
 
 on:
   push:
@@ -10,58 +10,43 @@ permissions:
   contents: write
 
 jobs:
-  update-index:
+  correct-titles:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Remove pictures from PID9 PID10 PID12 PID13
+      - name: Correct Luke reference everywhere Sarah product titles are controlled
         shell: python
         run: |
           from pathlib import Path
-          import re
 
-          path = Path('index.html')
-          text = path.read_text(encoding='utf-8')
-          targets = {'PID9', 'PID10', 'PID12', 'PID13'}
-          article_re = re.compile(r'<article\b[^>]*>.*?</article>', re.S)
+          files = [
+              Path('index.html'),
+              Path('script-enhancements.js'),
+              Path('.github/workflows/apply-isbn-title-updates.yml'),
+              Path('.github/workflows/fix-isbn-description-placement.yml'),
+          ]
 
-          def patch_article(match):
-              article = match.group(0)
-              hm = re.search(r'<h3[^>]*>\s*(PID9|PID10|PID12|PID13)\s*—', article, re.S)
-              if not hm:
-                  return article
-              code = hm.group(1)
-              if code not in targets:
-                  return article
+          changed = []
+          for path in files:
+              text = path.read_text(encoding='utf-8')
+              new = text.replace('Luke 1-20 (NIV)', 'Luke 2: 1-20 (NIV)')
+              new = new.replace('Luke 2:1-20 (NIV)', 'Luke 2: 1-20 (NIV)')
+              new = new.replace('Luke 2: 1-20(NIV)', 'Luke 2: 1-20 (NIV)')
+              new = new.replace('Luke 2: 1-20 (NIV)Color', 'Luke 2: 1-20 (NIV) Color')
+              if new != text:
+                  path.write_text(new, encoding='utf-8')
+                  changed.append(str(path))
 
-              opening = re.match(r'<article\b[^>]*>', article, re.S).group(0)
-              rest = article[hm.start():]
+          if not changed:
+              raise SystemExit('No incorrect Luke references found.')
 
-              # Remove any remaining image tags anywhere in these four ads.
-              rest = re.sub(r'<img\b[^>]*>', '', rest, flags=re.S | re.I)
-              rest = re.sub(r'<picture\b[^>]*>.*?</picture>', '', rest, flags=re.S | re.I)
+          print('Corrected: ' + ', '.join(changed))
 
-              # Avoid a duplicate lower "COMING SOON" line; the replacement below is the visible placeholder.
-              rest = re.sub(r'<p\s+class="product-available">\s*COMING SOON\s*</p>', '', rest, count=1, flags=re.S | re.I)
-
-              coming = (
-                  '<div class="product-coming-soon" '
-                  'style="display:flex;align-items:center;justify-content:center;min-height:220px;'
-                  'background:#fff;color:#4b146f;font-family:Arial,Helvetica,sans-serif;'
-                  'font-size:32px;font-weight:700;text-align:center;">COMING SOON</div>\n'
-              )
-              return opening + '\n' + coming + rest
-
-          new_text = article_re.sub(patch_article, text)
-          if new_text == text:
-              raise SystemExit('No targeted product ads were changed.')
-          path.write_text(new_text, encoding='utf-8')
-
-      - name: Commit Coming Soon placeholders
+      - name: Commit exact Luke 2 title wording
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
+          git add index.html script-enhancements.js .github/workflows/apply-isbn-title-updates.yml .github/workflows/fix-isbn-description-placement.yml
           git diff --cached --quiet && exit 0
-          git commit -m "Remove pictures from four comb-bound ads and show Coming Soon"
+          git commit -m "Use exact Luke 2: 1-20 (NIV) wording in Sarah titles"
           git push
