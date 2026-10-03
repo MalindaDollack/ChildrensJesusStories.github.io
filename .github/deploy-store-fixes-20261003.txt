@@ -1,0 +1,1 @@
+Deploy corrected store titles and regular subtitles to the live website.
