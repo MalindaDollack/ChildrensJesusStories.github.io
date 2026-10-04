@@ -1,4 +1,4 @@
-name: Apply Exact Sarah Product Wording
+name: Keep Exact Sarah Product Wording
 
 on:
   push:
@@ -10,116 +10,63 @@ permissions:
   contents: write
 
 jobs:
-  update-wording:
+  update-email-wording:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Apply exact approved Sarah titles subtitles and description titles
+      - name: Add exact Sarah subtitle to prepared order emails
         shell: python
         run: |
           from pathlib import Path
-          import re
 
-          titles = {
-              'SESB1': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition.",
-              'PID8': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition.",
-              'PID7': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition.",
-              'PID11': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Staples Photo Book Edition. Shipping Included",
-              'PID16': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Saddle Book Regular 20 lb Paper Edition.",
-              'PID17': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Saddle Book Regular 28 lb Paper Edition.",
-              'PID10': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Soft Cover Book Edition.",
-              'PID13': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition.",
-              'PID9': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Fully Laminated Soft Cover Edition.",
-              'PID12': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition.",
-              'DID3': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Standard E-Book Edition.",
-              'DID4': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Flip E-Book Edition.",
-              'PID14': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Staples Photo Book Edition. Pick up at Local Staples",
-          }
+          path = Path('script.js')
+          text = path.read_text(encoding='utf-8')
 
-          subtitle_html = "Subtitle: Jesus's Birth through the <strong class=\"big-blue-eyes\">BIG BLUE EYES</strong> of Sarah the Baby Sheep !"
+          subtitle = "Subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !"
+          if subtitle in text:
+              print('Exact Sarah subtitle is already present in prepared-email logic.')
+          else:
+              old = """    var lines = [
+      'Dear Malinda,',
+      '',
+      'I would like to order: ' + emailProductTitle,
+      '',
+      'My name:',
+      'My email address:'
+    ];
 
-          # 1) Update the actual page source. This is also what script.js uses to build the prepared order-email titles.
-          index_path = Path('index.html')
-          text = index_path.read_text(encoding='utf-8')
-          text = text.replace('Luke 1-20 (NIV)', 'Luke 2: 1-20 (NIV)')
-          text = text.replace('Luke 2:1-20 (NIV)', 'Luke 2: 1-20 (NIV)')
-          text = text.replace('Luke 2: 1-20(NIV)', 'Luke 2: 1-20 (NIV)')
-          text = text.replace('Luke 2: 1-20 (NIV)Color', 'Luke 2: 1-20 (NIV) Color')
+    if (!isDigital) lines.push('My Shipping Address:');
+"""
+              new = """    var isSarahBookListing = /^(?:SESB1|PID7|PID8|PID9|PID10|PID11|PID12|PID13|PID14|PID16|PID17|DID3|DID4)$/i.test(productCode);
+    var lines = [
+      'Dear Malinda,',
+      '',
+      'I would like to order: ' + emailProductTitle
+    ];
 
-          article_re = re.compile(r'<article\b[^>]*>.*?</article>', re.S | re.I)
+    if (isSarahBookListing) {
+      lines.push("Subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !");
+    }
 
-          def patch_article(match):
-              article = match.group(0)
-              hm = re.search(r'<h3([^>]*)>\s*([A-Z0-9]+)\s*(?:—|–|-)\s*.*?</h3>', article, re.S | re.I)
-              if not hm:
-                  return article
-              code = hm.group(2).upper()
-              if code not in titles:
-                  return article
+    lines.push(
+      '',
+      'My name:',
+      'My email address:'
+    );
 
-              title = titles[code]
-              new_h3 = f'<h3{hm.group(1)}>{code} — {title}</h3>'
-              article = article[:hm.start()] + new_h3 + article[hm.end():]
+    if (!isDigital) lines.push('My Shipping Address:');
+"""
+              if old not in text:
+                  raise SystemExit('Prepared-email normalizer block was not found; no change made.')
+              text = text.replace(old, new, 1)
+              path.write_text(text, encoding='utf-8')
 
-              # Replace or insert the visible subtitle immediately after the heading.
-              h3_end = article.find('</h3>') + len('</h3>')
-              after = article[h3_end:]
-              after = re.sub(r'^\s*<p\s+class="isbn-product-subtitle"[^>]*>.*?</p>', '', after, count=1, flags=re.S | re.I)
-              visible_subtitle = f'\n<p class="isbn-product-subtitle">{subtitle_html}</p>'
-              article = article[:h3_end] + visible_subtitle + after
-
-              # Replace the title/subtitle shown inside the expanded description.
-              desc_block = (
-                  '<div class="isbn-title-description">'
-                  f'<p><strong>{title}</strong></p>'
-                  f'<p class="isbn-description-subtitle">{subtitle_html}</p>'
-                  '</div>'
-              )
-              if re.search(r'<div\s+class="isbn-title-description"[^>]*>.*?</div>', article, re.S | re.I):
-                  article = re.sub(r'<div\s+class="isbn-title-description"[^>]*>.*?</div>', desc_block, article, count=1, flags=re.S | re.I)
-              else:
-                  article = re.sub(r'(<div\s+class="store-details"[^>]*>)', r'\1\n' + desc_block, article, count=1, flags=re.I)
-
-              return article
-
-          text = article_re.sub(patch_article, text)
-          index_path.write_text(text, encoding='utf-8')
-
-          # 2) Update the late-running JavaScript title controller so it cannot overwrite the approved wording.
-          js_path = Path('script-enhancements.js')
-          js = js_path.read_text(encoding='utf-8')
-          js = js.replace('Luke 1-20 (NIV)', 'Luke 2: 1-20 (NIV)')
-          js = js.replace('Luke 2:1-20 (NIV)', 'Luke 2: 1-20 (NIV)')
-          js = js.replace('Luke 2: 1-20(NIV)', 'Luke 2: 1-20 (NIV)')
-          js = js.replace('Luke 2: 1-20 (NIV)Color', 'Luke 2: 1-20 (NIV) Color')
-
-          listings_lines = ["    const listings = {"]
-          for code in ['SESB1','PID8','PID7','PID11','PID16','PID17','PID10','PID13','PID9','PID12','DID3','DID4','PID14']:
-              title = titles[code].replace('\\', '\\\\').replace('"', '\\"')
-              listings_lines.append(f'      {code}: {{ title: "{title}" }},')
-          listings_lines.append('    };')
-          new_listings = '\n'.join(listings_lines)
-          js, count = re.subn(r'    const listings = \{.*?\n    \};', new_listings, js, count=1, flags=re.S)
-          if count != 1:
-              raise SystemExit('Could not replace the Sarah listings title map in script-enhancements.js')
-
-          # Ensure the approved subtitle text is the one used by the late-running controller.
-          js = re.sub(
-              r'    const subtitle = ".*?";\n    const subtitleHtml = ".*?";',
-              '    const subtitle = "Jesus\\\'s Birth through the BIG BLUE EYES of Sarah the Baby Sheep !";\n'
-              '    const subtitleHtml = "Jesus\\\'s Birth through the <strong class=\'big-blue-eyes\'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !";',
-              js,
-              count=1,
-              flags=re.S,
-          )
-          js_path.write_text(js, encoding='utf-8')
-
-      - name: Commit exact approved wording
+      - name: Commit prepared email subtitle
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html script-enhancements.js
+          git add script.js
           git diff --cached --quiet && exit 0
-          git commit -m "Apply exact Sarah titles subtitles descriptions and email wording"
+          git commit -m "Include exact Sarah subtitle in order emails"
           git push
