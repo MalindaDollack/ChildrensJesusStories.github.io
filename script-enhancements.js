@@ -194,6 +194,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const subtitle = "Jesus\'s Birth through the BIG BLUE EYES of Sarah the Baby Sheep !";
     const subtitleHtml = "Jesus\'s Birth through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !";
     const listings = {
+      PID1: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Laminated Book Mark." },
+      PID2: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 2 Laminated Book Marks." },
+      PID3: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 5 Laminated Book Marks." },
+      PID4: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 20 Hand Made Small Jesus Loves You ! Stickers." },
+      PID5: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 4 Hand Made Medium Jesus Loves You ! Stickers." },
+      PID6: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Hand Made Large Jesus Loves You ! Sticker." },
+      DID1: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Digital file.png \"Book Mark\"" },
+      DID2: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition. Luke 2: 1-20 (NIV) JESUS LOVES YOU ! Matching Game." },
       SESB1: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition." },
       PID8: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition." },
       PID7: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition." },
