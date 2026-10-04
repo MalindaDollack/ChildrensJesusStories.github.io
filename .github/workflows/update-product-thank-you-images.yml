@@ -1,0 +1,126 @@
+name: Update Product Thank You Pictures
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-product-thank-you-images.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-product-pictures:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Move old main pictures into descriptions and use Thank You pictures
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          js_path = Path('script-enhancements.js')
+          js = js_path.read_text(encoding='utf-8')
+
+          replacements = [
+              (
+                  "main: { src: 'stickers 20 small alone.jpg?v=20261002', alt: 'stickers 20 small alone' },\n      detail: [",
+                  "main: { src: 'Thank You 20 Small Stickers.jpg?v=20261004', alt: 'Thank You 20 Small Stickers' },\n      detail: [\n        { src: 'stickers 20 small alone.jpg?v=20261002', label: 'Alone' },"
+              ),
+              (
+                  "main: { src: 'stickers 4 medium alone.jpg?v=20261002', alt: 'stickers 4 medium alone' },\n      detail: [",
+                  "main: { src: 'Thank You 4 Medium Stickers.jpg?v=20261004', alt: 'Thank You 4 Medium Stickers' },\n      detail: [\n        { src: 'stickers 4 medium alone.jpg?v=20261002', label: 'Alone' },"
+              ),
+              (
+                  "main: { src: 'sticker lg alone.jpg?v=20261002', alt: 'sticker lg alone' },\n      detail: [",
+                  "main: { src: 'Thank You 1 Large Sticker.jpg?v=20261004', alt: 'Thank You 1 Large Sticker' },\n      detail: [\n        { src: 'sticker lg alone.jpg?v=20261002', label: 'Alone' },"
+              ),
+          ]
+
+          for old, new in replacements:
+              if old not in js:
+                  raise SystemExit(f'Expected sticker configuration not found: {old[:70]}')
+              js = js.replace(old, new, 1)
+
+          js = js.replace(
+              '  // PID4, PID5 and PID6: use the new sticker photographs.\n  // The "alone" photo is the main ad photo with no caption. The other three photos\n  // appear at the start of the expanded description with their exact file-name captions.',
+              '  // PID4, PID5 and PID6: use the Thank You photographs as the main ad pictures.\n  // Move each former main photograph into the expanded description and label it "Alone".'
+          )
+
+          pid15_marker = "  // PID15: use Thank You Sarah Game as the main ad picture"
+          if pid15_marker not in js:
+              anchor = "  // PID16 and PID17: use the correct photographed covers and keep every picture"
+              if anchor not in js:
+                  raise SystemExit('PID16/PID17 anchor not found for PID15 insertion')
+              pid15_block = r'''  // PID15: use Thank You Sarah Game as the main ad picture, and move the former
+          // main package picture into the expanded description labeled "Alone".
+          const pid15Card = document.getElementById('store-PID15');
+          if (pid15Card) {
+            const pid15Main = pid15Card.querySelector('.product-gallery > img') || pid15Card.querySelector('img');
+            if (pid15Main) {
+              pid15Main.src = 'Thank You Sarah Game.jpg?v=20261004';
+              pid15Main.alt = 'Thank You Sarah Game';
+            }
+
+            const pid15Details = pid15Card.querySelector('.store-details');
+            if (pid15Details) {
+              const pid15Gallery = pid15Details.querySelector('.pid15-photo-gallery');
+              if (pid15Gallery) {
+                pid15Gallery.querySelectorAll('.pid15-alone-photo').forEach(el => el.remove());
+
+                const figure = document.createElement('figure');
+                figure.className = 'pid15-alone-photo';
+                figure.style.cssText = 'margin:0;padding:10px;border:2px solid #ead5f5;border-radius:12px;background:#fff;text-align:center;';
+
+                const photo = document.createElement('img');
+                photo.loading = 'lazy';
+                photo.decoding = 'async';
+                photo.src = 'game card package no measurements.jpg?v=20261004';
+                photo.alt = 'Alone';
+                photo.style.cssText = 'display:block;width:100%;height:auto!important;aspect-ratio:auto!important;object-fit:contain;margin:0 auto;';
+
+                const caption = document.createElement('figcaption');
+                caption.textContent = 'Alone';
+                caption.style.cssText = 'margin-top:8px;color:#4b146f;font-weight:800;line-height:1.25;';
+
+                figure.append(photo, caption);
+                pid15Gallery.insertBefore(figure, pid15Gallery.firstChild);
+              }
+            }
+          }
+
+          '''
+              js = js.replace(anchor, pid15_block + anchor, 1)
+
+          js_path.write_text(js, encoding='utf-8')
+
+          html_path = Path('index.html')
+          html = html_path.read_text(encoding='utf-8')
+
+          main_images = {
+              'store-PID4': 'Thank You 20 Small Stickers.jpg?v=20261004',
+              'store-PID5': 'Thank You 4 Medium Stickers.jpg?v=20261004',
+              'store-PID6': 'Thank You 1 Large Sticker.jpg?v=20261004',
+              'store-PID15': 'Thank You Sarah Game.jpg?v=20261004',
+          }
+
+          for product_id, new_src in main_images.items():
+              pattern = rf'(<article\b[^>]*\bid="{re.escape(product_id)}"[^>]*>.*?<img\b[^>]*\bsrc=")([^"]+)(")'
+              html, count = re.subn(pattern, lambda m: m.group(1) + new_src + m.group(3), html, count=1, flags=re.S)
+              if count != 1:
+                  raise SystemExit(f'Could not update main image for {product_id}; matches={count}')
+
+          html_path.write_text(html, encoding='utf-8')
+
+      - name: Commit website update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html script-enhancements.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Move PID4-6 PID15 old main pictures into descriptions"
+          git push
