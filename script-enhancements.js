@@ -77,15 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // PID4, PID5 and PID6: use the new sticker photographs.
-  // The "alone" photo is the main ad photo with no caption. The other three photos
-  // appear at the start of the expanded description with their exact file-name captions.
+  // PID4, PID5 and PID6: use the Thank You photographs as the main ad pictures.
+  // Move each former main photograph into the expanded description and label it "Alone".
   const stickerPhotoNote = `Please note these Stickers looks much better in real life. I am using very old equipment to produce these ads the blurriness and sometimes lack of definition are caused by my camera. I wanted to give you the most accurate representation of these Stickers. I have included photos with rulers. The Stickers are all of Sarah the Baby Sheep: Jesus Loves You ! from the Children's Bible Story Book, Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. All Avery Paper Stickers are reusable. I have tried it and you can "carefully" remove them and place them again somewhere else. JESUS LOVES YOU !`;
   [
     {
       id: 'store-PID4',
-      main: { src: 'stickers 20 small alone.jpg?v=20261002', alt: 'stickers 20 small alone' },
+      main: { src: 'Thank You 20 Small Stickers.jpg?v=20261004', alt: 'Thank You 20 Small Stickers' },
       detail: [
+        { src: 'stickers 20 small alone.jpg?v=20261002', label: 'Alone' },
         { src: 'stickers 20 small horizontal.jpg?v=20261002', label: 'stickers 20 small horizontal' },
         { src: 'stickers 20 small vertical.jpg?v=20261002', label: 'stickers 20 small vertical' },
         { src: 'stickers 20 small envelope.jpg?v=20261002', label: 'stickers 20 small envelope' }
@@ -93,8 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       id: 'store-PID5',
-      main: { src: 'stickers 4 medium alone.jpg?v=20261002', alt: 'stickers 4 medium alone' },
+      main: { src: 'Thank You 4 Medium Stickers.jpg?v=20261004', alt: 'Thank You 4 Medium Stickers' },
       detail: [
+        { src: 'stickers 4 medium alone.jpg?v=20261002', label: 'Alone' },
         { src: 'stickers 4 medium horizontal.jpg?v=20261002', label: 'stickers 4 medium horizontal' },
         { src: 'stickers 4 medium vertical.jpg?v=20261002', label: 'stickers 4 medium vertical' },
         { src: 'stickers 4 medium envelope.jpg?v=20261002', label: 'stickers 4 medium envelope' }
@@ -102,8 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       id: 'store-PID6',
-      main: { src: 'sticker lg alone.jpg?v=20261002', alt: 'sticker lg alone' },
+      main: { src: 'Thank You 1 Large Sticker.jpg?v=20261004', alt: 'Thank You 1 Large Sticker' },
       detail: [
+        { src: 'sticker lg alone.jpg?v=20261002', label: 'Alone' },
         { src: 'sticker lg horizontal.jpg?v=20261002', label: 'sticker lg horizontal' },
         { src: 'sticker lg vertical.jpg?v=20261002', label: 'sticker lg vertical' },
         { src: 'sticker lg mailing.jpg?v=20261002', label: 'sticker lg mailing' }
@@ -155,6 +157,43 @@ document.addEventListener('DOMContentLoaded', () => {
     details.insertBefore(note, details.firstChild);
     details.insertBefore(gallery, note.nextSibling);
   });
+
+  // PID15: use Thank You Sarah Game as the main ad picture, and move the former
+// main package picture into the expanded description labeled "Alone".
+const pid15Card = document.getElementById('store-PID15');
+if (pid15Card) {
+  const pid15Main = pid15Card.querySelector('.product-gallery > img') || pid15Card.querySelector('img');
+  if (pid15Main) {
+    pid15Main.src = 'Thank You Sarah Game.jpg?v=20261004';
+    pid15Main.alt = 'Thank You Sarah Game';
+  }
+
+  const pid15Details = pid15Card.querySelector('.store-details');
+  if (pid15Details) {
+    const pid15Gallery = pid15Details.querySelector('.pid15-photo-gallery');
+    if (pid15Gallery) {
+      pid15Gallery.querySelectorAll('.pid15-alone-photo').forEach(el => el.remove());
+
+      const figure = document.createElement('figure');
+      figure.className = 'pid15-alone-photo';
+      figure.style.cssText = 'margin:0;padding:10px;border:2px solid #ead5f5;border-radius:12px;background:#fff;text-align:center;';
+
+      const photo = document.createElement('img');
+      photo.loading = 'lazy';
+      photo.decoding = 'async';
+      photo.src = 'game card package no measurements.jpg?v=20261004';
+      photo.alt = 'Alone';
+      photo.style.cssText = 'display:block;width:100%;height:auto!important;aspect-ratio:auto!important;object-fit:contain;margin:0 auto;';
+
+      const caption = document.createElement('figcaption');
+      caption.textContent = 'Alone';
+      caption.style.cssText = 'margin-top:8px;color:#4b146f;font-weight:800;line-height:1.25;';
+
+      figure.append(photo, caption);
+      pid15Gallery.insertBefore(figure, pid15Gallery.firstChild);
+    }
+  }
+}
 
   // PID16 and PID17: use the correct photographed covers and keep every picture
   // in both the main ads and their expanded descriptions the same displayed size.
