@@ -242,6 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Use an ordinary hyphen in outgoing e-mail text so older Windows/e-mail
     // programs never display the em dash as mojibake such as "â€”".
     var emailProductTitle = productTitle.replace(/[—–]/g, ' - ').replace(/\s+/g, ' ').trim();
+    var isSarahBookListing = /^(?:SESB1|PID7|PID8|PID9|PID10|PID11|PID12|PID13|PID14|PID16|PID17|DID3|DID4)$/i.test(productCode);
     var lines = [
       'Dear Malinda,',
       '',
@@ -250,6 +251,10 @@ document.addEventListener('DOMContentLoaded', () => {
       'My name:',
       'My email address:'
     ];
+
+    if (isSarahBookListing) {
+      lines.splice(3, 0, "Subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !");
+    }
 
     if (!isDigital) lines.push('My Shipping Address:');
 
