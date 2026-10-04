@@ -1,0 +1,66 @@
+name: Update Book 1 and Book 2 Subtitle Lines
+
+on:
+  push:
+    paths:
+      - '.github/workflows/update-book1-book2-subtitle-lines-20261004.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-subtitles:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Apply exact subtitle wording and line breaks
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          old_sweetpea = '''subtitle:"<span class='sweetpea-subtitle-text'>God's Message of Caring told through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sweet-Pea the Baby Sparrow!</span>"'''
+          new_sweetpea = '''subtitle:"<span class='sweetpea-subtitle-text'><br>God's Message of<br>Caring told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Sweet-Pea<br>the Baby Sparrow !</span>"'''
+
+          old_sarah = '''subtitle:"<span class='sarah-subtitle-text'>Jesus's Birth through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !</span>"'''
+          new_sarah = '''subtitle:"<span class='sarah-subtitle-text'><br>Jesus's Birth<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Sarah<br>the Baby Sheep !</span>"'''
+
+          if text.count(old_sweetpea) != 1:
+              raise SystemExit(f'Expected exactly one Sweet-Pea subtitle, found {text.count(old_sweetpea)}')
+          if text.count(old_sarah) != 1:
+              raise SystemExit(f'Expected exactly one Sarah shelf subtitle, found {text.count(old_sarah)}')
+
+          text = text.replace(old_sweetpea, new_sweetpea, 1)
+          text = text.replace(old_sarah, new_sarah, 1)
+          path.write_text(text, encoding='utf-8')
+
+      - name: Verify only requested shelf subtitles
+        shell: python
+        run: |
+          from pathlib import Path
+          text = Path('index.html').read_text(encoding='utf-8')
+          required = [
+              "<span class='sweetpea-subtitle-text'><br>God's Message of<br>Caring told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Sweet-Pea<br>the Baby Sparrow !</span>",
+              "<span class='sarah-subtitle-text'><br>Jesus's Birth<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Sarah<br>the Baby Sheep !</span>",
+          ]
+          for item in required:
+              if item not in text:
+                  raise SystemExit('Required subtitle format missing')
+
+      - name: Commit website update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes needed."
+          else
+            git commit -m "Format Book 1 and Book 2 subtitles on exact lines"
+            git push origin main
+          fi
