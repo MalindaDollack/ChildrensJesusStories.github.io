@@ -1,0 +1,101 @@
+name: Update PID1 PID2 PID3 Thank You Pictures
+
+on:
+  push:
+    paths:
+      - '.github/workflows/update-pid1-pid3-thank-you-images.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-bookmark-pictures:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Move old main pictures into descriptions and use Thank You pictures
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          items = [
+              {
+                  'pid': 'PID1',
+                  'old': '1 book mark alone.jpg?v=1',
+                  'new': 'Thank You 1 Book Mark.jpg?v=20261004',
+                  'gallery': 'pid1-bookmark-photo-gallery',
+                  'alt': 'Thank You 1 Book Mark Final',
+              },
+              {
+                  'pid': 'PID2',
+                  'old': '2 book marks main.jpg?v=1',
+                  'new': 'Thank You 2 Book Marks.jpg?v=20261004',
+                  'gallery': 'pid2-bookmark-photo-gallery',
+                  'alt': 'Thank You 2 Book Marks Final',
+              },
+              {
+                  'pid': 'PID3',
+                  'old': '5 book marks main.jpg?v=1',
+                  'new': 'Thank You 5 Book Marks.jpg?v=20261004',
+                  'gallery': 'pid3-bookmark-photo-gallery',
+                  'alt': 'Thank You 5 Book Marks Final',
+              },
+          ]
+
+          for item in items:
+              pid = item['pid']
+              # Change only the first/main image inside this product card.
+              pattern = re.compile(
+                  r'(<article class="store-card" id="store-' + re.escape(pid) + r'">\s*<img\b[^>]*?src=")' +
+                  re.escape(item['old']) + r'("[^>]*?alt=")[^"]*(")',
+                  re.S,
+              )
+              s, count = pattern.subn(
+                  lambda m: m.group(1) + item['new'] + m.group(2) + item['alt'] + m.group(3),
+                  s,
+                  count=1,
+              )
+              if count != 1:
+                  raise SystemExit(f'Could not update main picture for {pid}; replacements={count}')
+
+              marker = f'<!-- {pid}-ALONE-PHOTO -->'
+              if marker not in s:
+                  gallery_pattern = re.compile(
+                      r'(<div class="' + re.escape(item['gallery']) + r'"[^>]*>)',
+                      re.S,
+                  )
+                  figure = (
+                      '\n' + marker + '\n'
+                      '<figure style="margin:0;text-align:center;">'
+                      f'<img loading="lazy" decoding="async" src="{item["old"]}" alt="Alone" '
+                      'style="display:block;width:100%;height:auto!important;aspect-ratio:auto!important;object-fit:contain;margin:0 auto;">'
+                      '<figcaption style="margin-top:6px;color:#4b146f;font-weight:800;line-height:1.25;">Alone</figcaption>'
+                      '</figure>'
+                  )
+                  s, count = gallery_pattern.subn(lambda m: m.group(1) + figure, s, count=1)
+                  if count != 1:
+                      raise SystemExit(f'Could not add Alone picture to {pid} description; replacements={count}')
+
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit website update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+          else
+            git commit -m "Move PID1-3 old main pictures into descriptions"
+            git push origin main
+          fi
