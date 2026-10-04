@@ -1,4 +1,4 @@
-name: Apply Exact PID1-6 DID1 DID2 Wording
+name: Audit Sarah Titles In Descriptions
 
 on:
   push:
@@ -10,64 +10,74 @@ permissions:
   contents: write
 
 jobs:
-  update-store:
+  audit-sarah-titles:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update product listings descriptions and prepared emails
+      - name: Correct stale Sarah title references
         shell: python
         run: |
           from pathlib import Path
           import html
           import re
 
-          titles = {
-              'PID1': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Laminated Book Mark.",
-              'PID2': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 2 Laminated Book Marks.",
-              'PID3': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 5 Laminated Book Marks.",
-              'PID4': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 20 Hand Made Small Jesus Loves You ! Stickers.",
-              'PID5': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 4 Hand Made Medium Jesus Loves You ! Stickers.",
-              'PID6': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Hand Made Large Jesus Loves You ! Sticker.",
-              'DID1': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Digital file.png \"Book Mark\"",
-              'DID2': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition. Luke 2: 1-20 (NIV) JESUS LOVES YOU ! Matching Game.",
-          }
+          base = "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV)"
           subtitle_text = "Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !"
           subtitle_html = "Subtitle: Jesus's Birth through the <strong class=\"big-blue-eyes\">BIG BLUE EYES</strong> of Sarah the Baby Sheep !"
+
+          titles = {
+              'DID1': base + ' JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Digital file.png "Book Mark"',
+              'DID2': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition. Luke 2: 1-20 (NIV) JESUS LOVES YOU ! Matching Game.",
+              'DID3': base + ' Color Standard E-Book Edition.',
+              'DID4': base + ' Color Flip E-Book Edition.',
+              'SESB1': base + " Black and White Regular 20 lb Paper Special Sameritain's Purse Edition.",
+              'PID1': base + ' Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Laminated Book Mark.',
+              'PID2': base + ' Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 2 Laminated Book Marks.',
+              'PID3': base + ' Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 5 Laminated Book Marks.',
+              'PID4': base + ' Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 20 Hand Made Small Jesus Loves You ! Stickers.',
+              'PID5': base + ' Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 4 Hand Made Medium Jesus Loves You ! Stickers.',
+              'PID6': base + ' Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Hand Made Large Jesus Loves You ! Sticker.',
+              'PID7': base + ' Customizable Color Laminated and Ribbon Tied Baby Book Edition.',
+              'PID8': base + ' Color Laminated and Ribbon Tied Baby Book Edition.',
+              'PID9': base + ' Color Comb-Bound Fully Laminated Soft Cover Edition.',
+              'PID10': base + ' Color Comb-Bound Soft Cover Book Edition.',
+              'PID11': base + ' Color Staples Photo Book Edition. Shipping Included',
+              'PID12': base + ' Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition.',
+              'PID13': base + ' Color Comb-Bound Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition.',
+              'PID14': base + ' Color Staples Photo Book Edition. Pick up at Local Staples',
+              'PID15': base + ' Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Laminated Tiles.',
+              'PID16': base + ' Color Saddle Book Regular 20 lb Paper Edition.',
+              'PID17': base + ' Color Saddle Book Regular 28 lb Paper Edition.',
+          }
 
           index_path = Path('index.html')
           text = index_path.read_text(encoding='utf-8')
           article_re = re.compile(r'<article\b[^>]*>.*?</article>', re.S | re.I)
 
-          def article_for(code, source):
-              for m in article_re.finditer(source):
-                  if re.search(r'<h3[^>]*>\s*' + re.escape(code) + r'\s*(?:—|–|-)\s*', m.group(0), re.I):
-                      return m.group(0)
-              return None
-
-          # Move the existing DID6 Matching Game into DID2's position and remove the downloadable sticker listing.
-          old_did2 = article_for('DID2', text)
-          old_did6 = article_for('DID6', text)
-          if not old_did2 or not old_did6:
-              raise SystemExit('Could not find both the current DID2 sticker listing and DID6 Matching Game listing.')
-
-          moved = old_did6
-          moved = re.sub(r'(<article\b)(?![^>]*\bid=)', r'\1 id="store-DID2"', moved, count=1, flags=re.I)
-          moved = re.sub(r'\bid="store-DID6"', 'id="store-DID2"', moved, count=1, flags=re.I)
-          moved = re.sub(r'(<h3[^>]*>)\s*DID6\s*(?:—|–|-)\s*.*?(</h3>)', r'\1DID2 — ' + html.escape(titles['DID2']) + r'\2', moved, count=1, flags=re.S | re.I)
-          moved = moved.replace('data-email-form="m12"', 'data-email-form="m8"')
-          moved = moved.replace("openPreparedEmail('m12')", "openPreparedEmail('m8')")
-          text = text.replace(old_did2, moved, 1)
-          text = text.replace(old_did6, '', 1)
-
-          # Give DID1 a stable id too.
-          did1 = article_for('DID1', text)
-          if did1 and 'id="store-DID1"' not in did1:
-              did1_new = re.sub(r'<article\b', '<article id="store-DID1"', did1, count=1)
-              text = text.replace(did1, did1_new, 1)
+          def clean_old_base(value):
+              # Old title forms that appeared in visible descriptive prose.
+              value = re.sub(
+                  r"Sarah the Baby Sheep\s*:\s*My Shepherd, Jesus's Birth[,.]\s*The [Cc]hristmas Story Edition(?!\.\s*Luke 2:)",
+                  base,
+                  value,
+              )
+              value = re.sub(
+                  r"Sarah the Baby Sheep\s*:\s*My Shepherd, Jesus's Birth[,.]\s*The [Cc]hristmas Story\.(?!\s*Luke 2:)",
+                  base,
+                  value,
+              )
+              value = re.sub(
+                  r"Sarah the Baby Sheep\s*:\s*My Shepherd, Jesus's Birth[,.]\s*The [Cc]hristmas Story(?![A-Za-z]|\.\s*Luke 2:)",
+                  base,
+                  value,
+              )
+              return value
 
           def patch_article(match):
               article = match.group(0)
+              if 'subscription-card' in article:
+                  return article
               hm = re.search(r'<h3([^>]*)>\s*([A-Z0-9]+)\s*(?:—|–|-)\s*.*?</h3>', article, re.S | re.I)
               if not hm:
                   return article
@@ -77,80 +87,108 @@ jobs:
 
               title = titles[code]
               safe_title = html.escape(title)
-              new_h3 = f'<h3{hm.group(1)}>{code} — {safe_title}</h3>'
-              article = article[:hm.start()] + new_h3 + article[hm.end():]
 
+              # Exact visible heading.
+              article = article[:hm.start()] + f'<h3{hm.group(1)}>{code} — {safe_title}</h3>' + article[hm.end():]
+
+              # Exact visible subtitle directly below heading.
               article = re.sub(r'\s*<p\s+class="isbn-product-subtitle"[^>]*>.*?</p>', '', article, flags=re.S | re.I)
               h3_end = article.find('</h3>') + len('</h3>')
               article = article[:h3_end] + f'\n<p class="isbn-product-subtitle">{subtitle_html}</p>' + article[h3_end:]
 
-              article = re.sub(r'<div\s+class="isbn-title-description"[^>]*>.*?</div>\s*', '', article, flags=re.S | re.I)
+              # Work only inside expanded description from here on.
+              dm = re.search(r'(<div\s+class="store-details"[^>]*>)(.*)(</div>\s*</article>\s*$)', article, re.S | re.I)
+              if not dm:
+                  return article
+              details = dm.group(2)
+
+              # Remove any previous generated title/subtitle block, then clean stale title mentions in prose.
+              details = re.sub(r'\s*<div\s+class="isbn-title-description"[^>]*>.*?</div>\s*', '\n', details, flags=re.S | re.I)
+              details = clean_old_base(details)
+
+              # Product-specific notes that should display the complete current product title.
+              if code in {'PID1','PID2','PID3'}:
+                  details = re.sub(
+                      r"(Children(?:'|&#x27;)s Bible Story Book Marks?,\s*)(?:Sarah the Baby Sheep.*?)(?=</strong>)",
+                      lambda m: m.group(1) + safe_title,
+                      details,
+                      count=1,
+                      flags=re.S | re.I,
+                  )
+              if code in {'PID11','PID14'}:
+                  details = re.sub(
+                      r"(Children(?:'|&#x27;)s Bible Story Photo Book Edition,\s*)(?:Sarah the Baby Sheep.*?)(?=</strong>)",
+                      lambda m: m.group(1) + safe_title,
+                      details,
+                      count=1,
+                      flags=re.S | re.I,
+                  )
+
+              # Put the exact product title and subtitle first inside every expanded description.
               desc = (
                   '<div class="isbn-title-description">'
                   f'<p><strong>{safe_title}</strong></p>'
                   f'<p class="isbn-description-subtitle">{subtitle_html}</p>'
-                  '</div>'
+                  '</div>\n'
               )
-              article, n = re.subn(r'(<div\s+class="store-details"[^>]*>)', r'\1\n' + desc, article, count=1, flags=re.I)
-              if n != 1:
-                  raise SystemExit(f'Store details block not found for {code}.')
+              details = '\n' + desc + details.lstrip()
+              article = article[:dm.start(2)] + details + article[dm.end(2):]
               return article
 
           text = article_re.sub(patch_article, text)
 
-          # Update prepared email forms for PID1-6, DID1 and the new DID2.
-          if 'id="clean-prepared-email-links"' not in text:
-              raise SystemExit('Prepared email forms block not found.')
+          # Ensure the DID2 game prose uses the current base book title when referring to the source book.
+          text = re.sub(
+              r'(PRINTABLE_PDF_PICTURES\.zip contains 16 separate printable PDF files:.*?from the Book )Sarah the Baby Sheep\s*:\s*My Shepherd, Jesus\'s Birth\. The [Cc]hristmas Story',
+              r'\1' + base,
+              text,
+              count=1,
+              flags=re.S,
+          )
 
-          for code, title in titles.items():
-              pattern = re.compile(r'("subject":"' + re.escape(code) + r'","body":")((?:\\.|[^"])*)(' + r'"})')
-              m = pattern.search(text)
-              if not m:
-                  raise SystemExit(f'Prepared email form not found for {code}.')
-              body = m.group(2)
-              start = body.find('I would like to order: ')
-              end = body.find(r'\n\nMy name:', start)
-              if start < 0 or end < 0:
-                  raise SystemExit(f'Could not locate order text in prepared email for {code}.')
-              email_title = title.replace('\\', '\\\\').replace('"', '\\"')
-              exact = f'I would like to order: {code} - {email_title}\\nSubtitle: {subtitle_text}'
-              new_body = body[:start] + exact + body[end:]
-              text = text[:m.start(2)] + new_body + text[m.end(2):]
-
-          # Remove the obsolete DID6 prepared form entirely.
-          text, removed = re.subn(r',"m12":\{"subject":"DID6","body":"(?:\\.|[^"])*"\}', '', text, count=1)
-          if removed != 1:
-              raise SystemExit('Obsolete DID6 prepared email form was not found.')
+          # PID15 email form had never received the new Sarah/Luke title.
+          email_pattern = re.compile(r'("subject":"PID15","body":")((?:\\.|[^"])*)(' + r'"})')
+          em = email_pattern.search(text)
+          if not em:
+              raise SystemExit('PID15 prepared email form not found.')
+          body = em.group(2)
+          start = body.find('I would like to order: ')
+          end = body.find(r'\n\nMy name:', start)
+          if start < 0 or end < 0:
+              raise SystemExit('PID15 prepared email order text not found.')
+          exact = 'I would like to order: PID15 - ' + titles['PID15'] + r'\nSubtitle: ' + subtitle_text
+          body = body[:start] + exact + body[end:]
+          text = text[:em.start(2)] + body + text[em.end(2):]
 
           index_path.write_text(text, encoding='utf-8')
 
-          # Keep the late-running title controller from restoring older names.
+          # Keep the late-running browser code from restoring an old Sarah base title.
           js_path = Path('script-enhancements.js')
           js = js_path.read_text(encoding='utf-8')
-          for code, title in reversed(list(titles.items())):
-              esc = title.replace('\\', '\\\\').replace('"', '\\"')
-              line = f'      {code}: {{ title: "{esc}" }},'
-              patt = re.compile(r'^\s*' + re.escape(code) + r': \{ title: ".*?" \},\s*$', re.M)
-              if patt.search(js):
-                  js = patt.sub(line, js, count=1)
-              else:
-                  js = js.replace('    const listings = {\n', '    const listings = {\n' + line + '\n', 1)
+          js = js.replace(
+              'const fullTitle = "Sarah the Baby Sheep: My Shepherd, Jesus\'s Birth. The Christmas Story";',
+              'const fullTitle = "' + base.replace('"', '\\"') + '";'
+          )
+          esc15 = titles['PID15'].replace('\\', '\\\\').replace('"', '\\"')
+          line15 = f'      PID15: {{ title: "{esc15}" }},'
+          patt15 = re.compile(r'^\s*PID15: \{ title: ".*?" \},\s*$', re.M)
+          if patt15.search(js):
+              js = patt15.sub(line15, js, count=1)
+          else:
+              js = js.replace('    const listings = {\n', '    const listings = {\n' + line15 + '\n', 1)
           js_path.write_text(js, encoding='utf-8')
 
-          # Include the newly retitled Sarah items in generic email normalization as a fallback.
+          # Include PID15 in the generic Sarah email fallback list.
           script_path = Path('script.js')
           script = script_path.read_text(encoding='utf-8')
-          codes = 'SESB1|PID1|PID2|PID3|PID4|PID5|PID6|PID7|PID8|PID9|PID10|PID11|PID12|PID13|PID14|PID16|PID17|DID1|DID2|DID3|DID4'
-          script, n = re.subn(r'var isSarahBookListing = /\^\(\?:.*?\)\$/i\.test\(productCode\);', f'var isSarahBookListing = /^(?:{codes})$/i.test(productCode);', script, count=1)
-          if n != 1:
-              raise SystemExit('Could not update Sarah email-normalizer code list.')
+          script = script.replace('|PID14|PID16|', '|PID14|PID15|PID16|')
           script_path.write_text(script, encoding='utf-8')
 
-      - name: Commit exact product changes
+      - name: Commit Sarah title audit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html script-enhancements.js script.js
           git diff --cached --quiet && exit 0
-          git commit -m "Update PID1-6 DID1 DID2 titles and move matching game"
+          git commit -m "Correct stale Sarah titles inside descriptions"
           git push
