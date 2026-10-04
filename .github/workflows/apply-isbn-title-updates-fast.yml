@@ -1,4 +1,4 @@
-name: Keep Exact Sarah Product Wording
+name: Fix Exact Sarah Prepared Email Forms
 
 on:
   push:
@@ -10,41 +10,71 @@ permissions:
   contents: write
 
 jobs:
-  update-email-wording:
+  update-email-forms:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Add exact Sarah subtitle to prepared order emails
+      - name: Correct the prepared-email block in index.html
         shell: python
         run: |
           from pathlib import Path
+          import re
 
-          path = Path('script.js')
+          titles = {
+              'SESB1': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition.",
+              'PID8': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition.",
+              'PID7': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition.",
+              'PID11': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Staples Photo Book Edition. Shipping Included",
+              'PID16': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Saddle Book Regular 20 lb Paper Edition.",
+              'PID17': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Saddle Book Regular 28 lb Paper Edition.",
+              'PID10': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Soft Cover Book Edition.",
+              'PID13': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition.",
+              'PID9': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Fully Laminated Soft Cover Edition.",
+              'PID12': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition.",
+              'DID3': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Standard E-Book Edition.",
+              'DID4': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Flip E-Book Edition.",
+              'PID14': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Staples Photo Book Edition. Pick up at Local Staples",
+          }
+
+          subtitle = "Subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !"
+          path = Path('index.html')
           text = path.read_text(encoding='utf-8')
 
-          if 'var isSarahBookListing =' not in text:
-              marker = "    var emailProductTitle = productTitle.replace(/[—–]/g, ' - ').replace(/\\s+/g, ' ').trim();\n"
-              addition = marker + "    var isSarahBookListing = /^(?:SESB1|PID7|PID8|PID9|PID10|PID11|PID12|PID13|PID14|PID16|PID17|DID3|DID4)$/i.test(productCode);\n"
-              if marker not in text:
-                  raise SystemExit('Email product-title marker not found; no change made.')
-              text = text.replace(marker, addition, 1)
+          if 'id="clean-prepared-email-links"' not in text:
+              raise SystemExit('Prepared-email block was not found; no changes made.')
 
-          subtitle_line = "      lines.splice(3, 0, \"Subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !\");"
-          if subtitle_line not in text:
-              marker2 = "    ];\n\n    if (!isDigital) lines.push('My Shipping Address:');"
-              replacement2 = "    ];\n\n    if (isSarahBookListing) {\n      lines.splice(3, 0, \"Subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !\");\n    }\n\n    if (!isDigital) lines.push('My Shipping Address:');"
-              if marker2 not in text:
-                  raise SystemExit('Prepared-email array marker not found; no change made.')
-              text = text.replace(marker2, replacement2, 1)
+          changed = []
+          for code, title in titles.items():
+              pattern = re.compile(r'("subject":"' + re.escape(code) + r'","body":")([^"]*)(")')
+              match = pattern.search(text)
+              if not match:
+                  raise SystemExit(f'Prepared email form for {code} was not found; no partial update committed.')
+
+              body = match.group(2)
+              order_start = 'I would like to order: '
+              name_marker = r'\n\nMy name:'
+              start = body.find(order_start)
+              end = body.find(name_marker, start)
+              if start < 0 or end < 0:
+                  raise SystemExit(f'Could not locate the order wording inside {code}; no partial update committed.')
+
+              exact_order = f'I would like to order: {code} - {title}\\n{subtitle}'
+              new_body = body[:start] + exact_order + body[end:]
+              text = text[:match.start(2)] + new_body + text[match.end(2):]
+              changed.append(code)
+
+          if len(changed) != 13:
+              raise SystemExit(f'Expected 13 Sarah forms, changed {len(changed)}.')
 
           path.write_text(text, encoding='utf-8')
+          print('Corrected prepared email forms:', ', '.join(changed))
 
-      - name: Commit prepared email subtitle
+      - name: Commit corrected prepared forms
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add script.js
+          git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Include exact Sarah subtitle in order emails"
+          git commit -m "Fix all 13 Sarah prepared email forms"
           git push
