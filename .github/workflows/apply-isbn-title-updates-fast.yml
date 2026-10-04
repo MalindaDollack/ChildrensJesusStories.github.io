@@ -23,44 +23,22 @@ jobs:
           path = Path('script.js')
           text = path.read_text(encoding='utf-8')
 
-          subtitle = "Subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !"
-          if subtitle in text:
-              print('Exact Sarah subtitle is already present in prepared-email logic.')
-          else:
-              old = """    var lines = [
-      'Dear Malinda,',
-      '',
-      'I would like to order: ' + emailProductTitle,
-      '',
-      'My name:',
-      'My email address:'
-    ];
+          if 'var isSarahBookListing =' not in text:
+              marker = "    var emailProductTitle = productTitle.replace(/[—–]/g, ' - ').replace(/\\s+/g, ' ').trim();\n"
+              addition = marker + "    var isSarahBookListing = /^(?:SESB1|PID7|PID8|PID9|PID10|PID11|PID12|PID13|PID14|PID16|PID17|DID3|DID4)$/i.test(productCode);\n"
+              if marker not in text:
+                  raise SystemExit('Email product-title marker not found; no change made.')
+              text = text.replace(marker, addition, 1)
 
-    if (!isDigital) lines.push('My Shipping Address:');
-"""
-              new = """    var isSarahBookListing = /^(?:SESB1|PID7|PID8|PID9|PID10|PID11|PID12|PID13|PID14|PID16|PID17|DID3|DID4)$/i.test(productCode);
-    var lines = [
-      'Dear Malinda,',
-      '',
-      'I would like to order: ' + emailProductTitle
-    ];
+          subtitle_line = "      lines.splice(3, 0, \"Subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !\");"
+          if subtitle_line not in text:
+              marker2 = "    ];\n\n    if (!isDigital) lines.push('My Shipping Address:');"
+              replacement2 = "    ];\n\n    if (isSarahBookListing) {\n      lines.splice(3, 0, \"Subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !\");\n    }\n\n    if (!isDigital) lines.push('My Shipping Address:');"
+              if marker2 not in text:
+                  raise SystemExit('Prepared-email array marker not found; no change made.')
+              text = text.replace(marker2, replacement2, 1)
 
-    if (isSarahBookListing) {
-      lines.push("Subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !");
-    }
-
-    lines.push(
-      '',
-      'My name:',
-      'My email address:'
-    );
-
-    if (!isDigital) lines.push('My Shipping Address:');
-"""
-              if old not in text:
-                  raise SystemExit('Prepared-email normalizer block was not found; no change made.')
-              text = text.replace(old, new, 1)
-              path.write_text(text, encoding='utf-8')
+          path.write_text(text, encoding='utf-8')
 
       - name: Commit prepared email subtitle
         run: |
