@@ -1,104 +1,17 @@
-name: Apply ISBN Store Titles
+name: Retired ISBN Store Title Updater
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/apply-isbn-title-updates.yml'
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  update-index:
+  retired:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Update store titles and descriptions
-        shell: python
+      - name: Wording source notice
         run: |
-          from pathlib import Path
-          import re
-          import html
-
-          path = Path('index.html')
-          text = path.read_text(encoding='utf-8')
-          subtitle = "Jesus's birth through the eyes of Sarah the baby sheep !"
-
-          listings = {
-              'SESB1': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition.",
-              'PID8': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition.",
-              'PID7': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition.",
-              'PID11': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition. Shipping Included",
-              'PID16': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Saddle Book Regular 20 lb Paper Edition.",
-              'PID17': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV)Color Saddle Book Regular 28 lb Paper Edition.",
-              'PID10': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Soft Cover Book Edition.",
-              'PID13': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound  Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition.",
-              'PID9': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Fully Laminated Soft Cover Edition.",
-              'PID12': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition.",
-              'DID3': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Standard E-Book Edition.",
-              'DID4': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Flip E-Book Edition.",
-              'PID14': "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 1-20 (NIV) Color Staples Photo Book Edition. Pick up at Local Staples",
-          }
-
-          # Remove any earlier generated copies so this is safe to run once or again.
-          text = re.sub(r'\n?<p class="isbn-product-subtitle">.*?</p>', '', text, flags=re.S)
-          text = re.sub(r'\n?<div class="isbn-title-description">.*?</div>', '', text, flags=re.S)
-
-          for code, display in listings.items():
-              safe_display = html.escape(display, quote=False)
-              safe_subtitle = html.escape(subtitle, quote=False)
-
-              heading_pattern = re.compile(
-                  r'<h3([^>]*)>\s*' + re.escape(code) + r'\s*—\s*.*?</h3>',
-                  re.S
-              )
-              heading_replacement = (
-                  f'<h3\\1>{code} — {safe_display}</h3>\n'
-                  f'<p class="isbn-product-subtitle"><strong>{safe_subtitle}</strong></p>'
-              )
-              text, heading_count = heading_pattern.subn(heading_replacement, text, count=1)
-              if heading_count != 1:
-                  raise SystemExit(f'Could not uniquely update heading for {code}: {heading_count}')
-
-              article_pattern = re.compile(
-                  r'(<article\b[^>]*>.*?<h3[^>]*>\s*' + re.escape(code) + r'\s*—.*?</h3>.*?</article>)',
-                  re.S
-              )
-              match = article_pattern.search(text)
-              if not match:
-                  raise SystemExit(f'Could not find article for {code}')
-
-              article = match.group(1)
-              description_block = (
-                  '<div class="isbn-title-description">'
-                  f'<p><strong>{safe_display}</strong></p>'
-                  f'<p><strong>{safe_subtitle}</strong></p>'
-                  '</div>\n'
-              )
-
-              if code in {'PID11', 'PID14'} and '<!-- PID-STAPLES-NOTE-END -->' in article:
-                  article = article.replace(
-                      '<!-- PID-STAPLES-NOTE-END -->',
-                      '<!-- PID-STAPLES-NOTE-END -->\n' + description_block,
-                      1
-                  )
-              else:
-                  article = article.replace(
-                      '<div class="store-details" hidden>',
-                      '<div class="store-details" hidden>\n' + description_block,
-                      1
-                  )
-
-              text = text[:match.start(1)] + article + text[match.end(1):]
-
-          path.write_text(text, encoding='utf-8')
-
-      - name: Commit updated index
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          git diff --cached --quiet && exit 0
-          git commit -m "Write ISBN-matching titles into live store page"
-          git push
+          echo "Retired workflow. Exact Sarah product wording is maintained by apply-isbn-title-updates-fast.yml."
+          echo "Required scripture wording: Luke 2: 1-20 (NIV)"
+          echo "Required subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !"
