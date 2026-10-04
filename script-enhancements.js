@@ -1,7 +1,7 @@
 // Malinda's Story Garden website enhancements.
 document.addEventListener('DOMContentLoaded', () => {
   const storeGrid = document.querySelector('#store .store-grid');
-  const fullTitle = "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story";
+  const fullTitle = "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV)";
   const standardCoverFile = 'stb1.png?v=31';
 
   const standardEbookCard = storeGrid ? [...storeGrid.querySelectorAll('.store-card')].find(card => /PDF (?:Download|Link) Standard E-Book Edition|Standard E-Book Edition/i.test(card.textContent)) : null;
@@ -194,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const subtitle = "Jesus\'s Birth through the BIG BLUE EYES of Sarah the Baby Sheep !";
     const subtitleHtml = "Jesus\'s Birth through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !";
     const listings = {
+      PID15: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Laminated Tiles." },
       PID1: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Laminated Book Mark." },
       PID2: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 2 Laminated Book Marks." },
       PID3: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 5 Laminated Book Marks." },

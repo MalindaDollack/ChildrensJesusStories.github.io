@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Use an ordinary hyphen in outgoing e-mail text so older Windows/e-mail
     // programs never display the em dash as mojibake such as "â€”".
     var emailProductTitle = productTitle.replace(/[—–]/g, ' - ').replace(/\s+/g, ' ').trim();
-    var isSarahBookListing = /^(?:SESB1|PID1|PID2|PID3|PID4|PID5|PID6|PID7|PID8|PID9|PID10|PID11|PID12|PID13|PID14|PID16|PID17|DID1|DID2|DID3|DID4)$/i.test(productCode);
+    var isSarahBookListing = /^(?:SESB1|PID1|PID2|PID3|PID4|PID5|PID6|PID7|PID8|PID9|PID10|PID11|PID12|PID13|PID14|PID15|PID16|PID17|DID1|DID2|DID3|DID4)$/i.test(productCode);
     var lines = [
       'Dear Malinda,',
       '',
