@@ -1,0 +1,53 @@
+name: Update Book 2 paragraph wording
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-book2-paragraph-20261004.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-book2-paragraph:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Apply Book 2 paragraph change
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          old = '  const seoDescription=b.available?`<p class="book-description">A joyful Christmas Bible story for kids about the birth of Jesus, the Nativity, and Luke 2, told through the eyes of Sarah the Baby Sheep.</p>`:``;'
+          new = '  const seoDescription=b.name==="Sarah"?`<p class="book-description">A Joyful Christmas, Bible Story for Children about the Birth of Jesus using Luke 2: 1-10(NIV) as a reference. It is The Nativity Historical Event told through the <strong class="big-blue-eyes">BIG BLUE EYES</strong> of Sarah the Baby Sheep who was a Witness of the Glorious Happening that Forever Changed the World!</p>`:``;'
+
+          if old not in text:
+              raise SystemExit('Expected Book 2 paragraph line not found exactly; no changes made.')
+
+          text = text.replace(old, new, 1)
+          path.write_text(text, encoding='utf-8')
+
+      - name: Verify exact new paragraph
+        shell: python
+        run: |
+          from pathlib import Path
+          text = Path('index.html').read_text(encoding='utf-8')
+          expected = 'A Joyful Christmas, Bible Story for Children about the Birth of Jesus using Luke 2: 1-10(NIV) as a reference. It is The Nativity Historical Event told through the <strong class="big-blue-eyes">BIG BLUE EYES</strong> of Sarah the Baby Sheep who was a Witness of the Glorious Happening that Forever Changed the World!'
+          if expected not in text:
+              raise SystemExit('Verification failed: expected Book 2 paragraph not found.')
+
+      - name: Commit website update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Update Book 2 description paragraph wording"
+          git push
