@@ -1,0 +1,52 @@
+name: Update Big Blue Eyes styling
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-big-blue-eyes.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-homepage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Apply requested Big Blue Eyes wording and colors
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          old_css = ".sarah-subtitle-text{"
+          new_css = ".sarah-subtitle-text,\n.sweetpea-subtitle-text{"
+          if old_css in text and ".sweetpea-subtitle-text{" not in text:
+              text = text.replace(old_css, new_css, 1)
+
+          old_hero = '<h1>Children’s Bible Stories Through the Big Blue Eyes of Adorable Little Animals</h1>'
+          new_hero = '<h1>Children’s Bible Stories Through the <strong class="big-blue-eyes">Big Blue Eyes</strong> of Adorable Little Animals</h1>'
+          if old_hero in text:
+              text = text.replace(old_hero, new_hero, 1)
+
+          old_sweetpea = 'subtitle:"God\'s Message of Caring told through the Eyes of Sweet-Pea the Baby Sparrow!"'
+          new_sweetpea = 'subtitle:"<span class=\'sweetpea-subtitle-text\'>God\'s Message of Caring told through the <strong class=\'big-blue-eyes\'>BIG BLUE EYES</strong> of Sweet-Pea the Baby Sparrow!</span>"'
+          if old_sweetpea in text:
+              text = text.replace(old_sweetpea, new_sweetpea, 1)
+
+          path.write_text(text, encoding='utf-8')
+
+      - name: Commit website update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Style Big Blue Eyes bright blue"
+          git push
