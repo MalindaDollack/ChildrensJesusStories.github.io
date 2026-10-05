@@ -119,15 +119,27 @@ document.addEventListener('DOMContentLoaded', () => {
     return text.replace(/\bKIDS\b/g, 'CHILDREN').replace(/\bKids\b/g, 'Children').replace(/\bkids\b/g, 'children');
   }
 
+  function replaceWebsitePhrases(text) {
+    if (!text) return text;
+    return replaceKids(text)
+      .replace(/Children’s Bible Stories For Children/g, 'Childrens Bible Stories')
+      .replace(/Children's Bible Stories For Children/g, 'Childrens Bible Stories')
+      .replace(/Joyful, colourful Christian children’s books and Bible stories for children that help children discover courage, kindness, obedience, hope, and the love of Jesus\./g, 'Joyful, colourful Bible Adventures that help children discover courage, kindness, obedience, hope, and the love of Jesus.')
+      .replace(/Joyful, colourful Christian children's books and Bible stories for children that help children discover courage, kindness, obedience, hope, and the love of Jesus\./g, 'Joyful, colourful Bible Adventures that help children discover courage, kindness, obedience, hope, and the love of Jesus.')
+      .replace(/Christian children’s books and Bible stories for children/g, 'Bible Adventures for children')
+      .replace(/Christian children's books and Bible stories for children/g, 'Bible Adventures for children')
+      .replace(/Christian stories/gi, 'Bible Adventures');
+  }
+
   function applyAllWording() {
     [...document.querySelectorAll('#bookGrid .book-card')].forEach((card, index) => {
       if (books[index]) setShelfCard(card, books[index]);
     });
 
-    document.title = replaceKids(document.title);
+    document.title = replaceWebsitePhrases(document.title);
     document.querySelectorAll('meta[content]').forEach(meta => {
       const old = meta.getAttribute('content') || '';
-      const next = replaceKids(old);
+      const next = replaceWebsitePhrases(old);
       if (next !== old) meta.setAttribute('content', next);
     });
 
@@ -137,22 +149,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const node = walker.currentNode;
       const parent = node.parentElement;
       if (!parent || /^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE)$/i.test(parent.tagName)) continue;
-      if (/\bkids\b/i.test(node.nodeValue || '')) nodes.push(node);
+      const old = node.nodeValue || '';
+      const next = replaceWebsitePhrases(old);
+      if (next !== old) nodes.push([node, next]);
     }
-    nodes.forEach(node => { node.nodeValue = replaceKids(node.nodeValue); });
+    nodes.forEach(([node, next]) => { node.nodeValue = next; });
 
     document.querySelectorAll('[alt],[title],[aria-label],[placeholder]').forEach(el => {
       ['alt','title','aria-label','placeholder'].forEach(attr => {
         if (!el.hasAttribute(attr)) return;
         const old = el.getAttribute(attr) || '';
-        const next = replaceKids(old);
+        const next = replaceWebsitePhrases(old);
         if (next !== old) el.setAttribute(attr, next);
       });
     });
 
     document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
       const old = link.getAttribute('href') || '';
-      const next = replaceKids(old);
+      const next = replaceWebsitePhrases(old);
       if (next !== old) link.setAttribute('href', next);
     });
   }
