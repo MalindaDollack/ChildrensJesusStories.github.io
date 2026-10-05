@@ -61,6 +61,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Official ISBN master wording and preferred "Children" wording — October 5, 2026.
 document.addEventListener('DOMContentLoaded', () => {
+  const DARK_PURPLE = '#4b146f';
+
+  const repairStyle = document.createElement('style');
+  repairStyle.textContent = `
+    #bookGrid .book-card,
+    #bookGrid .book-card h2,
+    #bookGrid .book-card h3,
+    #bookGrid .book-card p,
+    #bookGrid .book-card .book-title,
+    #bookGrid .book-card .book-subtitle {
+      color: ${DARK_PURPLE} !important;
+    }
+    #bookGrid .book-card .big-blue-eyes {
+      color: #008cff !important;
+      font-weight: 900 !important;
+    }
+    #bookGrid .book-card .book-subtitle {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      margin-top: 10px !important;
+      margin-bottom: 12px !important;
+      line-height: 1.35 !important;
+    }
+  `;
+  document.head.appendChild(repairStyle);
+
   const books = [
     { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV).", subtitle: "Jesus's Birth told through the BIG BLUE EYES of Sarah the Baby Sheep !" },
     { title: "Sweet-Pea the baby Sparrow: Don't Be Afraid ! God Cares ! Even the Feathers on your head are all numbered. Matthew 10: 29-31 (NIV).", subtitle: "God's Message of Caring told through the BIG BLUE EYES of Sweet-Pea the Baby Sparrow !" },
@@ -80,15 +107,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setShelfCard(card, book) {
     const titleEl = card.querySelector('.book-title, h3, h2');
-    if (titleEl && titleEl.textContent.trim() !== book.title) titleEl.textContent = book.title;
+    if (titleEl) {
+      if (titleEl.textContent.trim() !== book.title) titleEl.textContent = book.title;
+      titleEl.style.setProperty('color', DARK_PURPLE, 'important');
+    }
 
     let subtitleEl = card.querySelector('.book-subtitle, [class*="subtitle"]');
     if (!subtitleEl) {
       subtitleEl = [...card.querySelectorAll('p')].find(p => /Message|Birth|BIG BLUE EYES|Eyes of|told through/i.test(p.textContent || ''));
     }
-    if (subtitleEl && subtitleEl.textContent.replace(/\s+/g, ' ').trim() !== book.subtitle.replace(/\s+/g, ' ').trim()) {
-      subtitleEl.innerHTML = styleBlueEyes(book.subtitle);
+    if (!subtitleEl) {
+      subtitleEl = document.createElement('p');
+      subtitleEl.className = 'book-subtitle';
+      const actions = card.querySelector('.book-actions');
+      if (actions) card.insertBefore(subtitleEl, actions);
+      else if (titleEl) titleEl.insertAdjacentElement('afterend', subtitleEl);
+      else card.appendChild(subtitleEl);
     }
+    subtitleEl.classList.add('book-subtitle');
+    subtitleEl.innerHTML = styleBlueEyes(book.subtitle);
+    subtitleEl.style.setProperty('color', DARK_PURPLE, 'important');
+    subtitleEl.style.setProperty('display', 'block', 'important');
+    subtitleEl.style.setProperty('visibility', 'visible', 'important');
+    subtitleEl.style.setProperty('opacity', '1', 'important');
+
+    card.querySelectorAll('p, h2, h3').forEach(el => {
+      el.style.setProperty('color', DARK_PURPLE, 'important');
+    });
   }
 
   function normalizeSarahText(text) {
