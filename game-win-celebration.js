@@ -10,18 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const style = document.createElement('style');
     style.textContent = `
       #storyMatchBoard { position: relative; }
-      .story-match-win-picture {
-        position: absolute;
-        inset: 0;
-        z-index: 20;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 14px;
-        background: #fff;
-        opacity: 1;
-        pointer-events: none;
-      }
+      .story-match-win-picture { position:absolute; inset:0; z-index:20; width:100%; height:100%; object-fit:contain; border-radius:14px; background:#fff; opacity:1; pointer-events:none; }
       .story-match-win-picture.flash { animation: storyMatchWinFlash .55s ease-in-out 4; }
       @keyframes storyMatchWinFlash { 0%,100%{opacity:1} 50%{opacity:.12} }
       @media (prefers-reduced-motion: reduce) { .story-match-win-picture.flash { animation:none; } }
@@ -53,37 +42,27 @@ document.addEventListener('DOMContentLoaded', () => {
     reset.addEventListener('click', () => {
       if (celebrationTimer) clearTimeout(celebrationTimer);
       celebrationTimer = null;
-      board.querySelector('.story-match-win-picture')?.remove();
+      const current = board.querySelector('.story-match-win-picture');
+      if (current) current.remove();
       celebrating = false;
     });
   }
 });
 
-// Official ISBN master wording and preferred "Children" wording — October 5, 2026.
 document.addEventListener('DOMContentLoaded', () => {
   const DARK_PURPLE = '#4b146f';
+  const BRIGHT_BLUE = '#008cff';
 
   const repairStyle = document.createElement('style');
   repairStyle.textContent = `
-    #bookGrid .book-card,
-    #bookGrid .book-card h2,
-    #bookGrid .book-card h3,
-    #bookGrid .book-card p,
-    #bookGrid .book-card .book-title,
-    #bookGrid .book-card .book-subtitle {
-      color: ${DARK_PURPLE} !important;
+    #bookGrid .book-card, #bookGrid .book-card h2, #bookGrid .book-card h3,
+    #bookGrid .book-card p, #bookGrid .book-card .book-title, #bookGrid .book-card .book-subtitle {
+      color:${DARK_PURPLE}!important;
     }
-    #bookGrid .book-card .big-blue-eyes {
-      color: #008cff !important;
-      font-weight: 900 !important;
-    }
+    #bookGrid .book-card .big-blue-eyes { color:${BRIGHT_BLUE}!important; font-weight:900!important; }
     #bookGrid .book-card .book-subtitle {
-      display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      margin-top: 10px !important;
-      margin-bottom: 12px !important;
-      line-height: 1.35 !important;
+      display:block!important; visibility:visible!important; opacity:1!important;
+      margin:10px 0 12px!important; line-height:1.35!important;
     }
   `;
   document.head.appendChild(repairStyle);
@@ -93,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { title: "Sweet-Pea the baby Sparrow: Don't Be Afraid ! God Cares ! Even the Feathers on your head are all numbered. Matthew 10: 29-31 (NIV).", subtitle: "God's Message of Caring told through the BIG BLUE EYES of Sweet-Pea the Baby Sparrow !" },
     { title: "Larry the Lizard: Larry Leaps with the Lepers !  Only One Leper Thanks Jesus. The Healing of the Ten Lepers. Luke 17: 11-19 (NIV).", subtitle: "God's Message of Thankfulness and Healing  told through BIG BLUE EYES of Larry the Lizard !" },
     { title: "Davy the Donkey: Davey Speaks Out Loud ! Davy sees an Angel. Balaam Doesn't and is Mean. Balaam Sees the Angel and Changes. Balaam is Now, Kind and Truthful. Numbers 22: 21-41 (NIV).", subtitle: "God's Message of Kindness and Truthfulness told through BIG BLUE EYES Davy the Donkey !" },
-    { title: "Patsy the Plain Peacock: Patsy Gives Esther Fashion Advice !  Esther is Clothed with Strength and Dignity. Esther is chosen as Queen. Esther 2: 1-17 (NIV) Proverbs 31: 10-31 (NIV).", subtitle: "God's Message of How to Dress told through BIG BLUE EYES Patsy the Plain Peacock !" },
+    { title: "Patsy the Plain Peacock: Gives Queen Esther Fashion Advice Esther 4:13-17 (NIV).", subtitle: "God's Message of How to Dress told through BIG BLUE EYES Patsy the Plain Peacock !" },
     { title: "Francesco the Frog: The Frog Fiesta in Egypt ! Frogs Moved in Everywhere. The Second Plague of Egypt. Exodus 8:1-15 (NIV).", subtitle: "God's Message of Obedience told through BIG BLUE EYES Francesco the Frog !" },
     { title: "Freddy the Ferret: Freddy Finds Fun in the Firey Furnace with Friends ! Freddy Trusted God to Deliver him from the Flames. Daniel In the Lion's Den. Daniel 3:1-30 (NIV).", subtitle: "God's Message of Trust told through BIG BLUE EYES Freddy the Ferret !" },
     { title: "Joy the Fish: Joy Learns about her Forever Pond ! Heaven our Forever Home. Papa Fish Sings over the Eggs. Jesus Sings Over All Of Us! Zepheniah 3:17 (NIV).", subtitle: "God's Message of Heaven and how He sings over all of us told through BIG BLUE EYES Joy the Fish !" },
@@ -103,7 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
     { title: "Barry the Blind Mole: Barry and a Blind Man Read Braille. Barry Receives His Sight ! Jesus Heals a Blind Man. John 9:25 (NIV).", subtitle: "God's Message of Healing told through BIG BLUE EYES Barry the Blind Mole !" }
   ];
 
-  const styleBlueEyes = text => text.replace(/BIG BLUE EYES/g, '<strong class="big-blue-eyes">BIG BLUE EYES</strong>');
+  function styleBlueEyes(text) {
+    return text.replace(/BIG BLUE EYES/g, '<strong class="big-blue-eyes">BIG BLUE EYES</strong>');
+  }
 
   function setShelfCard(card, book) {
     const titleEl = card.querySelector('.book-title, h3, h2');
@@ -125,83 +106,25 @@ document.addEventListener('DOMContentLoaded', () => {
       else card.appendChild(subtitleEl);
     }
     subtitleEl.classList.add('book-subtitle');
-    subtitleEl.innerHTML = styleBlueEyes(book.subtitle);
+    const wanted = styleBlueEyes(book.subtitle);
+    if (subtitleEl.innerHTML !== wanted) subtitleEl.innerHTML = wanted;
     subtitleEl.style.setProperty('color', DARK_PURPLE, 'important');
     subtitleEl.style.setProperty('display', 'block', 'important');
     subtitleEl.style.setProperty('visibility', 'visible', 'important');
     subtitleEl.style.setProperty('opacity', '1', 'important');
-
-    card.querySelectorAll('p, h2, h3').forEach(el => {
-      el.style.setProperty('color', DARK_PURPLE, 'important');
-    });
-  }
-
-  function normalizeSarahText(text) {
-    if (!text || !/Sarah the Baby Sheep/i.test(text)) return text;
-    const official = books[0].title;
-    return text
-      .replace(/Sarah the Baby Sheep:\s*My Shepherd,\s*Jesus's Birth[.,]\s*The Christmas Story(?:\s*Edition)?[.,]?\s*Luke\s*2:\s*1-20\s*\(NIV\)\.?/gi, official)
-      .replace(/Sarah the Baby Sheep:\s*My Shepherd,\s*Jesus's Birth[.,]\s*The Christmas Story[.,]?\s*Luke\s*2:\s*1-20\s*\(NIV\)\.?/gi, official)
-      .replace(/Sarah the Baby Sheep:\s*My Shepherd,\s*Jesus's Birth[.,]\s*The Christmas Story\.?/gi, "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story.");
   }
 
   function replaceKids(text) {
     if (!text) return text;
-    return text
-      .replace(/\bKIDS\b/g, 'CHILDREN')
-      .replace(/\bKids\b/g, 'Children')
-      .replace(/\bkids\b/g, 'children');
+    return text.replace(/\bKIDS\b/g, 'CHILDREN').replace(/\bKids\b/g, 'Children').replace(/\bkids\b/g, 'children');
   }
 
-  function applyOfficialIsbnWording() {
+  function applyAllWording() {
     [...document.querySelectorAll('#bookGrid .book-card')].forEach((card, index) => {
       if (books[index]) setShelfCard(card, books[index]);
     });
 
-    document.querySelectorAll('#store h3, #store p, #store a, #store img[alt], [aria-label], [title]').forEach(el => {
-      if (el.tagName === 'IMG') {
-        const next = normalizeSarahText(el.alt);
-        if (next !== el.alt) el.alt = next;
-        return;
-      }
-      if (el.hasAttribute && el.hasAttribute('aria-label')) {
-        const old = el.getAttribute('aria-label');
-        const next = normalizeSarahText(old);
-        if (next !== old) el.setAttribute('aria-label', next);
-      }
-      if (el.hasAttribute && el.hasAttribute('title')) {
-        const old = el.getAttribute('title');
-        const next = normalizeSarahText(old);
-        if (next !== old) el.setAttribute('title', next);
-      }
-      if (el.tagName === 'A' && /^mailto:/i.test(el.getAttribute('href') || '')) {
-        try {
-          const decoded = decodeURIComponent(el.getAttribute('href'));
-          const next = normalizeSarahText(decoded);
-          if (next !== decoded) el.setAttribute('href', encodeURI(next).replace(/#/g, '%23'));
-        } catch (_) {}
-      }
-      if (el.childNodes.length === 1 && el.firstChild.nodeType === Node.TEXT_NODE) {
-        const old = el.textContent;
-        const next = normalizeSarahText(old);
-        if (next !== old) el.textContent = next;
-      }
-    });
-
-    document.querySelectorAll('#store *').forEach(el => {
-      if (el.childNodes.length !== 1 || el.firstChild.nodeType !== Node.TEXT_NODE) return;
-      const old = el.textContent || '';
-      const fixed = old
-        .replace(/Jesus's Birthtold through the BIG BLUE EYES of Sarah the Baby Sheep\s*!/gi, books[0].subtitle)
-        .replace(/Jesus's Birth\s+through the BIG BLUE EYES of Sarah the Baby Sheep\s*!/gi, books[0].subtitle)
-        .replace(/Jesus's Birth\s+told through the BIG BLUE EYES of Sarah the Baby Sheep\s*!/gi, books[0].subtitle);
-      if (fixed !== old) el.textContent = fixed;
-    });
-  }
-
-  function applyChildrenWording() {
     document.title = replaceKids(document.title);
-
     document.querySelectorAll('meta[content]').forEach(meta => {
       const old = meta.getAttribute('content') || '';
       const next = replaceKids(old);
@@ -234,15 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function applyWebsiteWording() {
-    applyOfficialIsbnWording();
-    applyChildrenWording();
-  }
-
-  [0, 250, 800, 1600].forEach(ms => setTimeout(applyWebsiteWording, ms));
-  const wordingObserver = new MutationObserver(() => {
+  [0, 250, 800, 1600].forEach(ms => setTimeout(applyAllWording, ms));
+  const observer = new MutationObserver(() => {
     clearTimeout(window.__officialWordingTimer);
-    window.__officialWordingTimer = setTimeout(applyWebsiteWording, 60);
+    window.__officialWordingTimer = setTimeout(applyAllWording, 80);
   });
-  wordingObserver.observe(document.body, { childList:true, subtree:true, characterData:true });
+  observer.observe(document.body, { childList:true, subtree:true, characterData:true });
 });
