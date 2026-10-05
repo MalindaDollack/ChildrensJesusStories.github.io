@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
 
+# Registered workflow: perform this exact one-time source replacement.
 jobs:
   fix:
     runs-on: ubuntu-latest
