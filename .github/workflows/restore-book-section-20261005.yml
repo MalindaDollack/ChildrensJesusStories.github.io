@@ -1,0 +1,60 @@
+name: Restore complete 12-book section safely
+on:
+  push:
+    paths:
+      - '.github/workflows/restore-book-section-20261005.yml'
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore known-good index and apply only requested book fixes
+        shell: python
+        run: |
+          import subprocess, re, pathlib
+          p = pathlib.Path('index.html')
+          good = subprocess.check_output(['git','show','d358d23ed8ea856b9cc346eafdfbd2df3f4f0134:index.html'], text=True)
+          text = good
+
+          text = text.replace('Children’s Bible Stories & Christian Books for Kids', 'Children’s Bible Stories For Children')
+          text = text.replace("Children's Bible Stories & Christian Books for Kids", 'Children’s Bible Stories For Children')
+
+          books_block = r'''const books = [
+  {name:"Sweet-Pea", title:"Sweet-Pea the baby Sparrow: Don't Be Afraid ! God Cares ! Even the Feathers on your head are all numbered. Matthew 10: 29-31 (NIV).", subtitle:"God's Message of Caring told through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sweet-Pea the Baby Sparrow !", ref:"Matthew 10:29–31 NIV", img:"web-images/sweet-pea book cover for library.webp?v=1", release:"Coming November 1, 2026"},
+  {name:"Sarah", title:"Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV).", subtitle:"Jesus's Birth told through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !", ref:"Luke 2:1–20 NIV", img:"web-images/sarah book cover for library.webp?v=1", bookmark:"web-images/sarah-new.webp?v=1", release:"Available Now! • December 1, 2026", available:true},
+  {name:"Larry", title:"Larry the Lizard: Larry Leaps with the Lepers !  Only One Leper Thanks Jesus. The Healing of the Ten Lepers. Luke 17: 11-19 (NIV).", subtitle:"God's Message of Thankfulness and Healing  told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Larry the Lizard !", ref:"Luke 17:11–19 NIV", img:"web-images/larry-new.webp?v=1", release:"January 2027"},
+  {name:"Davy", title:"Davy the Donkey: Davey Speaks Out Loud ! Davy sees an Angel. Balaam Doesn't and is Mean. Balaam Sees the Angel and Changes. Balaam is Now, Kind and Truthful. Numbers 22: 21-41 (NIV).", subtitle:"God's Message of Kindness and Truthfulness told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Davy the Donkey !", ref:"Numbers 22:21–39 NIV", img:"web-images/davy-new.webp?v=1", release:"February 2027"},
+  {name:"Patsy", title:"Patsy the Plain Peacock: Gives Queen Esther Fashion Advice Esther 4:13-17 (NIV).", subtitle:"God's Message of How to Dress told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Patsy the Plain Peacock !", ref:"Esther 4:13–17 NIV", img:"web-images/patsy-new.webp?v=1", release:"March 2027"},
+  {name:"Francesco", title:"Francesco the Frog: The Frog Fiesta in Egypt ! Frogs Moved in Everywhere. The Second Plague of Egypt. Exodus 8:1-15 (NIV).", subtitle:"God's Message of Obedience told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Francesco the Frog !", ref:"Exodus 8:1–15 NIV", img:"web-images/francesco-new.webp?v=1", release:"April 2027"},
+  {name:"Freddy", title:"Freddy the Ferret: Freddy Finds Fun in the Firey Furnace with Friends ! Freddy Trusted God to Deliver him from the Flames. Daniel In the Lion's Den. Daniel 3:1-30 (NIV).", subtitle:"God's Message of Trust told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Freddy the Ferret !", ref:"Daniel 3:1–30 NIV", img:"web-images/freddy-new.webp?v=1", release:"May 2027"},
+  {name:"Joy", title:"Joy the Fish: Joy Learns about her Forever Pond ! Heaven our Forever Home. Papa Fish Sings over the Eggs. Jesus Sings Over All Of Us! Zepheniah 3:17 (NIV).", subtitle:"God's Message of Heaven and how He sings over all of us told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Joy the Fish !", ref:"Zepheniah 3:17 NIV", img:"web-images/joy-new.webp?v=1", release:"June 2027"},
+  {name:"Willy", title:"Willy the Water Strider Bug: Willy Walks on Water with Peter ! Peter Walks on Water Towards Jesus. Peter takes his Eyes Off Jesus and Sinks! Matthew 14:22-33 (NIV).", subtitle:"God's Message Keeping Our Eyes on Jesus  told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Willy the Water Strider Bug !", ref:"Matthew 14:22–33 NIV", img:"web-images/willy-new.webp?v=1", release:"July 2027"},
+  {name:"Wally", title:"Wally the Whale: Wally Obeys God !  Wally Swallows a Human. Wally Gets Sick. Jonah Obeys God.  Jonah and the Whale. Jonah 1:1-17 (NIV).", subtitle:"God's Message of Always Do What God Says told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Wally the Whale !", ref:"Jonah 1:1–17 NIV", img:"web-images/wally-new.webp?v=1", release:"August 2027"},
+  {name:"Levi", title:"Levi the Lion: Levi Listens to God and Shuts His Mouth ! Sign Language helps Levi speaks to Daniel. Daniel In the Lion's Den. Daniel 6:1-28 (NIV).", subtitle:"God's Message of Protection told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Levi the Lion !", ref:"Daniel 6:1–28 NIV", img:"web-images/levi-new.webp?v=1", release:"September 2027"},
+  {name:"Barry", title:"Barry the Blind Mole: Barry and a Blind Man Read Braille. Barry Receives His Sight ! Jesus Heals a Blind Man. John 9:25 (NIV).", subtitle:"God's Message of Healing told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Barry the Blind Mole !", ref:"John 9:25 NIV", img:"web-images/barry-new.webp?v=1", release:"October 2027"}
+];'''
+
+          start = text.index('const books = [')
+          end = text.index('];', start) + 2
+          text = text[:start] + books_block + text[end:]
+          text = text.replace('${i<2&&b.subtitle?`<p class="reference" style="margin-top:16px">Subtitle: ${b.subtitle}</p>`:``}', '${b.subtitle?`<p class="reference" style="margin-top:16px">Subtitle: ${b.subtitle}</p>`:``}')
+
+          assert '<section class="shelf-section" id="books">' in text
+          assert '<div class="bookcase"><div class="shelf-grid" id="bookGrid"></div></div>' in text
+          assert text.count(' subtitle:') >= 12
+          assert 'i<2&&b.subtitle' not in text
+          assert 'Children’s Bible Stories For Children' in text
+          assert 'Patsy the Plain Peacock: Gives Queen Esther Fashion Advice Esther 4:13-17 (NIV).' in text
+
+          p.write_text(text, encoding='utf-8')
+      - name: Commit restored section
+        run: |
+          git config user.name "Malinda Dollack"
+          git config user.email "dollackj316@gmail.com"
+          git add index.html
+          git commit -m "Restore complete 12-book collection section" || exit 0
+          git push
