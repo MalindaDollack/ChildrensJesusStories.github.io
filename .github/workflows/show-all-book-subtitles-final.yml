@@ -13,20 +13,67 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Remove first-two-only subtitle restriction
+      - name: Add missing subtitles directly to current index
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          p=Path('index.html')
-          text=p.read_text(encoding='utf-8')
-          text=text.replace('i<2&&b.subtitle','b.subtitle')
-          text=text.replace('${i<2&&b.subtitle?','${b.subtitle?')
-          p.write_text(text,encoding='utf-8')
+
+          p = Path('index.html')
+          text = p.read_text(encoding='utf-8')
+
+          text = text.replace('Children’s Bible Stories & Christian Books for Kids', 'Children’s Bible Stories For Children')
+          text = text.replace("Children's Bible Stories & Christian Books for Kids", 'Children’s Bible Stories For Children')
+
+          subtitles = {
+            'Larry': "God's Message of Thankfulness and Healing  told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Larry the Lizard !",
+            'Davy': "God's Message of Kindness and Truthfulness told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Davy the Donkey !",
+            'Patsy': "God's Message of How to Dress told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Patsy the Plain Peacock !",
+            'Francesco': "God's Message of Obedience told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Francesco the Frog !",
+            'Freddy': "God's Message of Trust told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Freddy the Ferret !",
+            'Joy': "God's Message of Heaven and how He sings over all of us told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Joy the Fish !",
+            'Willy': "God's Message Keeping Our Eyes on Jesus  told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Willy the Water Strider Bug !",
+            'Wally': "God's Message of Always Do What God Says told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Wally the Whale !",
+            'Levi': "God's Message of Protection told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Levi the Lion !",
+            'Barry': "God's Message of Healing told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Barry the Blind Mole !",
+          }
+
+          lines = text.splitlines()
+          found = set()
+          for n, line in enumerate(lines):
+              for name, subtitle in subtitles.items():
+                  marker = '{name:"' + name + '"'
+                  if marker in line:
+                      found.add(name)
+                      if 'subtitle:' not in line:
+                          needle = ', ref:'
+                          if needle not in line:
+                              raise SystemExit('No ref field on ' + name)
+                          lines[n] = line.replace(needle, ', subtitle:"' + subtitle + '", ref:', 1)
+                      break
+
+          missing = set(subtitles) - found
+          if missing:
+              raise SystemExit('Missing book records: ' + ', '.join(sorted(missing)))
+
+          text = '\n'.join(lines) + ('\n' if text.endswith('\n') else '')
+          text = text.replace('i<2&&b.subtitle', 'b.subtitle')
+          text = text.replace('${i<2&&b.subtitle?', '${b.subtitle?')
+
+          start = text.index('const books = [')
+          end = text.index('];', start)
+          block = text[start:end]
+          if block.count('subtitle:') != 12:
+              raise SystemExit('Expected 12 subtitle fields, found ' + str(block.count('subtitle:')))
+          if 'Children’s Bible Stories For Children' not in text:
+              raise SystemExit('Heading not corrected')
+
+          p.write_text(text, encoding='utf-8')
+          print('Verified index source contains 12 subtitle fields.')
           PY
-      - name: Commit
+      - name: Commit verified index repair
         run: |
           git config user.name 'Malinda Dollack'
           git config user.email 'dollackj316@gmail.com'
           git add index.html
-          git commit -m 'Display subtitles on all 12 book cards' || true
+          git diff --cached --quiet || git commit -m 'Restore all 12 book subtitles in live source'
           git push
