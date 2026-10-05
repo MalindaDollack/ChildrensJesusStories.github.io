@@ -1,6 +1,6 @@
 // Stable website enhancements loader - August 31, 2026.
 document.write('<script src="script-enhancements.js?v=9"><\/script>');
-document.write('<script src="game-win-celebration.js?v=6"><\/script>');
+document.write('<script src="game-win-celebration.js?v=9"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
   const WEBSITE_EMAIL = 'berachahdirector@gmail.com';
@@ -239,8 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     var productCode = codeMatch[1];
     var isDigital = /^DID/i.test(productCode);
-    // Use an ordinary hyphen in outgoing e-mail text so older Windows/e-mail
-    // programs never display the em dash as mojibake such as "â€”".
     var emailProductTitle = productTitle.replace(/[—–]/g, ' - ').replace(/\s+/g, ' ').trim();
     var isSarahBookListing = /^(?:SESB1|PID1|PID2|PID3|PID4|PID5|PID6|PID7|PID8|PID9|PID10|PID11|PID12|PID13|PID14|PID15|PID16|PID17|DID1|DID2|DID3|DID4)$/i.test(productCode);
     var lines = [
@@ -265,19 +263,6 @@ document.addEventListener('DOMContentLoaded', () => {
       'God Bless You and Your Family Mightily !'
     );
 
-    link.textContent = 'Buy Now';
-    link.href = 'mailto:' + WEBSITE_EMAIL +
-      '?subject=' + encodeURIComponent(productCode) +
-      '&body=' + encodeURIComponent(lines.join('\n'));
-
-    if (card.classList.contains('special-samaritan-card')) {
-      link.style.setProperty('background', '#c40000', 'important');
-      link.style.setProperty('color', '#ffffff', 'important');
-      link.style.setProperty('border-color', '#c40000', 'important');
-    } else {
-      link.style.setProperty('background', '#5b197d', 'important');
-      link.style.setProperty('color', '#ffffff', 'important');
-    }
+    link.href = 'mailto:' + WEBSITE_EMAIL + '?subject=' + encodeURIComponent(productCode) + '&body=' + encodeURIComponent(lines.join('\n'));
   });
-
 });
