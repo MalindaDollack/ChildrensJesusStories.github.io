@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       key: 'Sarah the Baby Sheep',
       title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV).",
-      subtitle: "Jesus's Birthtold through the BIG BLUE EYES of Sarah the Baby Sheep !"
+      subtitle: "Jesus's Birth told through the BIG BLUE EYES of Sarah the Baby Sheep !"
     },
     {
       key: 'Sweet-Pea',
@@ -165,8 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (book) setShelfCard(card, book);
     });
 
-    // Sarah appears throughout the current store. Keep her official ISBN title as
-    // the product-title prefix while retaining each item's edition/product wording.
     document.querySelectorAll('#store h3, #store p, #store a, #store img[alt], [aria-label], [title]').forEach(el => {
       if (el.tagName === 'IMG') {
         const next = normalizeSarahText(el.alt);
@@ -197,18 +195,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // The official Sarah subtitle is also used in order forms and store listings.
     document.querySelectorAll('#store *').forEach(el => {
       if (el.childNodes.length !== 1 || el.firstChild.nodeType !== Node.TEXT_NODE) return;
       const old = el.textContent || '';
-      if (/Jesus's Birth\s+through the BIG BLUE EYES of Sarah the Baby Sheep\s*!/i.test(old) || /Jesus's Birthtold through the BIG BLUE EYES of Sarah the Baby Sheep\s*!/i.test(old)) {
-        el.textContent = old.replace(/Jesus's Birth(?:told|\s+through)?\s*through?\s*the BIG BLUE EYES of Sarah the Baby Sheep\s*!/i, books[0].subtitle);
+      if (/Jesus's Birth\s+through the BIG BLUE EYES of Sarah the Baby Sheep\s*!/i.test(old) || /Jesus's Birthtold through the BIG BLUE EYES of Sarah the Baby Sheep\s*!/i.test(old) || /Jesus's Birth told through the BIG BLUE EYES of Sarah the Baby Sheep\s*!/i.test(old)) {
+        el.textContent = old.replace(/Jesus's Birth(?:told|\s+told|\s+through)?\s*through?\s*the BIG BLUE EYES of Sarah the Baby Sheep\s*!/i, books[0].subtitle);
       }
     });
   }
 
-  // Run after the shelf/store has been drawn, then keep it correct if older code
-  // redraws any of those elements later.
   [0, 250, 800, 1600].forEach(ms => setTimeout(applyOfficialIsbnWording, ms));
   const isbnObserver = new MutationObserver(() => {
     clearTimeout(window.__isbnMasterTimer);
