@@ -198,8 +198,8 @@ if (pid15Card) {
   // PID16 and PID17: use the correct photographed covers and keep every picture
   // in both the main ads and their expanded descriptions the same displayed size.
   [
-    { id: 'store-PID16', src: 'Thank You 20lb Saddle Book.jpg?v=20261005', alt: 'Thank You 20lb Saddle Book' },
-    { id: 'store-PID17', src: 'Thank You 28lb Saddle Book.jpg?v=20261005', alt: 'Thank You 28lb Saddle Book' }
+    { id: 'store-PID16', src: 'Thank You 20lb Saddle Book.jpg?v=20261005d', alt: 'Thank You 20lb Saddle Book' },
+    { id: 'store-PID17', src: 'Thank You 28lb Saddle Book.jpg?v=20261005d', alt: 'Thank You 28lb Saddle Book' }
   ].forEach(item => {
     const card = document.getElementById(item.id);
     if (!card) return;
