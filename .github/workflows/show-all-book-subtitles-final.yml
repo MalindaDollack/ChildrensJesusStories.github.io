@@ -78,3 +78,5 @@ jobs:
           git add index.html
           git diff --cached --quiet || git commit -m 'Restore all 12 book subtitles in live source'
           git push
+
+# Deployment retrigger after previous Pages deployment conflict.
