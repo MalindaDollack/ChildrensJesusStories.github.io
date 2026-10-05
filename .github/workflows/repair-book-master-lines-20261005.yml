@@ -1,0 +1,120 @@
+name: Repair all 12 book master lines October 5 2026
+
+on:
+  push:
+    paths:
+      - '.github/workflows/repair-book-master-lines-20261005.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Repair exact book titles subtitles and shelf heading
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('index.html')
+          text = p.read_text(encoding='utf-8')
+
+          text = text.replace('Children’s Bible Stories & Christian Books for Kids', 'Children’s Bible Stories For Children')
+          text = text.replace("Children's Bible Stories & Christian Books for Kids", 'Children’s Bible Stories For Children')
+
+          master = {
+            'Sweet-Pea': (
+              "Sweet-Pea the baby Sparrow: Don't Be Afraid ! God Cares ! Even the Feathers on your head are all numbered. Matthew 10: 29-31 (NIV).",
+              "God's Message of Caring told through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sweet-Pea the Baby Sparrow !"
+            ),
+            'Sarah': (
+              "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV).",
+              "Jesus's Birth told through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !"
+            ),
+            'Larry': (
+              "Larry the Lizard: Larry Leaps with the Lepers !  Only One Leper Thanks Jesus. The Healing of the Ten Lepers. Luke 17: 11-19 (NIV).",
+              "God's Message of Thankfulness and Healing  told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Larry the Lizard !"
+            ),
+            'Davy': (
+              "Davy the Donkey: Davey Speaks Out Loud ! Davy sees an Angel. Balaam Doesn't and is Mean. Balaam Sees the Angel and Changes. Balaam is Now, Kind and Truthful. Numbers 22: 21-41 (NIV).",
+              "God's Message of Kindness and Truthfulness told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Davy the Donkey !"
+            ),
+            'Patsy': (
+              "Patsy the Plain Peacock: Gives Queen Esther Fashion Advice Esther 4:13-17 (NIV).",
+              "God's Message of How to Dress told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Patsy the Plain Peacock !"
+            ),
+            'Francesco': (
+              "Francesco the Frog: The Frog Fiesta in Egypt ! Frogs Moved in Everywhere. The Second Plague of Egypt. Exodus 8:1-15 (NIV).",
+              "God's Message of Obedience told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Francesco the Frog !"
+            ),
+            'Freddy': (
+              "Freddy the Ferret: Freddy Finds Fun in the Firey Furnace with Friends ! Freddy Trusted God to Deliver him from the Flames. Daniel In the Lion's Den. Daniel 3:1-30 (NIV).",
+              "God's Message of Trust told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Freddy the Ferret !"
+            ),
+            'Joy': (
+              "Joy the Fish: Joy Learns about her Forever Pond ! Heaven our Forever Home. Papa Fish Sings over the Eggs. Jesus Sings Over All Of Us! Zepheniah 3:17 (NIV).",
+              "God's Message of Heaven and how He sings over all of us told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Joy the Fish !"
+            ),
+            'Willy': (
+              "Willy the Water Strider Bug: Willy Walks on Water with Peter ! Peter Walks on Water Towards Jesus. Peter takes his Eyes Off Jesus and Sinks! Matthew 14:22-33 (NIV).",
+              "God's Message Keeping Our Eyes on Jesus  told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Willy the Water Strider Bug !"
+            ),
+            'Wally': (
+              "Wally the Whale: Wally Obeys God !  Wally Swallows a Human. Wally Gets Sick. Jonah Obeys God.  Jonah and the Whale. Jonah 1:1-17 (NIV).",
+              "God's Message of Always Do What God Says told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Wally the Whale !"
+            ),
+            'Levi': (
+              "Levi the Lion: Levi Listens to God and Shuts His Mouth ! Sign Language helps Levi speaks to Daniel. Daniel In the Lion's Den. Daniel 6:1-28 (NIV).",
+              "God's Message of Protection told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Levi the Lion !"
+            ),
+            'Barry': (
+              "Barry the Blind Mole: Barry and a Blind Man Read Braille. Barry Receives His Sight ! Jesus Heals a Blind Man. John 9:25 (NIV).",
+              "God's Message of Healing told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Barry the Blind Mole !"
+            ),
+          }
+
+          lines = text.splitlines()
+          seen = set()
+          for i, line in enumerate(lines):
+              for name, (title, subtitle) in master.items():
+                  marker = '{name:"' + name + '"'
+                  if marker not in line:
+                      continue
+                  refpos = line.find('ref:')
+                  if refpos == -1:
+                      continue
+                  indent = line[:len(line)-len(line.lstrip())]
+                  suffix = line[refpos:]
+                  lines[i] = indent + '{name:"' + name + '", title:"' + title + '", subtitle:"' + subtitle + '", ' + suffix
+                  seen.add(name)
+                  break
+
+          missing = set(master) - seen
+          if missing:
+              raise SystemExit('Missing book lines: ' + ', '.join(sorted(missing)))
+
+          text = '\n'.join(lines) + ('\n' if text.endswith('\n') else '')
+          text = text.replace('i<2&&b.subtitle', 'b.subtitle')
+          p.write_text(text, encoding='utf-8')
+          PY
+      - name: Verify all 12 subtitles exist
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          text=Path('index.html').read_text(encoding='utf-8')
+          assert 'Children’s Bible Stories For Children' in text
+          assert 'i<2&&b.subtitle' not in text
+          block=text.split('const books = [',1)[1].split('];',1)[0]
+          assert block.count('subtitle:') == 12, block.count('subtitle:')
+          assert 'Patsy the Plain Peacock: Gives Queen Esther Fashion Advice Esther 4:13-17 (NIV).' in block
+          print('Verified 12 subtitle fields and corrected heading.')
+          PY
+      - name: Commit repair
+        run: |
+          git config user.name 'Malinda Dollack'
+          git config user.email 'dollackj316@gmail.com'
+          git add index.html
+          git diff --cached --quiet || git commit -m 'Repair all 12 book titles and subtitles'
+          git push
