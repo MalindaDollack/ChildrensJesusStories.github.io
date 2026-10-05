@@ -1,0 +1,154 @@
+name: Update PID7 PID8 Baby Book Pictures
+
+on:
+  push:
+    paths:
+      - '.github/workflows/update-pid7-pid8-baby-book-pictures.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-pid7-pid8-pictures:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Replace PID7 and PID8 pictures only
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          main_image = 'baby book thank you.jpg?v=20261004b'
+          description_images = [
+              'baby book spread.jpg',
+              'baby book alone.jpg',
+              'baby book horizontal.jpg',
+              'baby book vertical.jpg',
+              'baby book dedication.jpg',
+              'baby book frog.jpg',
+              'baby book mailing.jpg',
+          ]
+
+          def description_gallery(pid):
+              figures = []
+              for name in description_images:
+                  figures.append(
+                      '<figure style="margin:0;text-align:center;">'
+                      f'<img loading="lazy" decoding="async" src="{name}?v=20261004b" alt="{name}" '
+                      'style="display:block;width:100%;height:auto!important;aspect-ratio:auto!important;object-fit:contain;margin:0 auto;">'
+                      f'<figcaption style="margin-top:6px;color:#4b146f;font-weight:800;line-height:1.25;">{name}</figcaption>'
+                      '</figure>'
+                  )
+              return (
+                  f'\n<!-- {pid}-BABY-BOOK-DESCRIPTION-PICTURES -->\n'
+                  f'<div class="{pid.lower()}-baby-book-photo-gallery" '
+                  'style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0;">'
+                  + ''.join(figures) +
+                  '</div>\n'
+                  f'<!-- END-{pid}-BABY-BOOK-DESCRIPTION-PICTURES -->\n'
+              )
+
+          for pid in ('PID7', 'PID8'):
+              article_pattern = re.compile(
+                  r'(<article\b[^>]*\bid="store-' + re.escape(pid) + r'"[^>]*>)(.*?)(</article>)',
+                  re.S,
+              )
+              match = article_pattern.search(s)
+              if not match:
+                  raise SystemExit(f'Could not find store card for {pid}')
+
+              body = match.group(2)
+
+              # Remove every existing main/gallery picture before the product title,
+              # then use only baby book thank you.jpg as the main picture.
+              body, count = re.subn(
+                  r'^\s*.*?(?=<h3>)',
+                  '\n<img loading="lazy" decoding="async" src="' + main_image + '" alt="baby book thank you.jpg" '
+                  'style="display:block;width:100%;height:auto!important;aspect-ratio:auto!important;object-fit:contain;margin:0 auto;">\n',
+                  body,
+                  count=1,
+                  flags=re.S,
+              )
+              if count != 1:
+                  raise SystemExit(f'Could not replace main picture area for {pid}; replacements={count}')
+
+              # Remove an older copy of this exact description gallery if workflow is re-run.
+              body = re.sub(
+                  r'\s*<!-- ' + re.escape(pid) + r'-BABY-BOOK-DESCRIPTION-PICTURES -->.*?<!-- END-' + re.escape(pid) + r'-BABY-BOOK-DESCRIPTION-PICTURES -->\s*',
+                  '\n',
+                  body,
+                  flags=re.S,
+              )
+
+              # Put the seven remaining named pictures inside the description,
+              # directly after the description title/subtitle block.
+              desc_pattern = re.compile(r'(<div class="isbn-title-description">.*?</div>)', re.S)
+              body, count = desc_pattern.subn(
+                  lambda m: m.group(1) + description_gallery(pid),
+                  body,
+                  count=1,
+              )
+              if count != 1:
+                  raise SystemExit(f'Could not add description pictures for {pid}; replacements={count}')
+
+              new_article = match.group(1) + body + match.group(3)
+              s = s[:match.start()] + new_article + s[match.end():]
+
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Verify PID7 and PID8 picture setup
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          s = Path('index.html').read_text(encoding='utf-8')
+          expected = [
+              'baby book thank you.jpg',
+              'baby book spread.jpg',
+              'baby book alone.jpg',
+              'baby book horizontal.jpg',
+              'baby book vertical.jpg',
+              'baby book dedication.jpg',
+              'baby book frog.jpg',
+              'baby book mailing.jpg',
+          ]
+
+          for pid in ('PID7', 'PID8'):
+              m = re.search(r'<article\b[^>]*\bid="store-' + pid + r'"[^>]*>(.*?)</article>', s, re.S)
+              if not m:
+                  raise SystemExit(f'Missing {pid}')
+              card = m.group(1)
+              before_title = card.split('<h3>', 1)[0]
+              if before_title.count('<img') != 1 or 'baby book thank you.jpg' not in before_title:
+                  raise SystemExit(f'{pid} main picture is not exactly one baby book thank you.jpg')
+              for name in expected:
+                  if name not in card:
+                      raise SystemExit(f'{pid} missing {name}')
+              for name in expected[1:]:
+                  if f'<figcaption style="margin-top:6px;color:#4b146f;font-weight:800;line-height:1.25;">{name}</figcaption>' not in card:
+                      raise SystemExit(f'{pid} missing filename caption for {name}')
+          print('PID7 and PID8 picture setup verified')
+          PY
+
+      - name: Commit website update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+          else
+            git commit -m "Update PID7 and PID8 baby book pictures"
+            git push origin main
+          fi
