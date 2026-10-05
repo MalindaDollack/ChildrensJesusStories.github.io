@@ -1,0 +1,32 @@
+name: Show all 12 book subtitles final
+
+on:
+  push:
+    paths:
+      - '.github/workflows/show-all-book-subtitles-final.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove first-two-only subtitle restriction
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          text=p.read_text(encoding='utf-8')
+          text=text.replace('i<2&&b.subtitle','b.subtitle')
+          text=text.replace('${i<2&&b.subtitle?','${b.subtitle?')
+          p.write_text(text,encoding='utf-8')
+          PY
+      - name: Commit
+        run: |
+          git config user.name 'Malinda Dollack'
+          git config user.email 'dollackj316@gmail.com'
+          git add index.html
+          git commit -m 'Display subtitles on all 12 book cards' || true
+          git push
