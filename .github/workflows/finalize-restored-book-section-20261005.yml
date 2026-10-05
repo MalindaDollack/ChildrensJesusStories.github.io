@@ -1,0 +1,57 @@
+name: Finalize restored book section corrections
+on:
+  push:
+    paths:
+      - '.github/workflows/finalize-restored-book-section-20261005.yml'
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix correction script and cache version
+        shell: python
+        run: |
+          from pathlib import Path
+
+          p = Path('game-win-celebration.js')
+          s = p.read_text(encoding='utf-8')
+          sarah = '''    { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV).", subtitle: "Jesus's Birth told through the BIG BLUE EYES of Sarah the Baby Sheep !" },'''
+          sweet = '''    { title: "Sweet-Pea the baby Sparrow: Don't Be Afraid ! God Cares ! Even the Feathers on your head are all numbered. Matthew 10: 29-31 (NIV).", subtitle: "God's Message of Caring told through the BIG BLUE EYES of Sweet-Pea the Baby Sparrow !" },'''
+          old_pair = sarah + '\n' + sweet
+          new_pair = sweet + '\n' + sarah
+          if old_pair in s:
+              s = s.replace(old_pair, new_pair, 1)
+
+          needle = '''  function applyAllWording() {\n    [...document.querySelectorAll('#bookGrid .book-card')].forEach((card, index) => {'''
+          replacement = '''  function applyAllWording() {\n    document.querySelectorAll('h1,h2,h3').forEach(el => {\n      const t = (el.textContent || '').replace(/\\s+/g, ' ').trim();\n      if (/^Children[’']s Bible Stories(?: & Christian Books)? for (?:Kids|Children)$/i.test(t)) {\n        el.textContent = 'Children’s Bible Stories For Children';\n        el.style.setProperty('color', DARK_PURPLE, 'important');\n      }\n    });\n    [...document.querySelectorAll('#bookGrid .book-card')].forEach((card, index) => {'''
+          if needle not in s:
+              raise SystemExit('applyAllWording insertion point not found')
+          s = s.replace(needle, replacement, 1)
+          p.write_text(s, encoding='utf-8')
+
+          q = Path('script.js')
+          t = q.read_text(encoding='utf-8')
+          t = t.replace('game-win-celebration.js?v=6', 'game-win-celebration.js?v=7')
+          q.write_text(t, encoding='utf-8')
+      - name: Verify restored shelf and fixes
+        shell: python
+        run: |
+          from pathlib import Path
+          i = Path('index.html').read_text(encoding='utf-8')
+          g = Path('game-win-celebration.js').read_text(encoding='utf-8')
+          assert 'id="bookGrid"' in i
+          assert 'const books = [' in i
+          assert 'Sweet-Pea the baby Sparrow' in i
+          assert 'Barry the Blind Mole' in i
+          assert g.index('Sweet-Pea the baby Sparrow') < g.index('Sarah the Baby Sheep')
+          assert 'Children’s Bible Stories For Children' in g
+          assert g.count('subtitle:') >= 12
+      - name: Commit
+        run: |
+          git config user.name "Malinda Dollack"
+          git config user.email "dollackj316@gmail.com"
+          git add game-win-celebration.js script.js
+          git commit -m "Finalize restored 12-book section wording" || exit 0
+          git push
