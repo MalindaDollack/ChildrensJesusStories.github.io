@@ -1,0 +1,75 @@
+name: Restore all 12 book subtitles now
+
+on:
+  push:
+    paths:
+      - '.github/workflows/restore-all-12-subtitles-now.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore subtitles in actual index source
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          text = p.read_text(encoding='utf-8')
+
+          # Make every book card render its subtitle, not only the first two.
+          text = text.replace('i<2&&b.subtitle', 'b.subtitle')
+          text = text.replace('${i<2&&b.subtitle?', '${b.subtitle?')
+
+          # Ensure all 12 book data records contain a subtitle field.
+          master = {
+            'Sweet-Pea': "God's Message of Caring told through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sweet-Pea the Baby Sparrow !",
+            'Sarah': "Jesus's Birth told through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !",
+            'Larry': "God's Message of Thankfulness and Healing  told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Larry the Lizard !",
+            'Davy': "God's Message of Kindness and Truthfulness told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Davy the Donkey !",
+            'Patsy': "God's Message of How to Dress told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Patsy the Plain Peacock !",
+            'Francesco': "God's Message of Obedience told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Francesco the Frog !",
+            'Freddy': "God's Message of Trust told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Freddy the Ferret !",
+            'Joy': "God's Message of Heaven and how He sings over all of us told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Joy the Fish !",
+            'Willy': "God's Message Keeping Our Eyes on Jesus  told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Willy the Water Strider Bug !",
+            'Wally': "God's Message of Always Do What God Says told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Wally the Whale !",
+            'Levi': "God's Message of Protection told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Levi the Lion !",
+            'Barry': "God's Message of Healing told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Barry the Blind Mole !",
+          }
+
+          for name, subtitle in master.items():
+              pat = re.compile(r'(\{name:"'+re.escape(name)+r'",\s*title:"[^"]*")(.*?\bref:)', re.S)
+              m = pat.search(text)
+              if not m:
+                  raise SystemExit('Missing book record: '+name)
+              middle = m.group(2)
+              if 'subtitle:' in middle:
+                  middle = re.sub(r',\s*subtitle:".*?"\s*,?\s*$', '', middle, flags=re.S)
+              replacement = m.group(1) + ', subtitle:"' + subtitle + '", ' + m.group(3)
+              text = text[:m.start()] + replacement + text[m.end():]
+
+          # Keep the requested heading.
+          text = text.replace('Children’s Bible Stories & Christian Books for Kids', 'Children’s Bible Stories For Children')
+          text = text.replace("Children's Bible Stories & Christian Books for Kids", 'Children’s Bible Stories For Children')
+
+          p.write_text(text, encoding='utf-8')
+          PY
+      - name: Verify and commit
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('index.html').read_text(encoding='utf-8')
+          block = text.split('const books = [',1)[1].split('];',1)[0]
+          assert block.count('subtitle:') >= 12
+          assert 'i<2&&b.subtitle' not in text
+          PY
+          git config user.name 'Malinda Dollack'
+          git config user.email 'dollackj316@gmail.com'
+          git add index.html
+          git commit -m 'Restore all 12 book subtitles in index source' || true
+          git push
