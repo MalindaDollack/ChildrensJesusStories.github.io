@@ -19,21 +19,19 @@ jobs:
           from pathlib import Path
           import re
 
-          # Fix the runtime assignments.
           p = Path('script-enhancements.js')
           s = p.read_text(encoding='utf-8')
-          s = re.sub(r"\{ id: 'store-PID16', src: 'Thank You (?:20|28)lb Saddle Book\.jpg\?v=\d+', alt: 'Thank You (?:20|28)lb Saddle Book' \},",
-                     "{ id: 'store-PID16', src: 'Thank You 20lb Saddle Book.jpg?v=20261005b', alt: 'Thank You 20lb Saddle Book' },", s, count=1)
-          s = re.sub(r"\{ id: 'store-PID17', src: 'Thank You (?:20|28)lb Saddle Book\.jpg\?v=\d+', alt: 'Thank You (?:20|28)lb Saddle Book' \}",
-                     "{ id: 'store-PID17', src: 'Thank You 28lb Saddle Book.jpg?v=20261005b', alt: 'Thank You 28lb Saddle Book' }", s, count=1)
+          s = re.sub(r"\{ id: 'store-PID16', src: 'Thank You (?:20|28)lb Saddle Book\.jpg\?v=[^']+', alt: 'Thank You (?:20|28)lb Saddle Book' \},",
+                     "{ id: 'store-PID16', src: 'Thank You 20lb Saddle Book.jpg?v=20261005c', alt: 'Thank You 20lb Saddle Book' },", s, count=1)
+          s = re.sub(r"\{ id: 'store-PID17', src: 'Thank You (?:20|28)lb Saddle Book\.jpg\?v=[^']+', alt: 'Thank You (?:20|28)lb Saddle Book' \}",
+                     "{ id: 'store-PID17', src: 'Thank You 28lb Saddle Book.jpg?v=20261005c', alt: 'Thank You 28lb Saddle Book' }", s, count=1)
           p.write_text(s, encoding='utf-8')
 
-          # Fix the actual main image in each HTML card too, so it is correct even before JS runs.
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
           for card_id, wanted, alt in [
-              ('store-PID16', 'Thank You 20lb Saddle Book.jpg?v=20261005b', 'Thank You 20lb Saddle Book'),
-              ('store-PID17', 'Thank You 28lb Saddle Book.jpg?v=20261005b', 'Thank You 28lb Saddle Book')
+              ('store-PID16', 'Thank You 20lb Saddle Book.jpg?v=20261005c', 'Thank You 20lb Saddle Book'),
+              ('store-PID17', 'Thank You 28lb Saddle Book.jpg?v=20261005c', 'Thank You 28lb Saddle Book')
           ]:
               m = re.search(r'(<article\b[^>]*id="'+re.escape(card_id)+r'"[^>]*>.*?</article>)', s, re.S)
               if not m:
@@ -44,27 +42,32 @@ jobs:
                   raise SystemExit(f'main image not found for {card_id}')
               tag = img.group(0)
               tag = re.sub(r'src="[^"]*"', f'src="{wanted}"', tag, count=1)
-              if 'alt=' in tag:
-                  tag = re.sub(r'alt="[^"]*"', f'alt="{alt}"', tag, count=1)
+              tag = re.sub(r'alt="[^"]*"', f'alt="{alt}"', tag, count=1) if 'alt=' in tag else tag[:-1] + f' alt="{alt}">'
               block = block[:img.start()] + tag + block[img.end():]
               s = s[:m.start()] + block + s[m.end():]
-          # Force a fresh script.js on the page.
-          s = s.replace('<script src="script.js"></script>', '<script src="script.js?v=7"></script>')
+          s = re.sub(r'<script src="script\.js(?:\?v=[^"]*)?"></script>', '<script src="script.js?v=8"></script>', s)
           p.write_text(s, encoding='utf-8')
 
-          # Force script.js to load the fresh enhancements file.
           p = Path('script.js')
           s = p.read_text(encoding='utf-8')
-          s = s.replace('script-enhancements.js?v=6', 'script-enhancements.js?v=7')
+          s = re.sub(r'script-enhancements\.js\?v=\d+', 'script-enhancements.js?v=8', s, count=1)
           p.write_text(s, encoding='utf-8')
           PY
 
       - name: Verify exact assignments
         run: |
-          grep -q "store-PID16', src: 'Thank You 20lb Saddle Book.jpg?v=20261005b" script-enhancements.js
-          grep -q "store-PID17', src: 'Thank You 28lb Saddle Book.jpg?v=20261005b" script-enhancements.js
-          grep -q 'script-enhancements.js?v=7' script.js
-          grep -q 'script.js?v=7' index.html
+          grep -q "store-PID16', src: 'Thank You 20lb Saddle Book.jpg?v=20261005c" script-enhancements.js
+          grep -q "store-PID17', src: 'Thank You 28lb Saddle Book.jpg?v=20261005c" script-enhancements.js
+          grep -q 'script-enhancements.js?v=8' script.js
+          grep -q 'script.js?v=8' index.html
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          for card_id, wanted in [('store-PID16','Thank You 20lb Saddle Book.jpg?v=20261005c'),('store-PID17','Thank You 28lb Saddle Book.jpg?v=20261005c')]:
+              m=re.search(r'(<article\b[^>]*id="'+card_id+r'"[^>]*>.*?</article>)',s,re.S)
+              assert m and wanted in re.search(r'<img\b[^>]*>',m.group(1)).group(0)
+          PY
 
       - name: Commit only this fix and remove temporary workflow
         run: |
