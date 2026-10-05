@@ -1,0 +1,76 @@
+name: Fix PID16 PID17 main images final
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-pid16-pid17-main-images-final.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix PID16 PID17 main images and cache
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          # Fix the runtime assignments.
+          p = Path('script-enhancements.js')
+          s = p.read_text(encoding='utf-8')
+          s = re.sub(r"\{ id: 'store-PID16', src: 'Thank You (?:20|28)lb Saddle Book\.jpg\?v=\d+', alt: 'Thank You (?:20|28)lb Saddle Book' \},",
+                     "{ id: 'store-PID16', src: 'Thank You 20lb Saddle Book.jpg?v=20261005b', alt: 'Thank You 20lb Saddle Book' },", s, count=1)
+          s = re.sub(r"\{ id: 'store-PID17', src: 'Thank You (?:20|28)lb Saddle Book\.jpg\?v=\d+', alt: 'Thank You (?:20|28)lb Saddle Book' \}",
+                     "{ id: 'store-PID17', src: 'Thank You 28lb Saddle Book.jpg?v=20261005b', alt: 'Thank You 28lb Saddle Book' }", s, count=1)
+          p.write_text(s, encoding='utf-8')
+
+          # Fix the actual main image in each HTML card too, so it is correct even before JS runs.
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          for card_id, wanted, alt in [
+              ('store-PID16', 'Thank You 20lb Saddle Book.jpg?v=20261005b', 'Thank You 20lb Saddle Book'),
+              ('store-PID17', 'Thank You 28lb Saddle Book.jpg?v=20261005b', 'Thank You 28lb Saddle Book')
+          ]:
+              m = re.search(r'(<article\b[^>]*id="'+re.escape(card_id)+r'"[^>]*>.*?</article>)', s, re.S)
+              if not m:
+                  raise SystemExit(f'{card_id} not found')
+              block = m.group(1)
+              img = re.search(r'<img\b[^>]*>', block)
+              if not img:
+                  raise SystemExit(f'main image not found for {card_id}')
+              tag = img.group(0)
+              tag = re.sub(r'src="[^"]*"', f'src="{wanted}"', tag, count=1)
+              if 'alt=' in tag:
+                  tag = re.sub(r'alt="[^"]*"', f'alt="{alt}"', tag, count=1)
+              block = block[:img.start()] + tag + block[img.end():]
+              s = s[:m.start()] + block + s[m.end():]
+          # Force a fresh script.js on the page.
+          s = s.replace('<script src="script.js"></script>', '<script src="script.js?v=7"></script>')
+          p.write_text(s, encoding='utf-8')
+
+          # Force script.js to load the fresh enhancements file.
+          p = Path('script.js')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('script-enhancements.js?v=6', 'script-enhancements.js?v=7')
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Verify exact assignments
+        run: |
+          grep -q "store-PID16', src: 'Thank You 20lb Saddle Book.jpg?v=20261005b" script-enhancements.js
+          grep -q "store-PID17', src: 'Thank You 28lb Saddle Book.jpg?v=20261005b" script-enhancements.js
+          grep -q 'script-enhancements.js?v=7' script.js
+          grep -q 'script.js?v=7' index.html
+
+      - name: Commit only this fix and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html script.js script-enhancements.js
+          git rm .github/workflows/fix-pid16-pid17-main-images-final.yml
+          git commit -m "Correct PID16 and PID17 main pictures permanently"
+          git push
