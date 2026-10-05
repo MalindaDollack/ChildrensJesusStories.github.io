@@ -1,4 +1,4 @@
-name: Update SESB1 PID11 PID14 PID16 PID17 Thank You Pictures
+name: Swap PID16 PID17 Main Pictures
 
 on:
   push:
@@ -10,141 +10,69 @@ permissions:
   contents: write
 
 jobs:
-  update-book-pictures:
+  swap-pictures:
     runs-on: ubuntu-latest
     steps:
       - name: Check out website
         uses: actions/checkout@v4
 
-      - name: Move old main pictures into descriptions and use Thank You pictures
+      - name: Swap only PID16 and PID17 main pictures
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
 
-          path = Path('index.html')
-          text = path.read_text(encoding='utf-8')
+          html_path = Path('index.html')
+          html = html_path.read_text(encoding='utf-8')
 
-          def change_card(card_id, old_src, new_src, new_alt, gallery_class=None, marker=None):
-              global text
+          def set_main(card_id, src, alt):
+              global html
               pat = re.compile(r'(<article\b[^>]*id="' + re.escape(card_id) + r'"[^>]*>.*?</article>)', re.S)
-              m = pat.search(text)
+              m = pat.search(html)
               if not m:
                   raise SystemExit(f'Could not find {card_id}')
               block = m.group(1)
-
-              old_main = f'src="{old_src}"'
-              new_main = f'src="{new_src}?v=20261004"'
-              if old_main in block:
-                  block = block.replace(old_main, new_main, 1)
-              elif new_main not in block:
-                  raise SystemExit(f'Could not find old main picture for {card_id}: {old_src}')
-
-              # Set only the first/main image alt text.
-              first_img = re.search(r'<img\b[^>]*>', block)
-              if not first_img:
-                  raise SystemExit(f'Could not find main image tag for {card_id}')
-              img_tag = first_img.group(0)
-              if ' alt="' in img_tag:
-                  img_tag_new = re.sub(r'alt="[^"]*"', f'alt="{new_alt}"', img_tag, count=1)
+              img = re.search(r'<img\b[^>]*>', block)
+              if not img:
+                  raise SystemExit(f'Could not find main image in {card_id}')
+              tag = img.group(0)
+              if 'src="' in tag:
+                  tag = re.sub(r'src="[^"]*"', f'src="{src}"', tag, count=1)
               else:
-                  img_tag_new = img_tag[:-1] + f' alt="{new_alt}">'
-              block = block[:first_img.start()] + img_tag_new + block[first_img.end():]
+                  tag = tag[:-1] + f' src="{src}">'
+              if 'alt="' in tag:
+                  tag = re.sub(r'alt="[^"]*"', f'alt="{alt}"', tag, count=1)
+              else:
+                  tag = tag[:-1] + f' alt="{alt}">'
+              block = block[:img.start()] + tag + block[img.end():]
+              html = html[:m.start()] + block + html[m.end():]
 
-              marker = marker or f'{card_id}-ALONE-PHOTO'
-              if marker not in block:
-                  old_detail_src = old_src
-                  figure = (
-                      f'\n<!-- {marker} -->\n'
-                      f'<figure style="margin:0;text-align:center;">'
-                      f'<img loading="lazy" decoding="async" src="{old_detail_src}" alt="Alone" '
-                      f'style="display:block;width:100%;height:auto!important;aspect-ratio:auto!important;object-fit:contain;background:#fff;margin:0 auto;">'
-                      f'<figcaption style="margin-top:6px;color:#4b146f;font-weight:800;line-height:1.25;">Alone</figcaption>'
-                      f'</figure>\n'
-                  )
-                  if gallery_class:
-                      gallery_start = block.find(f'<div class="{gallery_class}"')
-                      if gallery_start < 0:
-                          raise SystemExit(f'Could not find {gallery_class} in {card_id}')
-                      insert_at = block.find('>', gallery_start)
-                      if insert_at < 0:
-                          raise SystemExit(f'Could not find gallery opening tag end in {card_id}')
-                      insert_at += 1
-                      block = block[:insert_at] + figure + block[insert_at:]
-                  else:
-                      order_start = block.find('<div class="store-order">')
-                      if order_start < 0:
-                          raise SystemExit(f'Could not find store-order in {card_id}')
-                      block = block[:order_start] + (
-                          '\n<div class="pid-alone-photo-gallery" style="display:grid;grid-template-columns:1fr;gap:18px;margin:18px 0;">'
-                          + figure + '</div>\n'
-                      ) + block[order_start:]
-
-              text = text[:m.start()] + block + text[m.end():]
-
-          change_card(
-              'store-SESB1',
-              'sb b&w.png?v=1',
-              'Thank You Black and White Sameritains Purse Saddle Book.jpg',
-              'Thank You Black and White Sameritains Purse Saddle Book',
-              marker='SESB1-ALONE-PHOTO'
-          )
-          change_card(
-              'store-PID11',
-              'new staples book shipped.jpg',
-              'Thank You Staple Shipped From My Home.jpg',
-              'Thank You Staple Shipped From My Home',
-              gallery_class='pid-staples-photo-gallery',
-              marker='PID11-ALONE-PHOTO'
-          )
-          change_card(
-              'store-PID14',
-              'new staples book picked up at local staples.jpg',
-              'Thank You Staple You Pick Up.jpg',
-              'Thank You Staple You Pick Up',
-              gallery_class='pid-staples-photo-gallery',
-              marker='PID14-ALONE-PHOTO'
-          )
-          change_card(
-              'store-PID16',
-              'saddle book main 28 lbs.jpg?v=2',
-              'Thank You 28lb Saddle Book.jpg',
-              'Thank You 28lb Saddle Book',
-              gallery_class='pid-saddle-photo-gallery',
-              marker='PID16-ALONE-PHOTO'
-          )
-          change_card(
-              'store-PID17',
-              'saddle book main 20lbs.jpg?v=2',
-              'Thank You 20lb Saddle Book.jpg',
-              'Thank You 20lb Saddle Book',
-              gallery_class='pid-saddle-photo-gallery',
-              marker='PID17-ALONE-PHOTO'
-          )
-
-          path.write_text(text, encoding='utf-8')
+          set_main('store-PID16', 'Thank You 20lb Saddle Book.jpg?v=20261005', 'Thank You 20lb Saddle Book')
+          set_main('store-PID17', 'Thank You 28lb Saddle Book.jpg?v=20261005', 'Thank You 28lb Saddle Book')
+          html_path.write_text(html, encoding='utf-8')
 
           js_path = Path('script-enhancements.js')
           js = js_path.read_text(encoding='utf-8')
-          replacements = {
-              "{ id: 'store-PID16', src: 'saddle book main 28 lbs.jpg?v=20261001', alt: 'Premium Saddle Book 28 lbs' },":
-              "{ id: 'store-PID16', src: 'Thank You 28lb Saddle Book.jpg?v=20261004', alt: 'Thank You 28lb Saddle Book' },",
-              "{ id: 'store-PID17', src: 'saddle book main 20lbs.jpg?v=20261001', alt: 'Regular Saddle Book 20 lbs' }":
-              "{ id: 'store-PID17', src: 'Thank You 20lb Saddle Book.jpg?v=20261004', alt: 'Thank You 20lb Saddle Book' }"
-          }
-          for old, new in replacements.items():
-              if old in js:
-                  js = js.replace(old, new, 1)
-              elif new not in js:
-                  raise SystemExit(f'Could not find expected script setting: {old}')
+          js = re.sub(
+              r"\{ id: 'store-PID16', src: '[^']*', alt: '[^']*' \},",
+              "{ id: 'store-PID16', src: 'Thank You 20lb Saddle Book.jpg?v=20261005', alt: 'Thank You 20lb Saddle Book' },",
+              js,
+              count=1
+          )
+          js = re.sub(
+              r"\{ id: 'store-PID17', src: '[^']*', alt: '[^']*' \}",
+              "{ id: 'store-PID17', src: 'Thank You 28lb Saddle Book.jpg?v=20261005', alt: 'Thank You 28lb Saddle Book' }",
+              js,
+              count=1
+          )
           js_path.write_text(js, encoding='utf-8')
           PY
 
-      - name: Commit website update
+      - name: Commit picture swap
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html script-enhancements.js
           git diff --cached --quiet && exit 0
-          git commit -m "Move SESB1 PID11 PID14 PID16 PID17 old main pictures into descriptions"
+          git commit -m "Swap PID16 and PID17 main pictures"
           git push
