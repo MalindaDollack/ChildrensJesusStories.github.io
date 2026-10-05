@@ -40,3 +40,5 @@ jobs:
           git diff --cached --quiet && exit 1
           git commit -m "Update homepage hero description"
           git push origin HEAD:main
+
+# Triggered after workflow registration.
