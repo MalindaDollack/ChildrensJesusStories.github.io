@@ -1,6 +1,6 @@
 // Stable website enhancements loader - August 31, 2026.
 document.write('<script src="script-enhancements.js?v=9"><\/script>');
-document.write('<script src="game-win-celebration.js?v=9"><\/script>');
+document.write('<script src="game-win-celebration.js?v=10"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
   const WEBSITE_EMAIL = 'berachahdirector@gmail.com';
