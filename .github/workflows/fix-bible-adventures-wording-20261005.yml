@@ -1,0 +1,59 @@
+name: Fix Bible Adventures wording
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-bible-adventures-wording-20261005.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Correct website wording
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('index.html')
+          text = p.read_text(encoding='utf-8')
+
+          replacements = {
+            'Children’s Bible Stories For Children': 'Childrens Bible Stories',
+            "Children's Bible Stories For Children": 'Childrens Bible Stories',
+            'Joyful, colourful Christian children’s books and Bible stories for kids that help children discover courage, kindness, obedience, hope, and the love of Jesus.': 'Joyful, colourful Bible Adventures that help children discover courage, kindness, obedience, hope, and the love of Jesus.',
+            "Joyful, colourful Christian children's books and Bible stories for kids that help children discover courage, kindness, obedience, hope, and the love of Jesus.": 'Joyful, colourful Bible Adventures that help children discover courage, kindness, obedience, hope, and the love of Jesus.',
+            'Joyful, colourful Christian children’s books and Bible stories for children that help children discover courage, kindness, obedience, hope, and the love of Jesus.': 'Joyful, colourful Bible Adventures that help children discover courage, kindness, obedience, hope, and the love of Jesus.',
+            "Joyful, colourful Christian children's books and Bible stories for children that help children discover courage, kindness, obedience, hope, and the love of Jesus.": 'Joyful, colourful Bible Adventures that help children discover courage, kindness, obedience, hope, and the love of Jesus.',
+            'Joyful, colourful adventures that help children discover courage, kindness, obedience, hope, and the love of Jesus.': 'Joyful, colourful Bible Adventures that help children discover courage, kindness, obedience, hope, and the love of Jesus.',
+            "Discover children's Bible stories, Christian books and Bible activities for kids": "Discover Bible Adventures and Bible activities for children",
+            "Discover children's Bible stories, Christian books and Bible activities for children": "Discover Bible Adventures and Bible activities for children",
+            'Christian stories': 'Bible Adventures',
+            'Christian Stories': 'Bible Adventures'
+          }
+          for old, new in replacements.items():
+              text = text.replace(old, new)
+
+          p.write_text(text, encoding='utf-8')
+
+          s = Path('script.js')
+          script = s.read_text(encoding='utf-8')
+          script = script.replace('game-win-celebration.js?v=9', 'game-win-celebration.js?v=10')
+          s.write_text(script, encoding='utf-8')
+
+          assert 'Children’s Bible Stories For Children' not in text
+          assert "Children's Bible Stories For Children" not in text
+          assert 'Joyful, colourful Christian children' not in text
+          assert 'Childrens Bible Stories' in text
+          print('Verified corrected website wording in source.')
+          PY
+      - name: Commit corrected wording
+        run: |
+          git config user.name 'Malinda Dollack'
+          git config user.email 'dollackj316@gmail.com'
+          git add index.html script.js
+          git diff --cached --quiet || git commit -m 'Use Bible Adventures wording across main page'
+          git push
