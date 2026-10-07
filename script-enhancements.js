@@ -27,10 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (orderLink) { orderLink.textContent='Buy Now !'; orderLink.href='mailto:berachahdirector@gmail.com?subject='+encodeURIComponent('Order inquiry: '+fullTitle+' — Standard E-Book Link')+'&body='+encodeURIComponent('Dear Malinda,\n\nI would like to order: '+fullTitle.replace(/[—–]/g,' - ').replace(/\s+/g,' ').trim()+' - PDF Link Standard E-Book Edition\n\nMy name:\nMy email address:\n\nPlease send me the e-Transfer instructions.\n\nGod Bless You and Your Family Mightily !'); }
   }
 
-  const sarahShelfCover = document.querySelector('#bookGrid .book-card:first-child .cover-button img');
+  const sarahShelfCover = document.querySelector('#bookGrid .book-card:nth-child(2) .cover-button img');
   if (sarahShelfCover) { sarahShelfCover.src = standardCoverFile; sarahShelfCover.alt = fullTitle + ' Standard E-Book cover'; }
 
-  const sarahShelfCard = document.querySelector('#bookGrid .book-card:first-child');
+  const sarahShelfCard = document.querySelector('#bookGrid .book-card:nth-child(2)');
   if (sarahShelfCard) {
     const actions = sarahShelfCard.querySelector('.book-actions');
     if (actions) {
