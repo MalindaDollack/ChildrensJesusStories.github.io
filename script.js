@@ -254,6 +254,12 @@ document.addEventListener('DOMContentLoaded', () => {
       lines.splice(3, 0, "Subtitle: Jesus's Birth through the BIG BLUE EYES of Sarah the Baby Sheep !");
     }
 
+    var emailPrice = productCode.toUpperCase() === 'PID7' ? 'C$24.00' :
+                     productCode.toUpperCase() === 'PID8' ? 'C$23.00' : '';
+    if (emailPrice) {
+      lines.splice(4, 0, 'Price: ' + emailPrice);
+    }
+
     if (!isDigital) lines.push('My Shipping Address:');
 
     lines.push(
