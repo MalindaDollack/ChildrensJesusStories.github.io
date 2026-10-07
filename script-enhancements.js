@@ -276,14 +276,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const subtitleLine = document.createElement('p');
         subtitleLine.className = 'isbn-product-subtitle';
         subtitleLine.innerHTML = 'Subtitle: ' + subtitleHtml;
-        subtitleLine.style.cssText = 'font-weight:400;color:#00008B;margin:4px 0 4px;line-height:1.3;';
+        subtitleLine.style.cssText = 'font-weight:400;color:#4b146f;margin:4px 0 4px;line-height:1.3;';
         heading.insertAdjacentElement('afterend', subtitleLine);
 
         if (info.isbn) {
           const isbnLine = document.createElement('p');
           isbnLine.className = 'isbn-product-number';
           isbnLine.textContent = info.isbn;
-          isbnLine.style.cssText = 'font-weight:700;color:#00008B;margin:0 0 8px;line-height:1.3;';
+          isbnLine.style.cssText = 'font-weight:700;color:#4b146f;margin:0 0 8px;line-height:1.3;';
           subtitleLine.insertAdjacentElement('afterend', isbnLine);
         }
       }
@@ -302,13 +302,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const descriptionSubtitle = document.createElement('p');
       descriptionSubtitle.innerHTML = 'Subtitle: ' + subtitleHtml;
-      descriptionSubtitle.style.cssText = 'font-weight:400;color:#00008B;line-height:1.3;';
+      descriptionSubtitle.style.cssText = 'font-weight:400;color:#4b146f;line-height:1.3;';
 
       descriptionTitle.append(titleLine, descriptionSubtitle);
       if (info.isbn) {
         const descriptionIsbn = document.createElement('p');
         descriptionIsbn.textContent = info.isbn;
-        descriptionIsbn.style.cssText = 'font-weight:700;color:#00008B;line-height:1.3;margin:4px 0 8px;';
+        descriptionIsbn.style.cssText = 'font-weight:700;color:#4b146f;line-height:1.3;margin:4px 0 8px;';
         descriptionTitle.appendChild(descriptionIsbn);
       }
 
