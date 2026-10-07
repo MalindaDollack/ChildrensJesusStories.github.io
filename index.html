@@ -113,55 +113,7 @@
   .subscription-card .extra-product-pictures{grid-template-columns:repeat(auto-fit,minmax(54px,1fr))}
 </style>
 
-<style>
-  /* Compact one-line subscription rows */
-  #physical-subscriptions ~ .store-grid{display:flex;flex-direction:column;gap:7px;width:min(1220px,96vw)}
-  #physical-subscriptions ~ .store-grid .subscription-card{
-    display:grid;
-    grid-template-columns:54px 92px 190px minmax(0,1fr);
-    grid-template-areas:"pic price code desc";
-    align-items:center;
-    gap:10px;
-    padding:7px 10px;
-    border-radius:12px;
-    min-height:58px;
-  }
-  #physical-subscriptions ~ .store-grid .subscription-card .product-gallery{
-    grid-area:pic;margin:0;width:48px;height:48px;display:block;
-  }
-  #physical-subscriptions ~ .store-grid .subscription-card .product-gallery>img{
-    width:48px!important;height:48px!important;object-fit:contain;border:1px solid #ead5f5;border-radius:7px;
-  }
-  #physical-subscriptions ~ .store-grid .subscription-card .extra-product-pictures{grid-area:desc;display:grid;grid-template-columns:repeat(auto-fit,minmax(54px,1fr));gap:6px;margin-top:6px}
-  #physical-subscriptions ~ .store-grid .subscription-card .price{
-    grid-area:price;margin:0;font-size:1.02rem;white-space:nowrap;
-  }
-  #physical-subscriptions ~ .store-grid .subscription-card h3{
-    display:contents;
-  }
-  #physical-subscriptions ~ .store-grid .subscription-card h3::before{
-    content:attr(data-code);
-  }
-  #physical-subscriptions ~ .store-grid .subscription-card .product-available,
-  #physical-subscriptions ~ .store-grid .subscription-card .store-details{display:none!important}
-  #physical-subscriptions ~ .store-grid .subscription-card .subscription-code{
-    grid-area:code;font-weight:900;color:#4b146f;font-size:.9rem;white-space:nowrap;
-  }
-  #physical-subscriptions ~ .store-grid .subscription-card .subscription-description{
-    grid-area:desc;color:#33243a;font-weight:700;font-size:.9rem;line-height:1.2;
-  }
-  @media(max-width:760px){
-    #physical-subscriptions ~ .store-grid .subscription-card{
-      grid-template-columns:46px 78px 145px minmax(180px,1fr);
-      gap:6px;padding:6px;font-size:.82rem;overflow-x:auto;
-    }
-    #physical-subscriptions ~ .store-grid .subscription-card .product-gallery,
-    #physical-subscriptions ~ .store-grid .subscription-card .product-gallery>img{width:40px!important;height:40px!important}
-    #physical-subscriptions ~ .store-grid .subscription-card .price{font-size:.88rem}
-    #physical-subscriptions ~ .store-grid .subscription-card .subscription-code,
-    #physical-subscriptions ~ .store-grid .subscription-card .subscription-description{font-size:.78rem}
-  }
-</style>
+
 
 <style>
   /* Force hidden extra product pictures */
