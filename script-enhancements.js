@@ -233,28 +233,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const subtitle = "Jesus\'s Birth through the BIG BLUE EYES of Sarah the Baby Sheep !";
     const subtitleHtml = "Jesus\'s Birth through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !";
     const listings = {
-      PID15: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Laminated Tiles." },
-      PID1: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Laminated Book Mark." },
-      PID2: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 2 Laminated Book Marks." },
-      PID3: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 5 Laminated Book Marks." },
-      PID4: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 20 Hand Made Small Jesus Loves You ! Stickers." },
-      PID5: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 4 Hand Made Medium Jesus Loves You ! Stickers." },
-      PID6: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Hand Made Large Jesus Loves You ! Sticker." },
+      PID15: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Hand Made Laminated Ribbon Tied Matching JESUS LOVES YOU ! Game Laminated Tiles.", isbn: "NO ISBN # FOR Games" },
+      PID1: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Laminated Book Mark.", isbn: "NO ISBN # FOR BOOKMARKS" },
+      PID2: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 2 Laminated Book Marks.", isbn: "NO ISBN # FOR BOOKMARKS" },
+      PID3: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 5 Laminated Book Marks.", isbn: "NO ISBN # FOR BOOKMARKS" },
+      PID4: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 20 Hand Made Small Jesus Loves You ! Stickers.", isbn: "NO ISBN # FOR STICKERS" },
+      PID5: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 4 Hand Made Medium Jesus Loves You ! Stickers.", isbn: "NO ISBN # FOR STICKERS" },
+      PID6: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) Hand-Made Color JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Hand Made Large Jesus Loves You ! Sticker.", isbn: "NO ISBN # FOR STICKERS" },
       DID1: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story. Luke 2: 1-20 (NIV) JESUS LOVES YOU ! with Sarah the Baby Sheep - 1 Digital file.png \"Book Mark\"" },
       DID2: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth, The Christmas Story Edition. Luke 2: 1-20 (NIV) JESUS LOVES YOU ! Matching Game." },
       SESB1: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Black and White Regular 20 lb Paper Special Sameritain's Purse Edition." },
-      PID8: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition." },
-      PID7: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition." },
-      PID11: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Staples Photo Book Edition. Shipping Included" },
-      PID16: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Saddle Book Regular 20 lb Paper Edition." },
-      PID17: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Saddle Book Regular 28 lb Paper Edition." },
-      PID10: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Soft Cover Book Edition." },
-      PID13: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition." },
-      PID9: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Fully Laminated Soft Cover Edition." },
-      PID12: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition." },
+      PID8: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Laminated and Ribbon Tied Baby Book Edition.", isbn: "ISBN # 978-1-0658709-0-6" },
+      PID7: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Customizable Color Laminated and Ribbon Tied Baby Book Edition.", isbn: "NO ISBN # FOR CUSTOM BOOKS" },
+      PID11: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Staples Photo Book Edition. Shipping Included", isbn: "NO ISBN # FOR CUSTOM BOOKS" },
+      PID16: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Saddle Book Regular 20 lb Paper Edition.", isbn: "ISBN # 978-1-0658709-1-3" },
+      PID17: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Saddle Book Regular 28 lb Paper Edition.", isbn: "ISBN # 978-1-0658709-2-0" },
+      PID10: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Soft Cover Book Edition.", isbn: "ISBN # 978-1-0658709-3-7" },
+      PID13: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Jesus Loves You ! Art Pad Laminated Covers Card Stock Edition.", isbn: "NO ISBN # FOR ART PADS" },
+      PID9: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Fully Laminated Soft Cover Edition.", isbn: "ISBN # 978-1-0658709-4-4" },
+      PID12: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Comb-Bound Laminated Covers Card Stock Coloring Book Edition.", isbn: "NO ISBN # FOR COLORING BOOKS" },
       DID3: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Standard E-Book Edition." },
       DID4: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Flip E-Book Edition." },
-      PID14: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Staples Photo Book Edition. Pick up at Local Staples" },
+      PID14: { title: "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV) Color Staples Photo Book Edition. Pick up at Local Staples", isbn: "NO ISBN # FOR CUSTOM BOOKS" },
     };
 
     const allCards = [...document.querySelectorAll('#store .store-card')];
@@ -271,13 +271,21 @@ document.addEventListener('DOMContentLoaded', () => {
       const heading = card.querySelector('h3');
       if (heading) heading.textContent = `${code} — ${displayTitle}`;
 
-      card.querySelectorAll('.isbn-product-subtitle').forEach(el => el.remove());
+      card.querySelectorAll('.isbn-product-subtitle, .isbn-product-number').forEach(el => el.remove());
       if (heading) {
         const subtitleLine = document.createElement('p');
         subtitleLine.className = 'isbn-product-subtitle';
         subtitleLine.innerHTML = 'Subtitle: ' + subtitleHtml;
-        subtitleLine.style.cssText = 'font-weight:400;color:#00008B;margin:4px 0 8px;line-height:1.3;';
+        subtitleLine.style.cssText = 'font-weight:400;color:#00008B;margin:4px 0 4px;line-height:1.3;';
         heading.insertAdjacentElement('afterend', subtitleLine);
+
+        if (info.isbn) {
+          const isbnLine = document.createElement('p');
+          isbnLine.className = 'isbn-product-number';
+          isbnLine.textContent = info.isbn;
+          isbnLine.style.cssText = 'font-weight:700;color:#00008B;margin:0 0 8px;line-height:1.3;';
+          subtitleLine.insertAdjacentElement('afterend', isbnLine);
+        }
       }
 
       const details = card.querySelector('.store-details');
@@ -297,6 +305,12 @@ document.addEventListener('DOMContentLoaded', () => {
       descriptionSubtitle.style.cssText = 'font-weight:400;color:#00008B;line-height:1.3;';
 
       descriptionTitle.append(titleLine, descriptionSubtitle);
+      if (info.isbn) {
+        const descriptionIsbn = document.createElement('p');
+        descriptionIsbn.textContent = info.isbn;
+        descriptionIsbn.style.cssText = 'font-weight:700;color:#00008B;line-height:1.3;margin:4px 0 8px;';
+        descriptionTitle.appendChild(descriptionIsbn);
+      }
 
       if (code === 'PID11' || code === 'PID14') {
         const noteEnd = [...details.childNodes].find(node => node.nodeType === Node.COMMENT_NODE && /PID-STAPLES-NOTE-END/.test(node.nodeValue || ''));
