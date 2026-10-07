@@ -1,6 +1,6 @@
 // Malinda's Story Garden website enhancements.
 document.addEventListener('DOMContentLoaded', () => {
-  const storeGrid = document.querySelector('#store .store-grid');
+  const storeGrid = document.querySelector('#digital-items-heading + .store-intro + .store-grid');
   const fullTitle = "Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV)";
   const standardCoverFile = 'stb1.png?v=31';
 
