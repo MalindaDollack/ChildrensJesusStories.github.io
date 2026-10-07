@@ -2819,18 +2819,117 @@ Malinda Dollack</p>
 
   <script>
 const books = [
-  {name:"Sweet-Pea", title:"Sweet-Pea the baby Sparrow: Don't Be Afraid! God Cares! Even the Feathers on your head are all numbered. Matthew 10:29-31 (NIV)", subtitle:"<span class='sweetpea-subtitle-text'><br>God's Message of<br>Caring told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Sweet-Pea<br>the Baby Sparrow !</span>", ref:"Matthew 10:29–31 NIV", img:"web-images/sweet-pea book cover for library.webp?v=1", release:"Coming November 1, 2026"},
-  {name:"Sarah", title:"Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV)", subtitle:"<span class='sarah-subtitle-text'><br>Jesus's Birth<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Sarah<br>the Baby Sheep !</span>", ref:"Luke 2:1–20 NIV", img:"web-images/sarah book cover for library.webp?v=1", bookmark:"web-images/sarah-new.webp?v=1", release:"Available Now !", available:true},
-  {name:"Larry", title:"Larry the Lizard: Leaps with the Leper! Only One Leper Thanks Jesus", subtitle:"God's Message of Thankfulness and Healing  told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Larry the Lizard !", ref:"Luke 17:11–19 NIV", img:"web-images/larry-new.webp?v=1", release:"January 2027"},
-  {name:"Davy", title:"Davy the Donkey: Speaks Out Loud, the Bullying by Balaam", subtitle:"God's Message of Kindness and Truthfulness told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Davy the Donkey !", ref:"Numbers 22:21–39 NIV", img:"web-images/davy-new.webp?v=1", release:"February 2027"},
-  {name:"Patsy", title:"Patsy the Plain Peacock: Gives Queen Esther Fashion Advice", subtitle:"God's Message of How to Dress told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Patsy the Plain Peacock !", ref:"Esther 4:13–17 NIV", img:"web-images/patsy-new.webp?v=1", release:"March 2027"},
-  {name:"Francesco", title:"Francesco’s Frog Fiesta in Egypt: The Second Plague", subtitle:"God's Message of Obedience told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Francesco the Frog !", ref:"Exodus 8:1–15 NIV", img:"web-images/francesco-new.webp?v=1", release:"April 2027"},
-  {name:"Freddy", title:"Freddy the Ferret: Finds Fun in the Firey Furnace with Friends. Freddy Trusted God to Deliver him from the Flames", subtitle:"God's Message of Trust told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Freddy the Ferret !", ref:"Daniel 3:1–30 NIV", img:"web-images/freddy-new.webp?v=1", release:"May 2027"},
-  {name:"Joy", title:"Joy the Fish: Sings Over the Eggs. Jesus Sings Over All Of Us", subtitle:"God's Message of Heaven and how He sings over all of us told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Joy the Fish !", ref:"Zepheniah 3:17 NIV", img:"web-images/joy-new.webp?v=1", release:"June 2027"},
-  {name:"Willy", title:"Willy the Water Strider Bug: Walks on Water with Jesus", subtitle:"God's Message Keeping Our Eyes on Jesus  told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Willy the Water Strider Bug !", ref:"Matthew 14:22–33 NIV", img:"web-images/willy-new.webp?v=1", release:"July 2027"},
-  {name:"Wally", title:"Wally the Whale: Obeys God and Swallows a Human", subtitle:"God's Message of Always Do What God Says told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Wally the Whale !", ref:"Jonah 1:1–17 NIV", img:"web-images/wally-new.webp?v=1", release:"August 2027"},
-  {name:"Levi", title:"Levi the Lion: Listens to God and Laughs with Daniel", subtitle:"God's Message of Protection told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Levi the Lion !", ref:"Daniel 6:1–28 NIV", img:"web-images/levi-new.webp?v=1", release:"September 2027"},
-  {name:"Barry", title:"Barry the Blind Mole: Receives His Sight Along with the Blind Man Jesus Healed", subtitle:"God's Message of Healing told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong> Barry the Blind Mole !", ref:"John 9:25 NIV", img:"web-images/barry-new.webp?v=1", release:"October 2027"}
+  {
+    name:"Sweet-Pea",
+    title:"Sweet-Pea the baby Sparrow: Don't Be Afraid ! God Cares ! Even the Feathers on your head are all numbered. Matthew 10: 29-31 (NIV).",
+    titleHtml:"Sweet-Pea the baby Sparrow:<br>Don't Be Afraid !<br>God Cares !<br>Even the Feathers<br>on your head<br>are all numbered.<br>Matthew 10: 29-31 (NIV).",
+    subtitleHtml:"Subtitle:<br>God's Message of<br>Caring<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Sweet-Pea the Baby Sparrow !",
+    ref:"Matthew 10:29–31 NIV",
+    img:"web-images/sweet-pea book cover for library.webp?v=1",
+    release:"Coming November 01, 2026"
+  },
+  {
+    name:"Sarah",
+    title:"Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story. Luke 2: 1-20 (NIV).",
+    titleHtml:"Sarah the Baby Sheep:<br>My Shepherd,<br>Jesus's Birth.<br>The Christmas Story.<br>Luke 2: 1-20 (NIV).",
+    subtitleHtml:"Subtitle:<br>Jesus's Birth<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Sarah<br>the Baby Sheep !",
+    ref:"Luke 2:1–20 NIV",
+    img:"web-images/sarah book cover for library.webp?v=1",
+    bookmark:"web-images/sarah-new.webp?v=1",
+    release:"Available Now !",
+    available:true
+  },
+  {
+    name:"Larry",
+    title:"Larry the Lizard: Larry Leaps with the Lepers ! Only One Leper Thanks Jesus. The Healing of the Ten Lepers. Luke 17: 11-19 (NIV).",
+    titleHtml:"Larry the Lizard:<br>Larry Leaps<br>with the Lepers !<br>Only One Leper<br>Thanks Jesus.<br>The Healing of the Ten Lepers.<br>Luke 17: 11-19 (NIV).",
+    subtitleHtml:"Subtitle:<br>God's Message of<br>Thankfulness and Healing<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Larry the Lizard !",
+    ref:"Luke 17:11–19 NIV",
+    img:"web-images/larry-new.webp?v=1",
+    release:"Coming January 01, 2027"
+  },
+  {
+    name:"Davy",
+    title:"Davy the Donkey: Davey Speaks Out Loud ! Davy sees an Angel. Balaam Doesn't and is Mean. Balaam Sees the Angel and Changes. Balaam is Now, Kind and Truthful. Numbers 22: 21-41 (NIV)",
+    titleHtml:"Davy the Donkey:<br>Davey Speaks Out Loud !<br>Davy sees an Angel.<br>Balaam Doesn't and is Mean.<br>Balaam Sees the Angel<br>and Changes.<br>Balaam is Now,<br>Kind and Truthful.<br>Numbers 22: 21-41 (NIV)",
+    subtitleHtml:"Subtitle:<br>God's Message of<br>Kindness and Truthfulness<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Davy the Donkey !<br><br>Subtitle:<br>God's Message of<br>Kindness and Truthfulness<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Davy the Donkey !",
+    ref:"Numbers 22:21–41 NIV",
+    img:"web-images/davy-new.webp?v=1",
+    release:"Coming February 01, 2027"
+  },
+  {
+    name:"Patsy",
+    title:"Patsy the Plain Peacock: Patsy Gives Esther Fashion Advice ! Esther is Clothed with Strength and Dignity. Esther is chosen as Queen. Esther 2: 1-17 (NIV). Proverbs 31: 10-31 (NIV).",
+    titleHtml:"Patsy the Plain Peacock:<br>Patsy Gives Esther<br>Fashion Advice !<br>Esther is Clothed with<br>Strength and Dignity.<br>Esther is chosen as Queen.<br>Esther 2: 1-17 (NIV).<br>Proverbs 31: 10-31 (NIV).",
+    subtitleHtml:"Subtitle:<br>God's Message of<br>How to Dress<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Patsy the Plain Peacock !",
+    ref:"Esther 2:1–17 NIV",
+    img:"web-images/patsy-new.webp?v=1",
+    release:"Coming March 01, 2027"
+  },
+  {
+    name:"Francesco",
+    title:"Francesco the Frog: The Frog Fiesta in Egypt ! Frogs Moved in Everywhere. The Second Plague of Egypt. Exodus 8:1-15 (NIV).",
+    titleHtml:"Francesco the Frog:<br>The Frog Fiesta in Egypt !<br>Frogs Moved in Everywhere.<br>The Second Plague of Egypt.<br>Exodus 8:1-15 (NIV).",
+    subtitleHtml:"Subtitle:<br>God's Message of<br>Obedience<br>told through <strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Francesco the Frog !",
+    ref:"Exodus 8:1–15 NIV",
+    img:"web-images/francesco-new.webp?v=1",
+    release:"Coming April 01, 2027"
+  },
+  {
+    name:"Freddy",
+    title:"Freddy the Ferret: Freddy Finds Fun in the Firey Furnace with Friends ! Freddy Trusted God to Deliver him from the Flames. Daniel In the Lion's Den. Daniel 3:1-30 (NIV).",
+    titleHtml:"Freddy the Ferret:<br>Freddy Finds Fun in the<br>Firey Furnace with Friends !<br>Freddy Trusted God<br>to Deliver him<br>from the Flames.<br>Daniel In the Lion's Den.<br>Daniel 3:1-30 (NIV).",
+    subtitleHtml:"Subtitle:<br>God's Message of<br>Trust<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Freddy the Ferret !",
+    ref:"Daniel 3:1–30 NIV",
+    img:"web-images/freddy-new.webp?v=1",
+    release:"Coming May 01, 2027"
+  },
+  {
+    name:"Joy",
+    title:"Joy the Fish: Joy Learns about her Forever Pond ! Heaven our Forever Home. Papa Fish Sings over the Eggs. Jesus Sings Over All Of Us! Zepheniah 3:17 (NIV).",
+    titleHtml:"Joy the Fish:<br>Joy Learns about her<br>Forever Pond !<br>Heaven our Forever Home.<br>Papa Fish Sings<br>over the Eggs.<br>Jesus Sings Over<br>All Of Us!<br>Zepheniah 3:17 (NIV).",
+    subtitleHtml:"Subtitle:<br>God's Message of<br>Heaven<br>and How He Sings<br>Over All Of Us<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Joy the Fish !",
+    ref:"Zepheniah 3:17 NIV",
+    img:"web-images/joy-new.webp?v=1",
+    release:"Coming June 01, 2027"
+  },
+  {
+    name:"Willy",
+    title:"Willy the Water Strider Bug: Willy Walks on Water with Peter ! Peter Walks on Water Towards Jesus. Peter takes his Eyes Off Jesus and Sinks! Matthew 14:22-33 (NIV).",
+    titleHtml:"Willy the Water Strider Bug:<br>Willy Walks on Water<br>with Peter !<br>Peter Walks on Water<br>Towards Jesus.<br>Peter takes his<br>Eyes Off Jesus<br>and Sinks!<br>Matthew 14:22-33 (NIV).",
+    subtitleHtml:"Subtitle:<br>God's Message of<br>Keeping Our Eyes<br>On Jesus !<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Willy the Water Strider Bug !",
+    ref:"Matthew 14:22–33 NIV",
+    img:"web-images/willy-new.webp?v=1",
+    release:"Coming July 01, 2027",
+    noReleaseGap:true
+  },
+  {
+    name:"Wally",
+    title:"Wally the Whale: Wally Obeys God ! Wally Swallows a Human. Wally Gets Sick. Jonah Obeys God. Jonah and the Whale. Jonah 1:1-17 (NIV).",
+    titleHtml:"Wally the Whale:<br>Wally Obeys God !<br>Wally Swallows a Human.<br>Wally Gets Sick.<br>Jonah Obeys God.<br>Jonah and the Whale.<br>Jonah 1:1-17 (NIV).",
+    subtitleHtml:"Subtitle:<br>God's Message of<br>Always Do What God Says<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Wally the Whale !",
+    ref:"Jonah 1:1–17 NIV",
+    img:"web-images/wally-new.webp?v=1",
+    release:"Coming August 01, 2027"
+  },
+  {
+    name:"Levi",
+    title:"Levi the Lion: Levi Listens to God and Shuts His Mouth ! Sign Language helps Levi speak to Daniel. Daniel In the Lion's Den. Daniel 6:1-28 (NIV).",
+    titleHtml:"Levi the Lion:<br>Levi Listens to God<br>and Shuts His Mouth !<br>Sign Language<br>helps Levi speak to Daniel.<br>Daniel In the Lion's Den.<br>Daniel 6:1-28 (NIV).",
+    subtitleHtml:"Subtitle:<br>God's Message of<br>Protection<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Levi the Lion !",
+    ref:"Daniel 6:1–28 NIV",
+    img:"web-images/levi-new.webp?v=1",
+    release:"Coming September 2027"
+  },
+  {
+    name:"Barry",
+    title:"Barry the Blind Mole: Barry and a Blind Man Read Braille. Barry Receives His Sight ! Jesus Heals a Blind Man. John 9:25 (NIV).",
+    titleHtml:"Barry the Blind Mole:<br>Barry and a Blind Man<br>Read Braille.<br>Barry Receives His Sight !<br>Jesus Heals a Blind Man.<br>John 9:25 (NIV).",
+    subtitleHtml:"Subtitle:<br>God's Message of<br>Healing told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Barry the Blind Mole !<br><br>Subtitle:<br>God's Message of<br>Healing<br>told through the<br><strong class='big-blue-eyes'>BIG BLUE EYES</strong><br>of Barry the Blind Mole !",
+    ref:"John 9:25 NIV",
+    img:"web-images/barry-new.webp?v=1",
+    release:"Coming October 01, 2027"
+  }
 ];
 
 const grid=document.getElementById('bookGrid');
@@ -2840,7 +2939,7 @@ books.forEach((b,i)=>{
   const media=b.img?`<img loading="lazy" decoding="async" src="${b.img}" alt="${b.title} book cover">`:`<div class="placeholder"><span>📖</span><b>${b.name}</b><small>Cover artwork coming soon</small></div>`;
   const availability=b.available?`<div class="book-actions"><a class="soon physical-item-link" href="#store">23 Items Available</a></div>`:`<div class="book-actions"><button class="soon coming-soon-book" type="button">COMING SOON</button></div>`;
   const seoDescription=b.name==="Sarah"?`<p class="book-description" style="font-size:15px;line-height:1.35;color:#4b146f;text-align:center;margin:0 0 8px;"><br>A Joyful Christmas, Bible Story<br>for Children about the<br>Birth of Jesus<br>using Luke 2: 1-10(NIV)<br>as a reference.<br>It is The Nativity Historical Event<br>told through the<br><strong class="big-blue-eyes" style="color:#008cff;font-weight:900;">BIG BLUE EYES</strong><br>of Sarah the Baby Sheep<br>who was a Witness of the<br>Glorious Happening that<br>Forever Changed the World !<br><br></p>`:``;
-  const shelfRef=b.ref.replace(/–/g,'-').replace(/\s+NIV$/,' (NIV)').replace(/(\d+)\s+(\d+(?:-\d+)?)/,'$1:$2'); const shelfTitle=/\(NIV\)\s*$/.test(b.title)?b.title:`${b.title} ${shelfRef}`; card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3>${shelfTitle}</h3>${b.subtitle?`<p class="reference" style="margin-top:16px">Subtitle: ${b.subtitle}</p>`:``}<p class="reference${b.name==="Sarah"?" sarah-available-now":""}"${b.name==="Sarah"?' style="text-align:center;color:#4b146f;"':""}><strong>${b.release}</strong></p>${seoDescription}${availability}`;
+  card.innerHTML=`<button class="cover-button" aria-label="Enlarge ${b.title}">${media}<span class="book-number">${i+1}</span></button><h3 class="shelf-book-title" style="font-size:13px;line-height:1.25;margin:13px 0 12px;color:#4b146f;white-space:nowrap;">${b.titleHtml}</h3><p class="reference shelf-book-subtitle" style="font-size:13px;line-height:1.25;margin:0 0 ${b.noReleaseGap?"0":"12px"};color:#4b146f;white-space:nowrap;">${b.subtitleHtml}</p><p class="reference shelf-book-release${b.name==="Sarah"?" sarah-available-now":""}" style="font-size:13px;line-height:1.25;margin:0 0 7px;color:#4b146f;text-align:center;white-space:nowrap;"><strong>${b.release}</strong></p>${seoDescription}${availability}`;
   const cover=card.querySelector('.cover-button');
   if(b.available){cover.addEventListener('click',()=>window.open('sarah-5-page-preview.html?v=31','_blank','noopener'))}else if(b.img){cover.addEventListener('click',()=>openImage(b.img,b.title))}else{cover.addEventListener('click',()=>showModal('comingSoonModal',b.title))}
   if(!b.available){card.querySelector('.coming-soon-book').addEventListener('click',()=>showModal('comingSoonModal',b.title))}
