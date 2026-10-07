@@ -132,10 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function applyAllWording() {
-    [...document.querySelectorAll('#bookGrid .book-card')].forEach((card, index) => {
-      if (books[index]) setShelfCard(card, books[index]);
-    });
-
+    // The 12 collection cards are authored directly in index.html.
+    // Do not rewrite their titles or subtitles here; this preserves exact line spacing.
     document.title = replaceWebsitePhrases(document.title);
     document.querySelectorAll('meta[content]').forEach(meta => {
       const old = meta.getAttribute('content') || '';
