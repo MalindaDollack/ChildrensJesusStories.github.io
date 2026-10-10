@@ -2122,16 +2122,31 @@ Malinda Dollack</p>
   frame.onload = function () {
     var page = frame.contentDocument;
     if (!page || !page.body) return;
-    function fitFullGame() {
-      var h = Math.ceil(page.body.scrollHeight + 24);
-      if (h > 0 && frame.style.height !== h + 'px') frame.style.height = h + 'px';
+    // Measure the game's actual content, not the iframe's own viewport:
+    // scrollHeight grows with iframe height and previously created endless white space.
+    var content = page.querySelector('.wrap') || page.body.firstElementChild;
+    if (!content) return;
+    function fitGame() {
+      var bottom = content.getBoundingClientRect().bottom;
+      var scrollTop = frame.contentWindow.pageYOffset || page.documentElement.scrollTop || 0;
+      var height = Math.max(100, Math.ceil(bottom + scrollTop + 12));
+      if (Math.abs(frame.offsetHeight - height) > 2) {
+        frame.style.height = height + 'px';
+      }
     }
-    fitFullGame();
+    fitGame();
     if (frame.contentWindow.ResizeObserver) {
-      var resizeObserver = new frame.contentWindow.ResizeObserver(fitFullGame);
-      resizeObserver.observe(page.body);
+      var observer = new frame.contentWindow.ResizeObserver(fitGame);
+      observer.observe(content);
     }
-    page.addEventListener('click', function () { setTimeout(fitFullGame, 80); });
+    var images = content.getElementsByTagName('img');
+    for (var i = 0; i < images.length; i++) {
+      if (!images[i].complete) images[i].addEventListener('load', fitGame, false);
+    }
+    page.addEventListener('click', function () { setTimeout(fitGame, 80); }, false);
+    frame.contentWindow.addEventListener('resize', fitGame, false);
+    setTimeout(fitGame, 400);
+    setTimeout(fitGame, 1500);
   };
 })();
 </script>
@@ -2316,17 +2331,31 @@ Malinda Dollack</p>
   frame.onload = function () {
     var page = frame.contentDocument;
     if (!page || !page.body) return;
-    function fitFullGame() {
-      var h = Math.ceil(page.body.scrollHeight + 24);
-      if (h > 0 && frame.style.height !== h + 'px') frame.style.height = h + 'px';
+    // Measure the game's actual content, not the iframe's own viewport:
+    // scrollHeight grows with iframe height and previously created endless white space.
+    var content = page.querySelector('.wrap') || page.body.firstElementChild;
+    if (!content) return;
+    function fitGame() {
+      var bottom = content.getBoundingClientRect().bottom;
+      var scrollTop = frame.contentWindow.pageYOffset || page.documentElement.scrollTop || 0;
+      var height = Math.max(100, Math.ceil(bottom + scrollTop + 12));
+      if (Math.abs(frame.offsetHeight - height) > 2) {
+        frame.style.height = height + 'px';
+      }
     }
-    fitFullGame();
+    fitGame();
     if (frame.contentWindow.ResizeObserver) {
-      var resizeObserver = new frame.contentWindow.ResizeObserver(fitFullGame);
-      resizeObserver.observe(page.body);
+      var observer = new frame.contentWindow.ResizeObserver(fitGame);
+      observer.observe(content);
     }
-    page.addEventListener('click', function () { setTimeout(fitFullGame, 80); });
-    page.addEventListener('drop', function () { setTimeout(fitFullGame, 80); });
+    var images = content.getElementsByTagName('img');
+    for (var i = 0; i < images.length; i++) {
+      if (!images[i].complete) images[i].addEventListener('load', fitGame, false);
+    }
+    page.addEventListener('click', function () { setTimeout(fitGame, 80); }, false);
+    frame.contentWindow.addEventListener('resize', fitGame, false);
+    setTimeout(fitGame, 400);
+    setTimeout(fitGame, 1500);
   };
 })();
 </script>
@@ -2581,31 +2610,40 @@ Malinda Dollack</p>
 </section>
 <!-- Full playable Sarah Find-a-Word, directly below Malinda Find-a-Word -->
 <div class="sarah-findword-website-game" aria-label="Sarah the Baby Sheep Find-a-Word Game" style="width:100%;max-width:900px;margin:28px auto 18px;">
-  <iframe id="sarahFindWordGameFrame" src="games/sarah-find-word-game.html" title="Sarah the Baby Sheep Find-a-Word Game — Play Here" loading="lazy" style="display:block;width:100%;height:1600px;border:0;background:#fff;"></iframe>
+  <iframe id="sarahFindWordGameFrame" src="games/sarah-find-word-game.html" title="Sarah the Baby Sheep Find-a-Word Game — Play Here" loading="lazy" style="display:block;width:100%;height:1050px;border:0;background:#fff;"></iframe>
 </div>
 <script>
-(function(){
-  var frame=document.getElementById('sarahFindWordGameFrame');
-  if(!frame)return;
-  frame.onload=function(){
-    var doc=frame.contentDocument;
-    if(!doc||!doc.body)return;
-    function fit(){
-      var h=Math.max(doc.body.scrollHeight,doc.documentElement.scrollHeight)+20;
-      if(h>0)frame.style.height=Math.ceil(h)+'px';
+(function () {
+  var frame = document.getElementById('sarahFindWordGameFrame');
+  if (!frame) return;
+  frame.onload = function () {
+    var page = frame.contentDocument;
+    if (!page || !page.body) return;
+    // Measure the game's actual content, not the iframe's own viewport:
+    // scrollHeight grows with iframe height and previously created endless white space.
+    var content = page.querySelector('.wrap') || page.body.firstElementChild;
+    if (!content) return;
+    function fitGame() {
+      var bottom = content.getBoundingClientRect().bottom;
+      var scrollTop = frame.contentWindow.pageYOffset || page.documentElement.scrollTop || 0;
+      var height = Math.max(100, Math.ceil(bottom + scrollTop + 12));
+      if (Math.abs(frame.offsetHeight - height) > 2) {
+        frame.style.height = height + 'px';
+      }
     }
-    fit();
-    var imgs=doc.getElementsByTagName('img');
-    for(var i=0;i<imgs.length;i++) {
-      if(!imgs[i].complete)imgs[i].addEventListener('load',fit,false);
+    fitGame();
+    if (frame.contentWindow.ResizeObserver) {
+      var observer = new frame.contentWindow.ResizeObserver(fitGame);
+      observer.observe(content);
     }
-    if(frame.contentWindow.ResizeObserver){
-      var observer=new frame.contentWindow.ResizeObserver(fit);
-      observer.observe(doc.body);
+    var images = content.getElementsByTagName('img');
+    for (var i = 0; i < images.length; i++) {
+      if (!images[i].complete) images[i].addEventListener('load', fitGame, false);
     }
-    frame.contentWindow.addEventListener('resize',fit,false);
-    setTimeout(fit,250);
-    setTimeout(fit,1500);
+    page.addEventListener('click', function () { setTimeout(fitGame, 80); }, false);
+    frame.contentWindow.addEventListener('resize', fitGame, false);
+    setTimeout(fitGame, 400);
+    setTimeout(fitGame, 1500);
   };
 })();
 </script>
