@@ -2272,10 +2272,39 @@ Malinda Dollack</p>
     <img loading="lazy" decoding="async" src="web-images/matching-win-malinda.webp?v=1" alt="Malinda - You Won! JESUS LOVES YOU !">
   </div>
 </section>
+<!-- Sarah's full playable Sudoku is directly below Malinda's Sudoku. -->
+<div class="sarah-sudoku-website-game" aria-label="Sarah the Baby Sheep Sudoku Game" style="width:100%;max-width:900px;margin:28px auto 18px;">
+  <iframe id="sarahSudokuGameFrame"
+    src="sarah-sudoku-game.html"
+    title="Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story Sudoku Game — Play Here"
+    loading="lazy"
+    style="display:block;width:100%;height:1040px;border:0;background:#fff;"
+  ></iframe>
+</div>
+<script>
+(function () {
+  var frame = document.getElementById('sarahSudokuGameFrame');
+  if (!frame) return;
+  frame.onload = function () {
+    var page = frame.contentDocument;
+    if (!page || !page.body) return;
+    function fitFullGame() {
+      var h = Math.ceil(page.body.scrollHeight + 24);
+      if (h > 0 && frame.style.height !== h + 'px') frame.style.height = h + 'px';
+    }
+    fitFullGame();
+    if (frame.contentWindow.ResizeObserver) {
+      var resizeObserver = new frame.contentWindow.ResizeObserver(fitFullGame);
+      resizeObserver.observe(page.body);
+    }
+    page.addEventListener('click', function () { setTimeout(fitFullGame, 80); });
+    page.addEventListener('drop', function () { setTimeout(fitFullGame, 80); });
+  };
+})();
+</script>
 <div class="book-game-links" aria-label="Sudoku Games for Each Book">
 <h4>Sudoku Games: Malinda&#39;s Story Garden Books&nbsp;&nbsp;Volumes 1-12</h4>
 <div class="book-game-links-list">
-<a class="book-game-link coming-soon" href="#" aria-disabled="true" onclick="return false;"><img loading="lazy" decoding="async" src="web-images/sarah book cover for library.webp?v=1" alt="Sarah"><span class="book-game-link-text"><span class="book-game-link-title">Sarah's Sudoku Game</span><span class="book-game-link-status">Coming Soon</span></span></a>
 <a class="book-game-link coming-soon" href="#" aria-disabled="true" onclick="return false;"><img loading="lazy" decoding="async" src="web-images/sweetpea-new.webp?v=1" alt="Sweet-Pea"><span class="book-game-link-text"><span class="book-game-link-title">Sweet-Pea's Sudoku Game</span><span class="book-game-link-status">Coming Soon</span></span></a>
 </div>
 </div>
