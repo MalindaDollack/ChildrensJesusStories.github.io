@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sarah the Sheep Find-a-Word - Offline</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#fff;color:#4b146f}
+.wrap{max-width:1040px;margin:0 auto;padding:18px;text-align:center}
+.game{border:4px solid #5b197d;border-radius:24px;padding:18px;background:#fff;box-shadow:0 10px 24px rgba(75,20,111,.18)}
+h1{margin:0 0 8px;font-size:30px;line-height:1.2;color:#4b146f}
+.intro,.note{max-width:900px;margin:10px auto;font-weight:bold;line-height:1.45}
+.layout{display:flex;align-items:flex-start;justify-content:center;gap:16px;max-width:950px;margin:16px auto}
+.puzzle{position:relative;width:min(100%,720px);margin:0}
+.puzzle img{display:block;width:100%;height:auto;margin:0 auto;border:2px solid #5b197d}
+#wordCanvas{position:absolute;left:0;top:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.words{width:170px;flex:0 0 170px;border:2px solid #5b197d;border-radius:12px;padding:10px 8px;background:#fff;text-align:center;color:#4b146f}
+.words h2{margin:0 0 8px;font-size:18px}.words p{margin:0;font-weight:800;line-height:1.45;font-size:15px}
+.message{min-height:28px;font-weight:900;font-size:19px}
+button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:900;font-size:16px;padding:10px 18px;margin:4px;cursor:pointer}
+.win{display:none;margin:14px auto 0;width:min(100%,520px)}
+.win.show{display:block}.win img{width:100%;height:auto;border-radius:18px;border:3px solid #5b197d}
+.small{font-size:13px;color:#684a74;margin-top:12px}
+@media(max-width:720px){.layout{display:flex;flex-direction:row;align-items:flex-start;gap:8px}.puzzle{width:calc(100% - 128px);margin:0}.words{width:120px;flex:0 0 120px;margin:0;padding:6px 4px}.words h2{font-size:14px}.words p{font-size:11px;line-height:1.3}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="game">
+<h1>Sarah the Sheep: My Shepherd, Jesus's Birth. The Christmas Story Find-a-Word</h1>
+<p class="intro">Hold down your mouse button and drag across each word to highlight it. On a touch screen, touch and slide across the word.</p>
+<div class="layout">
+  <div class="puzzle" id="puzzleWrap">
+    <img id="puzzleImage" src="sarah-find-word-puzzle.png" alt="Sarah Find-a-Word puzzle">
+    <canvas id="wordCanvas" aria-label="Highlight layer for Sarah Find-a-Word"></canvas>
+  </div>
+  <div class="words">
+    <h2>Words to Find</h2>
+    <p>AFRAID<br>ANGEL<br>BABY<br>BETHLEHEM<br>CHRIST<br>DAVID<br>GLORY<br>GOD<br>HEAVEN<br>JESUS<br>JOSEPH<br>JOY<br>LORD<br>MARY<br>MANGER<br>PEACE<br>SAVIOR<br>SHEEP<br>SHEPHERD<br>STAR</p>
+  </div>
+</div>
+<p class="note"><strong>Find all 20 words. Exactly 13 letters will be left over. They spell: JESUS LOVES YOU !</strong></p>
+<p id="message" class="message"></p>
+<button type="button" id="clearBtn">Clear Highlights</button>
+<button type="button" id="finishedBtn">I Found All The Words!</button>
+<div id="win" class="win"><img src="sarah-find-word-victory.png" alt="Sarah says JESUS LOVES YOU !"></div>
+<p class="small">Website edition. Enjoy Sarah's Find-a-Word puzzle!</p>
+</div>
+</div>
+<script>
+(function(){
+ var wrap=document.getElementById('puzzleWrap');
+ var img=document.getElementById('puzzleImage');
+ var canvas=document.getElementById('wordCanvas');
+ var ctx=canvas.getContext('2d');
+ var clearBtn=document.getElementById('clearBtn');
+ var finishedBtn=document.getElementById('finishedBtn');
+ var win=document.getElementById('win');
+ var msg=document.getElementById('message');
+ var drawing=false,sx=0,sy=0,marks=[];
+ function ratio(){return window.devicePixelRatio||1;}
+ function size(){
+   var r=img.getBoundingClientRect(),d=ratio();
+   canvas.width=Math.max(1,Math.round(r.width*d));
+   canvas.height=Math.max(1,Math.round(r.height*d));
+   draw();
+ }
+ function point(e){
+   var r=canvas.getBoundingClientRect();
+   var cx=(typeof e.clientX==='number')?e.clientX:0;
+   var cy=(typeof e.clientY==='number')?e.clientY:0;
+   return {x:(cx-r.left)*canvas.width/r.width,y:(cy-r.top)*canvas.height/r.height};
+ }
+ function draw(){
+   var i,m;
+   ctx.clearRect(0,0,canvas.width,canvas.height);
+   ctx.lineCap='round';
+   ctx.strokeStyle='rgba(109,31,145,.38)';
+   ctx.lineWidth=Math.max(12,canvas.width/38);
+   for(i=0;i<marks.length;i++){
+     m=marks[i];ctx.beginPath();ctx.moveTo(m.x1,m.y1);ctx.lineTo(m.x2,m.y2);ctx.stroke();
+   }
+ }
+ function mouseDown(e){if(e.preventDefault)e.preventDefault();drawing=true;var p=point(e);sx=p.x;sy=p.y;return false;}
+ function mouseUp(e){if(!drawing)return false;drawing=false;var p=point(e);marks.push({x1:sx,y1:sy,x2:p.x,y2:p.y});draw();return false;}
+ canvas.onmousedown=mouseDown;
+ canvas.onmouseup=mouseUp;
+ canvas.onmouseleave=function(){drawing=false;};
+ canvas.ontouchstart=function(e){if(!e.touches||!e.touches.length)return false;var t=e.touches[0];mouseDown({clientX:t.clientX,clientY:t.clientY,preventDefault:function(){}});if(e.preventDefault)e.preventDefault();return false;};
+ canvas.ontouchend=function(e){var t=(e.changedTouches&&e.changedTouches.length)?e.changedTouches[0]:null;if(t)mouseUp({clientX:t.clientX,clientY:t.clientY});if(e.preventDefault)e.preventDefault();return false;};
+ clearBtn.onclick=function(){marks=[];draw();win.className='win';msg.innerHTML='';};
+ finishedBtn.onclick=function(){msg.innerHTML='Wonderful! JESUS LOVES YOU !';win.className='win show';};
+ if(img.complete){size();}else{img.onload=size;}
+ if(window.addEventListener){window.addEventListener('resize',size,false);}else{window.attachEvent('onresize',size);}
+})();
+</script>
+</body>
+</html>

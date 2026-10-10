@@ -2579,10 +2579,39 @@ Malinda Dollack</p>
 
   <img loading="lazy" decoding="async" src="web-images/story-garden-find-word-banner.jpg?v=7" alt="Malinda's Story Garden - Faith-Filled Adventures for Little Hearts" style="display:block;width:100%;max-width:760px;height:auto;margin:18px auto 0;border:3px solid #5b197d;border-radius:16px;background:#fff">
 </section>
+<!-- Full playable Sarah Find-a-Word, directly below Malinda Find-a-Word -->
+<div class="sarah-findword-website-game" aria-label="Sarah the Baby Sheep Find-a-Word Game" style="width:100%;max-width:900px;margin:28px auto 18px;">
+  <iframe id="sarahFindWordGameFrame" src="games/sarah-find-word-game.html" title="Sarah the Baby Sheep Find-a-Word Game — Play Here" loading="lazy" style="display:block;width:100%;height:1600px;border:0;background:#fff;"></iframe>
+</div>
+<script>
+(function(){
+  var frame=document.getElementById('sarahFindWordGameFrame');
+  if(!frame)return;
+  frame.onload=function(){
+    var doc=frame.contentDocument;
+    if(!doc||!doc.body)return;
+    function fit(){
+      var h=Math.max(doc.body.scrollHeight,doc.documentElement.scrollHeight)+20;
+      if(h>0)frame.style.height=Math.ceil(h)+'px';
+    }
+    fit();
+    var imgs=doc.getElementsByTagName('img');
+    for(var i=0;i<imgs.length;i++) {
+      if(!imgs[i].complete)imgs[i].addEventListener('load',fit,false);
+    }
+    if(frame.contentWindow.ResizeObserver){
+      var observer=new frame.contentWindow.ResizeObserver(fit);
+      observer.observe(doc.body);
+    }
+    frame.contentWindow.addEventListener('resize',fit,false);
+    setTimeout(fit,250);
+    setTimeout(fit,1500);
+  };
+})();
+</script>
 <div class="book-game-links" aria-label="Find-A-Word Games for Each Book">
 <h4>Find-A-Word Games: Malinda&#39;s Story Garden Books&nbsp;&nbsp;Volumes 1-12</h4>
 <div class="book-game-links-list">
-<a class="book-game-link coming-soon" href="#" aria-disabled="true" onclick="return false;"><img loading="lazy" decoding="async" src="web-images/sarah book cover for library.webp?v=1" alt="Sarah"><span class="book-game-link-text"><span class="book-game-link-title">Sarah's Find-A-Word Game</span><span class="book-game-link-status">Coming Soon</span></span></a>
 <a class="book-game-link coming-soon" href="#" aria-disabled="true" onclick="return false;"><img loading="lazy" decoding="async" src="web-images/sweetpea-new.webp?v=1" alt="Sweet-Pea"><span class="book-game-link-text"><span class="book-game-link-title">Sweet-Pea's Find-A-Word Game</span><span class="book-game-link-status">Coming Soon</span></span></a>
 </div>
 </div>
