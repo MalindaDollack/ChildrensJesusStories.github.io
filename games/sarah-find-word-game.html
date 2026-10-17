@@ -15,7 +15,14 @@ h1{margin:0 0 8px;font-size:30px;line-height:1.2;color:#4b146f}
 .layout{display:flex;align-items:flex-start;justify-content:center;gap:16px;max-width:950px;margin:16px auto}
 .puzzle{position:relative;width:min(100%,720px);margin:0}
 .puzzle img{display:block;width:100%;height:auto;margin:0 auto;border:2px solid #5b197d}
-#wordCanvas{position:absolute;left:0;top:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+#wordGrid{position:absolute;left:7.52%;top:16.86%;width:84.96%;height:59.11%;touch-action:none;user-select:none;-webkit-user-select:none;-moz-user-select:none}
+.word-row{display:flex;height:10%}
+.word-cell{width:9.090909%;height:100%;cursor:crosshair;background:transparent;box-sizing:border-box}
+.word-cell.preview{background:rgba(230,157,216,.45)}
+.word-cell.found{background:rgba(182,110,230,.42)}
+.word-cell.start,.word-cell:focus-visible{outline:3px solid #d0208f;outline-offset:-3px}
+.word-cell.msg{background:rgba(255,221,75,.45)}
+.words .done{text-decoration:line-through;color:#888}
 .words{width:170px;flex:0 0 170px;border:2px solid #5b197d;border-radius:12px;padding:10px 8px;background:#fff;text-align:center;color:#4b146f}
 .words h2{margin:0 0 8px;font-size:18px}.words p{margin:0;font-weight:800;line-height:1.45;font-size:15px}
 .message{min-height:28px;font-weight:900;font-size:19px}
@@ -34,11 +41,11 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
 <div class="layout">
   <div class="puzzle" id="puzzleWrap">
     <img id="puzzleImage" src="sarah-find-word-puzzle.png" alt="Sarah Find-a-Word puzzle">
-    <canvas id="wordCanvas" aria-label="Highlight layer for Sarah Find-a-Word"></canvas>
+    <div id="wordGrid" aria-label="Sarah Find-a-Word letter grid"></div>
   </div>
   <div class="words">
     <h2>Words to Find</h2>
-    <p>AFRAID<br>ANGEL<br>BABY<br>BETHLEHEM<br>CHRIST<br>DAVID<br>GLORY<br>GOD<br>HEAVEN<br>JESUS<br>JOSEPH<br>JOY<br>LORD<br>MARY<br>MANGER<br>PEACE<br>SAVIOR<br>SHEEP<br>SHEPHERD<br>STAR</p>
+    <p id="wordList"></p>
   </div>
 </div>
 <p class="note"><strong>Find all 20 words. Exactly 13 letters will be left over. They spell: JESUS LOVES YOU !</strong></p>
@@ -51,80 +58,101 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
 </div>
 <script>
 (function(){
- var wrap=document.getElementById('puzzleWrap');
- var img=document.getElementById('puzzleImage');
- var canvas=document.getElementById('wordCanvas');
- var ctx=canvas.getContext('2d');
- var clearBtn=document.getElementById('clearBtn');
- var finishedBtn=document.getElementById('finishedBtn');
- var win=document.getElementById('win');
- var msg=document.getElementById('message');
- var drawing=false,awaitingEnd=false,sx=0,sy=0,last=null,marks=[];
- function size(){
-   var r=img.getBoundingClientRect(),d=window.devicePixelRatio||1;
-   canvas.width=Math.max(1,Math.round(r.width*d));
-   canvas.height=Math.max(1,Math.round(r.height*d));
-   draw();
+ var rows=["JESUECAEPSR","BHPESOJSHLA","EODROLSHEYT","TDIVADUEABS","HVIMCYSPVAM","LPAAHOEHEBA","EENRRJJENGN","HEGYIFYROLG","EHEESSADYOE","MSLUTSAVIOR"];
+ var words=["AFRAID","ANGEL","BABY","BETHLEHEM","CHRIST","DAVID","GLORY","GOD","HEAVEN","JESUS","JOSEPH","JOY","LORD","MARY","MANGER","PEACE","SAVIOR","SHEEP","SHEPHERD","STAR"];
+ var grid=document.getElementById('wordGrid'),list=document.getElementById('wordList');
+ var msg=document.getElementById('message'),win=document.getElementById('win');
+ var found={},foundCells={},cells=[],startCell=null,lastCell=null,dragging=false,awaitingEnd=false;
+ function key(p){return p.r+','+p.c;}
+ function paint(){
+   for(var r=0;r<rows.length;r++)for(var c=0;c<rows[r].length;c++){
+     cells[r][c].className='word-cell'+(foundCells[r+','+c]?' found':'');
+   }
  }
- function point(e){
-   var r=canvas.getBoundingClientRect();
-   return {x:Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),
-           y:Math.max(0,Math.min(1,(e.clientY-r.top)/r.height))};
+ function line(){
+   if(!startCell||!lastCell)return [];
+   var dr=lastCell.r-startCell.r,dc=lastCell.c-startCell.c;
+   if(dr&&dc&&Math.abs(dr)!==Math.abs(dc))return [];
+   var n=Math.max(Math.abs(dr),Math.abs(dc)),a=[];
+   for(var i=0;i<=n;i++)a.push({r:startCell.r+(dr===0?0:(dr>0?i:-i)),c:startCell.c+(dc===0?0:(dc>0?i:-i))});
+   return a;
  }
- function stroke(m){
-   ctx.beginPath();ctx.moveTo(m.x1*canvas.width,m.y1*canvas.height);
-   ctx.lineTo(m.x2*canvas.width,m.y2*canvas.height);ctx.stroke();
+ function preview(){
+   paint();var a=line();
+   for(var i=0;i<a.length;i++)if(!foundCells[key(a[i])])cells[a[i].r][a[i].c].className+=' preview';
+   if(startCell)cells[startCell.r][startCell.c].className+=' start';
  }
- function draw(){
-   ctx.clearRect(0,0,canvas.width,canvas.height);
-   ctx.lineCap='round';ctx.strokeStyle='rgba(109,31,145,.38)';
-   ctx.lineWidth=Math.max(12,canvas.width/38);
-   for(var i=0;i<marks.length;i++)stroke(marks[i]);
-   if((drawing||awaitingEnd)&&last)stroke({x1:sx,y1:sy,x2:last.x,y2:last.y});
+ function count(){var n=0;for(var i=0;i<words.length;i++)if(found[words[i]])n++;return n;}
+ function check(){
+   if(count()!==words.length)return;
+   for(var r=0;r<rows.length;r++)for(var c=0;c<rows[r].length;c++)if(!foundCells[r+','+c])cells[r][c].className+=' msg';
+   msg.innerHTML='Wonderful! The special message is JESUS LOVES YOU !';win.className='win show';
  }
- function commit(p){
-   marks.push({x1:sx,y1:sy,x2:p.x,y2:p.y});
-   drawing=false;awaitingEnd=false;last=null;draw();
+ function finish(force){
+   if(!dragging)return;
+   dragging=false;
+   if(startCell===lastCell&&force!==true){awaitingEnd=true;msg.innerHTML='Now click the last letter of the word.';return;}
+   awaitingEnd=false;
+   var a=line(),letters='',matched=false;
+   for(var i=0;i<a.length;i++)letters+=rows[a[i].r].charAt(a[i].c);
+   var rev=letters.split('').reverse().join('');
+   for(var w=0;w<words.length;w++){
+     var pos=letters.indexOf(words[w]),back=false;
+     if(pos<0){pos=rev.indexOf(words[w]);back=true;}
+     if(pos<0)continue;
+     if(back)pos=a.length-pos-words[w].length;
+     for(var j=pos;j<pos+words[w].length;j++)foundCells[key(a[j])]=true;
+     found[words[w]]=true;document.getElementById('word_'+w).className='done';
+     msg.innerHTML='You found '+words[w]+'!';matched=true;break;
+   }
+   if(!matched)msg.innerHTML='That line is not one of the listed words. Try again.';
+   startCell=null;lastCell=null;paint();check();
  }
- function mouseDown(e){
-   if(typeof e.button==='number'&&e.button!==0)return;
-   if(e.preventDefault)e.preventDefault();
-   var p=point(e);
-   if(awaitingEnd){commit(p);return false;}
-   drawing=true;sx=p.x;sy=p.y;last=p;draw();return false;
+ function start(cell,e){
+   if(e&&typeof e.button==='number'&&e.button!==0)return;
+   if(e&&e.preventDefault)e.preventDefault();
+   if(awaitingEnd){lastCell=cell;dragging=true;finish(true);}
+   else{startCell=cell;lastCell=cell;dragging=true;preview();}
  }
- function mouseMove(e){
-   if(!drawing&&!awaitingEnd)return;
-   last=point(e);draw();
+ function enter(cell){if(dragging||awaitingEnd){lastCell=cell;preview();}}
+ for(var r=0;r<rows.length;r++){
+   var row=document.createElement('div');row.className='word-row';cells[r]=[];
+   for(var c=0;c<rows[r].length;c++)(function(r,c){
+     var el=document.createElement('div');el.className='word-cell';el.r=r;el.c=c;
+     el.setAttribute('role','button');el.setAttribute('tabindex','0');
+     el.setAttribute('aria-label',rows[r].charAt(c)+', row '+(r+1)+', column '+(c+1));
+     el.onmousedown=function(e){start(el,e);};
+     el.onmouseenter=function(){enter(el);};
+     el.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){start(el,e);finish();}};
+     cells[r][c]=el;row.appendChild(el);
+   })(r,c);
+   grid.appendChild(row);
  }
- function mouseUp(e){
-   if(!drawing)return;
-   var p=point(e);
-   if(Math.abs(p.x-sx)*canvas.width<6&&Math.abs(p.y-sy)*canvas.height<6){
-     drawing=false;awaitingEnd=true;last=p;
-     msg.innerHTML='Now click the last letter of the word.';draw();
-   }else{commit(p);msg.innerHTML='';}
+ for(var w=0;w<words.length;w++){
+   var span=document.createElement('span');span.id='word_'+w;span.innerHTML=words[w];
+   list.appendChild(span);list.appendChild(document.createElement('br'));
  }
- canvas.onmousedown=mouseDown;
- canvas.onmousemove=mouseMove;
- document.addEventListener('mouseup',mouseUp,false);
- canvas.ontouchstart=function(e){
-   if(!e.touches||!e.touches.length)return;
-   mouseDown(e.touches[0]);if(e.preventDefault)e.preventDefault();return false;
- };
- canvas.ontouchmove=function(e){
-   if(e.touches&&e.touches.length)mouseMove(e.touches[0]);
+ document.addEventListener('mouseup',function(){finish();},false);
+ grid.ontouchstart=function(e){
+   var el=e.target;if(el&&el.className.indexOf('word-cell')>=0)start(el,e);
    if(e.preventDefault)e.preventDefault();return false;
  };
- canvas.ontouchend=function(e){
-   if(e.changedTouches&&e.changedTouches.length)mouseUp(e.changedTouches[0]);
+ grid.ontouchmove=function(e){
+   var t=e.touches&&e.touches[0];if(!t)return;
+   var el=document.elementFromPoint(t.clientX,t.clientY);
+   if(el&&el.className.indexOf('word-cell')>=0)enter(el);
    if(e.preventDefault)e.preventDefault();return false;
  };
- canvas.ontouchcancel=function(){drawing=false;awaitingEnd=false;last=null;draw();};
- clearBtn.onclick=function(){marks=[];drawing=false;awaitingEnd=false;last=null;draw();win.className='win';msg.innerHTML='';};
- finishedBtn.onclick=function(){msg.innerHTML='Wonderful! JESUS LOVES YOU !';win.className='win show';};
- if(img.complete){size();}else{img.onload=size;}
- if(window.addEventListener){window.addEventListener('resize',size,false);}else{window.attachEvent('onresize',size);}
+ grid.ontouchend=function(e){finish();if(e.preventDefault)e.preventDefault();return false;};
+ grid.ontouchcancel=function(){dragging=false;awaitingEnd=false;startCell=null;lastCell=null;paint();};
+ document.getElementById('clearBtn').onclick=function(){
+   found={};foundCells={};dragging=false;awaitingEnd=false;startCell=null;lastCell=null;
+   paint();msg.innerHTML='';win.className='win';
+   for(var w=0;w<words.length;w++)document.getElementById('word_'+w).className='';
+ };
+ document.getElementById('finishedBtn').onclick=function(){
+   if(count()===words.length)check();else msg.innerHTML='You have found '+count()+' of '+words.length+' words. Keep looking!';
+ };
 })();
 </script>
 </body>
