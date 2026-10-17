@@ -2559,7 +2559,7 @@ Malinda Dollack</p>
   </div>
   <div class="malinda-wordsearch-flowers" aria-hidden="true">✿ ✿ ✿ ✿ ✿</div>
   <h3 id="malinda-wordsearch-title">Malinda's Story Garden Find-a-Word Game</h3>
-  <p class="malinda-wordsearch-intro">Find all 12 hidden phrases in the letter grid. Hold down your mouse button and drag in a straight line across a phrase. Words may go across, down, up, backward, or diagonally.</p>
+  <p class="malinda-wordsearch-intro">Find all 12 hidden phrases in the letter grid. Click the first letter, then click the last letter of a phrase to keep it highlighted. You can also hold down your mouse button and drag in a straight line. Words may go across, down, up, backward, or diagonally.</p>
 
   <div class="malinda-wordsearch-gridwrap">
     <div id="malindaWordGrid" class="malinda-wordsearch-grid" aria-label="Malinda's Story Garden Find-a-Word puzzle"></div>
@@ -2583,7 +2583,7 @@ Malinda Dollack</p>
 </section>
 <!-- Full playable Sarah Find-a-Word, directly below Malinda Find-a-Word -->
 <div class="sarah-findword-website-game" aria-label="Sarah the Baby Sheep Find-a-Word Game" style="width:100%;max-width:900px;margin:28px auto 18px;">
-  <iframe id="sarahFindWordGameFrame" src="games/sarah-find-word-game.html" title="Sarah the Baby Sheep Find-a-Word Game — Play Here" loading="lazy" style="display:block;width:100%;height:1050px;border:0;background:#fff;"></iframe>
+  <iframe id="sarahFindWordGameFrame" src="games/sarah-find-word-game.html?v=20261017-click" title="Sarah the Baby Sheep Find-a-Word Game — Play Here" loading="lazy" style="display:block;width:100%;height:1050px;border:0;background:#fff;"></iframe>
 </div>
 <script>
 (function () {
@@ -2693,12 +2693,12 @@ Malinda Dollack</p>
 
   var msgKeys=["4,25","5,14","5,15","5,16","5,17","5,18","5,19","5,20","5,21","5,22","5,23","5,24","5,25"];
   var grid=document.getElementById("malindaWordGrid"),wordList=document.getElementById("malindaWordList"),message=document.getElementById("malindaWordMessage"),win=document.getElementById("malindaWordWin");
-  var found={},foundCells={},dragging=false,startCell=null,lastCell=null;
+  var found={},foundCells={},dragging=false,startCell=null,lastCell=null,awaitingEnd=false;
 
   function cellId(r,c){return "mw_"+r+"_"+c;}
   function build(){
     var r,c,rowDiv,cell,sp;
-    grid.innerHTML="";wordList.innerHTML="";found={};foundCells={};win.hidden=true;win.className="malinda-wordsearch-win";message.innerHTML="";
+    grid.innerHTML="";wordList.innerHTML="";found={};foundCells={};dragging=false;awaitingEnd=false;startCell=null;lastCell=null;win.hidden=true;win.className="malinda-wordsearch-win";message.innerHTML="";
     for(r=0;r<gridData.length;r++){
       rowDiv=document.createElement("div");rowDiv.className="malinda-wordsearch-row";
       for(c=0;c<gridData[r].length;c++){
@@ -2716,8 +2716,13 @@ Malinda Dollack</p>
     grid.ontouchmove=function(e){var t=e.touches&&e.touches[0];if(!t)return;var el=document.elementFromPoint(t.clientX,t.clientY);if(el&&el.className.indexOf("malinda-wordsearch-cell")>=0){lastCell=el;preview();}if(e.preventDefault)e.preventDefault();return false;};
     grid.ontouchend=function(e){end();if(e&&e.preventDefault)e.preventDefault();return false;};
   }
-  function start(e){dragging=true;startCell=this;lastCell=this;preview();if(e&&e.preventDefault)e.preventDefault();}
-  function enter(){if(dragging){lastCell=this;preview();}}
+  function start(e){
+    if(e&&typeof e.button==="number"&&e.button!==0)return;
+    if(awaitingEnd){awaitingEnd=false;lastCell=this;dragging=true;end(true);}
+    else{dragging=true;startCell=this;lastCell=this;preview();}
+    if(e&&e.preventDefault)e.preventDefault();
+  }
+  function enter(){if(dragging||awaitingEnd){lastCell=this;preview();}}
   function straightCells(){
     if(!startCell||!lastCell)return [];
     var r1=parseInt(startCell.getAttribute("data-r"),10),c1=parseInt(startCell.getAttribute("data-c"),10),r2=parseInt(lastCell.getAttribute("data-r"),10),c2=parseInt(lastCell.getAttribute("data-c"),10);
@@ -2754,9 +2759,15 @@ Malinda Dollack</p>
     for(i=0;i<a.length;i++){el=document.getElementById(cellId(a[i][0],a[i][1]));if(el.getAttribute("data-found")!=="1"&&el.className.indexOf(" found")<0)el.className+=" preview";}
     startCell.className+=" start";
   }
-  function end(){
+  function end(commitClick){
     if(!dragging)return;
     dragging=false;
+    if(startCell===lastCell&&commitClick!==true){
+      awaitingEnd=true;
+      message.innerHTML="Now click the last letter of the phrase.";
+      return;
+    }
+    awaitingEnd=false;
     var a=straightCells(),matchedCells=[],i,j,word="",idx=-1,letters="",norm="",rev="",pos=-1,startAt=0,endAt=0;
     for(i=0;i<a.length;i++){
       letters+=gridData[a[i][0]].charAt(a[i][1]);
@@ -2795,7 +2806,7 @@ Malinda Dollack</p>
   function countFound(){var i,n=0;for(i=0;i<words.length;i++)if(found[words[i]])n++;return n;}
   function revealMessage(){
     var i,p,el;
-    for(i=0;i<msgKeys.length;i++){p=msgKeys[i].split(",");el=document.getElementById(cellId(parseInt(p[0],10),parseInt(p[1],10)));if(el.className.indexOf(" msg")<0)el.className+=" msg";}
+    for(i=0;i<msgKeys.length;i++){p=msgKeys[i].split(",");el=document.getElementById(cellId(parseInt(p[0],10),parseInt(p[1],10)));if(el&&el.className.indexOf(" msg")<0)el.className+=" msg";}
   }
   function check(){
     if(countFound()===words.length){
