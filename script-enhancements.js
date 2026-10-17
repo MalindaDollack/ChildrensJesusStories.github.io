@@ -59,6 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  if (document.body.hasAttribute('data-catalog-revision')) return;
+
   // Force every picture in PID1, PID2 and PID3 to the same display box.
   // Inline !important rules are set here so older inline height:auto rules cannot override them.
   ['store-PID1', 'store-PID2', 'store-PID3'].forEach(id => {
@@ -229,6 +231,7 @@ if (pid15Card) {
 // ISBN-matching Sarah book listing wording — October 2026.
 // Run after the older store cleanup so those routines cannot overwrite these ISBN titles/subtitles.
 document.addEventListener('DOMContentLoaded', () => {
+  if (document.body.hasAttribute('data-catalog-revision')) return;
   setTimeout(() => {
     const subtitle = "Jesus\'s Birth through the BIG BLUE EYES of Sarah the Baby Sheep !";
     const subtitleHtml = "Jesus\'s Birth through the <strong class='big-blue-eyes'>BIG BLUE EYES</strong> of Sarah the Baby Sheep !";

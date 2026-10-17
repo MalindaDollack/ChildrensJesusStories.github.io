@@ -1,5 +1,5 @@
 // Stable website enhancements loader - August 31, 2026.
-document.write('<script src="script-enhancements.js?v=11"><\/script>');
+document.write('<script src="script-enhancements.js?v=20261017"><\/script>');
 document.write('<script src="game-win-celebration.js?v=11"><\/script>');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -272,3 +272,4 @@ document.addEventListener('DOMContentLoaded', () => {
     link.href = 'mailto:' + WEBSITE_EMAIL + '?subject=' + encodeURIComponent(productCode) + '&body=' + encodeURIComponent(lines.join('\n'));
   });
 });
+
