@@ -30,7 +30,7 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
 <div class="wrap">
 <div class="game">
 <h1>Sarah the Sheep: My Shepherd, Jesus's Birth. The Christmas Story Find-a-Word</h1>
-<p class="intro">Hold down your mouse button and drag across each word to highlight it. On a touch screen, touch and slide across the word.</p>
+<p class="intro">Click the first letter, then click the last letter of a word to keep it highlighted. You can also hold down your mouse button and drag, or touch and slide.</p>
 <div class="layout">
   <div class="puzzle" id="puzzleWrap">
     <img id="puzzleImage" src="sarah-find-word-puzzle.png" alt="Sarah Find-a-Word puzzle">
@@ -59,38 +59,69 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
  var finishedBtn=document.getElementById('finishedBtn');
  var win=document.getElementById('win');
  var msg=document.getElementById('message');
- var drawing=false,sx=0,sy=0,marks=[];
- function ratio(){return window.devicePixelRatio||1;}
+ var drawing=false,awaitingEnd=false,sx=0,sy=0,last=null,marks=[];
  function size(){
-   var r=img.getBoundingClientRect(),d=ratio();
+   var r=img.getBoundingClientRect(),d=window.devicePixelRatio||1;
    canvas.width=Math.max(1,Math.round(r.width*d));
    canvas.height=Math.max(1,Math.round(r.height*d));
    draw();
  }
  function point(e){
    var r=canvas.getBoundingClientRect();
-   var cx=(typeof e.clientX==='number')?e.clientX:0;
-   var cy=(typeof e.clientY==='number')?e.clientY:0;
-   return {x:(cx-r.left)*canvas.width/r.width,y:(cy-r.top)*canvas.height/r.height};
+   return {x:Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),
+           y:Math.max(0,Math.min(1,(e.clientY-r.top)/r.height))};
+ }
+ function stroke(m){
+   ctx.beginPath();ctx.moveTo(m.x1*canvas.width,m.y1*canvas.height);
+   ctx.lineTo(m.x2*canvas.width,m.y2*canvas.height);ctx.stroke();
  }
  function draw(){
-   var i,m;
    ctx.clearRect(0,0,canvas.width,canvas.height);
-   ctx.lineCap='round';
-   ctx.strokeStyle='rgba(109,31,145,.38)';
+   ctx.lineCap='round';ctx.strokeStyle='rgba(109,31,145,.38)';
    ctx.lineWidth=Math.max(12,canvas.width/38);
-   for(i=0;i<marks.length;i++){
-     m=marks[i];ctx.beginPath();ctx.moveTo(m.x1,m.y1);ctx.lineTo(m.x2,m.y2);ctx.stroke();
-   }
+   for(var i=0;i<marks.length;i++)stroke(marks[i]);
+   if((drawing||awaitingEnd)&&last)stroke({x1:sx,y1:sy,x2:last.x,y2:last.y});
  }
- function mouseDown(e){if(e.preventDefault)e.preventDefault();drawing=true;var p=point(e);sx=p.x;sy=p.y;return false;}
- function mouseUp(e){if(!drawing)return false;drawing=false;var p=point(e);marks.push({x1:sx,y1:sy,x2:p.x,y2:p.y});draw();return false;}
+ function commit(p){
+   marks.push({x1:sx,y1:sy,x2:p.x,y2:p.y});
+   drawing=false;awaitingEnd=false;last=null;draw();
+ }
+ function mouseDown(e){
+   if(typeof e.button==='number'&&e.button!==0)return;
+   if(e.preventDefault)e.preventDefault();
+   var p=point(e);
+   if(awaitingEnd){commit(p);return false;}
+   drawing=true;sx=p.x;sy=p.y;last=p;draw();return false;
+ }
+ function mouseMove(e){
+   if(!drawing&&!awaitingEnd)return;
+   last=point(e);draw();
+ }
+ function mouseUp(e){
+   if(!drawing)return;
+   var p=point(e);
+   if(Math.abs(p.x-sx)*canvas.width<6&&Math.abs(p.y-sy)*canvas.height<6){
+     drawing=false;awaitingEnd=true;last=p;
+     msg.innerHTML='Now click the last letter of the word.';draw();
+   }else{commit(p);msg.innerHTML='';}
+ }
  canvas.onmousedown=mouseDown;
- canvas.onmouseup=mouseUp;
- canvas.onmouseleave=function(){drawing=false;};
- canvas.ontouchstart=function(e){if(!e.touches||!e.touches.length)return false;var t=e.touches[0];mouseDown({clientX:t.clientX,clientY:t.clientY,preventDefault:function(){}});if(e.preventDefault)e.preventDefault();return false;};
- canvas.ontouchend=function(e){var t=(e.changedTouches&&e.changedTouches.length)?e.changedTouches[0]:null;if(t)mouseUp({clientX:t.clientX,clientY:t.clientY});if(e.preventDefault)e.preventDefault();return false;};
- clearBtn.onclick=function(){marks=[];draw();win.className='win';msg.innerHTML='';};
+ canvas.onmousemove=mouseMove;
+ document.addEventListener('mouseup',mouseUp,false);
+ canvas.ontouchstart=function(e){
+   if(!e.touches||!e.touches.length)return;
+   mouseDown(e.touches[0]);if(e.preventDefault)e.preventDefault();return false;
+ };
+ canvas.ontouchmove=function(e){
+   if(e.touches&&e.touches.length)mouseMove(e.touches[0]);
+   if(e.preventDefault)e.preventDefault();return false;
+ };
+ canvas.ontouchend=function(e){
+   if(e.changedTouches&&e.changedTouches.length)mouseUp(e.changedTouches[0]);
+   if(e.preventDefault)e.preventDefault();return false;
+ };
+ canvas.ontouchcancel=function(){drawing=false;awaitingEnd=false;last=null;draw();};
+ clearBtn.onclick=function(){marks=[];drawing=false;awaitingEnd=false;last=null;draw();win.className='win';msg.innerHTML='';};
  finishedBtn.onclick=function(){msg.innerHTML='Wonderful! JESUS LOVES YOU !';win.className='win show';};
  if(img.complete){size();}else{img.onload=size;}
  if(window.addEventListener){window.addEventListener('resize',size,false);}else{window.attachEvent('onresize',size);}
