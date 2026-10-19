@@ -2626,6 +2626,14 @@ Malinda Dollack</p>
 <a class="book-game-link coming-soon" href="#" aria-disabled="true" onclick="return false;"><img loading="lazy" decoding="async" src="web-images/sweetpea-new.webp?v=1" alt="Sweet-Pea"><span class="book-game-link-text"><span class="book-game-link-title">Sweet-Pea's Find-A-Word Game</span><span class="book-game-link-status">Coming Soon</span></span></a>
 </div>
 </div>
+<section id="maze-games" style="max-width:940px;margin:30px auto;text-align:center;">
+<h2>Maze Games</h2>
+<iframe class="story-maze-frame" id="sarah-maze" src="games/sarah-maze-game.html" title="Help Jesus find Sarah Maze Game" loading="lazy" style="display:block;width:100%;height:1400px;border:3px solid #5b197d;border-radius:18px;background:#fff" allow="autoplay"></iframe>
+<iframe class="story-maze-frame" id="malinda-maze" src="games/malinda-maze-game.html" title="Malinda's Story Garden Maze Game" loading="lazy" style="display:block;width:100%;height:1400px;margin-top:28px;border:3px solid #5b197d;border-radius:18px;background:#fff" allow="autoplay"></iframe>
+</section>
+<script>
+(function(){document.querySelectorAll('.story-maze-frame').forEach(function(frame){function fit(){try{var d=frame.contentDocument;var foot=d.querySelector('.footer');if(foot)frame.style.height=Math.ceil(foot.getBoundingClientRect().bottom+frame.contentWindow.scrollY+24)+'px'}catch(e){}}frame.addEventListener('load',function(){fit();if(window.ResizeObserver)new ResizeObserver(fit).observe(frame.contentDocument.body);setTimeout(fit,600)});window.addEventListener('resize',fit)})})();
+</script>
 <style>
 .malinda-wordsearch-section{width:min(100%,900px);margin:30px auto;padding:18px;border:4px solid #5b197d;border-radius:24px;background:#fff;text-align:center;color:#4b146f;box-shadow:0 10px 24px rgba(75,20,111,.18)}
 .malinda-wordsearch-section h3{margin:8px 0;font-size:clamp(1.35rem,3.8vw,2rem)}
@@ -3361,6 +3369,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 </body>
 </html>
+
 
 
 
