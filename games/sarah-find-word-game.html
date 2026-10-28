@@ -15,13 +15,13 @@ h1{margin:0 0 8px;font-size:30px;line-height:1.2;color:#4b146f}
 .layout{display:flex;align-items:flex-start;justify-content:center;gap:16px;max-width:950px;margin:16px auto}
 .puzzle{position:relative;width:min(100%,720px);margin:0}
 .puzzle img{display:block;width:100%;height:auto;margin:0 auto;border:2px solid #5b197d}
-#wordGrid{position:absolute;left:7.52%;top:16.86%;width:84.96%;height:59.11%;touch-action:none;user-select:none;-webkit-user-select:none;-moz-user-select:none}
+#wordGrid{background:#fff;border:2px solid #5b197d;position:absolute;left:7.52%;top:16.86%;width:84.96%;height:59.11%;touch-action:none;user-select:none;-webkit-user-select:none;-moz-user-select:none}
 .word-row{display:flex;height:10%}
-.word-cell{width:9.090909%;height:100%;cursor:crosshair;background:transparent;box-sizing:border-box}
-.word-cell.preview{background:rgba(230,157,216,.45)}
-.word-cell.found{background:rgba(182,110,230,.42)}
+.word-cell{display:flex;align-items:center;justify-content:center;width:9.090909%;height:100%;cursor:crosshair;background:#fff;color:#4b146f;font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:clamp(12px,3.8vw,27px);box-sizing:border-box;box-shadow:inset -1px -1px #9c79b4}
+.word-cell.preview{background:#f0d0ea}
+.word-cell.found{background:#dfc4ef}
 .word-cell.start,.word-cell:focus-visible{outline:3px solid #d0208f;outline-offset:-3px}
-.word-cell.msg{background:rgba(255,221,75,.45)}
+.word-cell.msg{background:#fff1a8}
 .words .done{text-decoration:line-through;color:#888}
 .words{width:170px;flex:0 0 170px;border:2px solid #5b197d;border-radius:12px;padding:10px 8px;background:#fff;text-align:center;color:#4b146f}
 .words h2{margin:0 0 8px;font-size:18px}.words p{margin:0;font-weight:800;line-height:1.45;font-size:15px}
@@ -48,7 +48,7 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
     <p id="wordList"></p>
   </div>
 </div>
-<p class="note"><strong>Find all 20 words. Exactly 13 letters will be left over. They spell: JESUS LOVES YOU !</strong></p>
+<p class="note"><strong>Find all 20 words to reveal the special message: JESUS LOVES YOU !</strong></p>
 <p id="message" class="message"></p>
 <button type="button" id="clearBtn">Clear Highlights</button>
 <button type="button" id="finishedBtn">I Found All The Words!</button>
@@ -58,7 +58,7 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
 </div>
 <script>
 (function(){
- var rows=["JESUECAEPSR","BHPESOJSHLA","EODROLSHEYT","TDIVADUEABS","HVIMCYSPVAM","LPAAHOEHEBA","EENRRJJENGN","HEGYIFYROLG","EHEESSADYOE","MSLUTSAVIOR"];
+ var rows=["JOYZECAEPJR","BHPESOJSHXA","EKDROLSHEYT","TDIVADUEABS","HXIMCVSPVAM","LPAAHQEHEBA","EENRRXJENGN","HEGYIFYROLG","EHEZSZADJQE","MSLKTSAVIOR"];
  var words=["AFRAID","ANGEL","BABY","BETHLEHEM","CHRIST","DAVID","GLORY","GOD","HEAVEN","JESUS","JOSEPH","JOY","LORD","MARY","MANGER","PEACE","SAVIOR","SHEEP","SHEPHERD","STAR"];
  var grid=document.getElementById('wordGrid'),list=document.getElementById('wordList');
  var msg=document.getElementById('message'),win=document.getElementById('win');
@@ -85,7 +85,7 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
  function count(){var n=0;for(var i=0;i<words.length;i++)if(found[words[i]])n++;return n;}
  function check(){
    if(count()!==words.length)return;
-   for(var r=0;r<rows.length;r++)for(var c=0;c<rows[r].length;c++)if(!foundCells[r+','+c])cells[r][c].className+=' msg';
+   // The unused cells contain random filler. The celebration reveals the message.
    msg.innerHTML='Wonderful! The special message is JESUS LOVES YOU !';win.className='win show';
  }
  function finish(force){
@@ -120,6 +120,7 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
    var row=document.createElement('div');row.className='word-row';cells[r]=[];
    for(var c=0;c<rows[r].length;c++)(function(r,c){
      var el=document.createElement('div');el.className='word-cell';el.r=r;el.c=c;
+     el.textContent=rows[r].charAt(c);
      el.setAttribute('role','button');el.setAttribute('tabindex','0');
      el.setAttribute('aria-label',rows[r].charAt(c)+', row '+(r+1)+', column '+(c+1));
      el.onmousedown=function(e){start(el,e);};
