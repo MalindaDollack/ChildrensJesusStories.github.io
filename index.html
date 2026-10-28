@@ -443,7 +443,7 @@
   font-weight:800!important;
 }
 </style>
-<script src="game-sounds.js?v=20261028" defer></script><style>@media(max-width:680px){.malinda-sudoku-board{width:min(100%,342px);height:auto;aspect-ratio:1;grid-template-columns:repeat(9,minmax(0,1fr));grid-auto-rows:1fr;box-sizing:border-box}.malinda-sudoku-cell{width:100%;height:100%;min-width:0}}</style></head>
+<script src="game-sounds.js?v=20261028-garden2" defer></script><style>@media(max-width:680px){.malinda-sudoku-board{width:min(100%,342px);height:auto;aspect-ratio:1;grid-template-columns:repeat(9,minmax(0,1fr));grid-auto-rows:1fr;box-sizing:border-box}.malinda-sudoku-cell{width:100%;height:100%;min-width:0}}</style></head>
 <body data-catalog-revision="20261017">
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
   <div class="worldwide-shipping-banner" style="padding:14px 18px;text-align:center;background:#fbf3ff;border-bottom:3px solid #ead5f5;line-height:1.4">
@@ -2130,7 +2130,7 @@ Malinda Dollack</p>
 <!-- Full-size, playable Sarah Matching Game directly beneath Malinda's Matching Game. -->
 <div class="sarah-matching-website-game" aria-label="Sarah the Baby Sheep Matching Game" style="width:100%;max-width:900px;margin:28px auto 18px;">
   <iframe id="sarahMatchingGameFrame"
-    src="sarah-matching-game.html?v=20261028-touch-sound"
+    src="sarah-matching-game.html?v=20261028-garden2"
     title="Sarah the Baby Sheep: JESUS LOVES YOU ! Matching Game — Play Here"
     loading="lazy"
     style="display:block;width:100%;height:2700px;border:0;background:#fff;"
@@ -2635,7 +2635,7 @@ Malinda Dollack</p>
 </section>
 <!-- Full playable Sarah Find-a-Word, directly below Malinda Find-a-Word -->
 <div class="sarah-findword-website-game" aria-label="Sarah the Baby Sheep Find-a-Word Game" style="width:100%;max-width:900px;margin:28px auto 18px;">
-  <iframe id="sarahFindWordGameFrame" src="games/sarah-find-word-game.html?v=20261028-touch-sound" title="Sarah the Baby Sheep Find-a-Word Game — Play Here" loading="lazy" style="display:block;width:100%;height:1050px;border:0;background:#fff;"></iframe>
+  <iframe id="sarahFindWordGameFrame" src="games/sarah-find-word-game.html?v=20261028-garden2" title="Sarah the Baby Sheep Find-a-Word Game — Play Here" loading="lazy" style="display:block;width:100%;height:1050px;border:0;background:#fff;"></iframe>
 </div>
 <script>
 (function () {
@@ -2680,8 +2680,8 @@ Malinda Dollack</p>
 </div>
 <section id="maze-games" style="max-width:940px;margin:30px auto;text-align:center;">
 <h2>Maze Games</h2>
-<iframe class="story-maze-frame" id="sarah-maze" src="games/sarah-maze-game.html?v=20261028-touch-sound" title="Help Jesus find Sarah Maze Game" loading="lazy" style="display:block;width:100%;height:1400px;border:3px solid #5b197d;border-radius:18px;background:#fff" allow="autoplay"></iframe>
-<iframe class="story-maze-frame" id="malinda-maze" src="games/malinda-maze-game.html?v=20261028-touch-sound" title="Malinda's Story Garden Maze Game" loading="lazy" style="display:block;width:100%;height:1400px;margin-top:28px;border:3px solid #5b197d;border-radius:18px;background:#fff" allow="autoplay"></iframe>
+<iframe class="story-maze-frame" id="sarah-maze" src="games/sarah-maze-game.html?v=20261028-garden2" title="Help Jesus find Sarah Maze Game" loading="lazy" style="display:block;width:100%;height:1400px;border:3px solid #5b197d;border-radius:18px;background:#fff" allow="autoplay"></iframe>
+<iframe class="story-maze-frame" id="malinda-maze" src="games/malinda-maze-game.html?v=20261028-garden2" title="Malinda's Story Garden Maze Game" loading="lazy" style="display:block;width:100%;height:1400px;margin-top:28px;border:3px solid #5b197d;border-radius:18px;background:#fff" allow="autoplay"></iframe>
 </section>
 <script>
 (function(){document.querySelectorAll('.story-maze-frame').forEach(function(frame){function fit(){try{var d=frame.contentDocument;var foot=d.querySelector('.footer');if(foot)frame.style.height=Math.ceil(foot.getBoundingClientRect().bottom+frame.contentWindow.scrollY+24)+'px'}catch(e){}}frame.addEventListener('load',function(){fit();if(window.ResizeObserver)new ResizeObserver(fit).observe(frame.contentDocument.body);setTimeout(fit,600)});window.addEventListener('resize',fit)})})();
@@ -2764,7 +2764,11 @@ Malinda Dollack</p>
       for(c=0;c<gridData[r].length;c++){
         cell=document.createElement("div");cell.className="malinda-wordsearch-cell";cell.id=cellId(r,c);
         cell.setAttribute("data-r",r);cell.setAttribute("data-c",c);cell.innerHTML=gridData[r].charAt(c);
-        cell.onmousedown=start;cell.onmouseenter=enter;rowDiv.appendChild(cell);
+        cell.onmousedown=start;cell.onmouseenter=enter;
+        cell.setAttribute('role','button');cell.setAttribute('tabindex','0');
+        cell.setAttribute('aria-label',gridData[r].charAt(c)+', row '+(r+1)+', column '+(c+1));
+        cell.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){start.call(this,e);end();e.preventDefault();}};
+        rowDiv.appendChild(cell);
       }
       grid.appendChild(rowDiv);
     }
@@ -2775,10 +2779,22 @@ Malinda Dollack</p>
     grid.ontouchstart=function(e){var t=e.target||e.srcElement;if(t&&t.className.indexOf("malinda-wordsearch-cell")>=0){start.call(t,e);if(e.preventDefault)e.preventDefault();return false;}};
     grid.ontouchmove=function(e){var t=e.touches&&e.touches[0];if(!t)return;var el=document.elementFromPoint(t.clientX,t.clientY);if(el&&el.className.indexOf("malinda-wordsearch-cell")>=0){lastCell=el;preview();}if(e.preventDefault)e.preventDefault();return false;};
     grid.ontouchend=function(e){end();if(e&&e.preventDefault)e.preventDefault();return false;};
+  if(window.PointerEvent){
+    var pointerId=null;
+    function selectedCell(e){var el=document.elementFromPoint(e.clientX,e.clientY);return el&&el.classList.contains('malinda-wordsearch-cell')&&grid.contains(el)?el:null;}
+    grid.querySelectorAll('.'+'malinda-wordsearch-cell').forEach(function(cell){cell.onmousedown=null;cell.onmouseenter=null;});
+    grid.onmouseup=null;grid.ontouchstart=null;grid.ontouchmove=null;grid.ontouchend=null;grid.ontouchcancel=null;
+    grid.onpointerdown=function(e){if(e.isPrimary===false||pointerId!==null||e.button!==0)return;var cell=selectedCell(e);if(!cell)return;pointerId=e.pointerId;grid.setPointerCapture(pointerId);start.call(cell,e);if(window.GardenSound)GardenSound.play('click');e.preventDefault();};
+    grid.onpointermove=function(e){if(e.pointerId!==pointerId)return;var cell=selectedCell(e);if(cell){enter.call(cell);}e.preventDefault();};
+    grid.onpointerup=function(e){if(e.pointerId!==pointerId)return;var cell=selectedCell(e);if(cell&&dragging){lastCell=cell;}end();pointerId=null;e.preventDefault();};
+    grid.onpointercancel=function(){pointerId=null;dragging=false;awaitingEnd=false;startCell=null;lastCell=null;clearPreview();};
+    grid.onlostpointercapture=function(){if(pointerId!==null){pointerId=null;if(dragging){dragging=false;awaitingEnd=false;startCell=null;lastCell=null;clearPreview();}}};
+  }
+
   }
   function start(e){
     if(e&&typeof e.button==="number"&&e.button!==0)return;
-    if(awaitingEnd){awaitingEnd=false;lastCell=this;dragging=true;end(true);}
+    if(awaitingEnd&&startCell){awaitingEnd=false;lastCell=this;dragging=true;end(true);}
     else{dragging=true;startCell=this;lastCell=this;preview();}
     if(e&&e.preventDefault)e.preventDefault();
   }

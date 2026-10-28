@@ -31,9 +31,9 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
 .win.show{display:block}.win img{width:100%;height:auto;border-radius:18px;border:3px solid #5b197d}
 .small{font-size:13px;color:#684a74;margin-top:12px}
 @media(max-width:720px){.layout{display:flex;flex-direction:row;align-items:flex-start;gap:8px}.puzzle{width:calc(100% - 128px);margin:0}.words{width:120px;flex:0 0 120px;margin:0;padding:6px 4px}.words h2{font-size:14px}.words p{font-size:11px;line-height:1.3}h1{font-size:22px}}
-</style>
-<script src="../game-sounds.js?v=20261028" defer></script></head>
-<body>
+@media(max-width:720px){.wrap{padding:6px}.game{padding:8px}.layout{flex-direction:column}.puzzle{width:100%}.words{width:100%;flex:auto}.words p{font-size:15px}#wordList{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px}#wordList br{display:none}.word-cell{touch-action:none}}</style>
+<script src="../game-sounds.js?v=20261028-garden2" defer></script></head>
+<body data-game-music="true">
 <div class="wrap">
 <div class="game">
 <h1>Sarah the Sheep: My Shepherd, Jesus's Birth. The Christmas Story Find-a-Word</h1>
@@ -97,6 +97,7 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
    for(var i=0;i<a.length;i++)letters+=rows[a[i].r].charAt(a[i].c);
    var rev=letters.split('').reverse().join('');
    for(var w=0;w<words.length;w++){
+     if(found[words[w]])continue;
      var pos=letters.indexOf(words[w]),back=false;
      if(pos<0){pos=rev.indexOf(words[w]);back=true;}
      if(pos<0)continue;
@@ -111,7 +112,7 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
  function start(cell,e){
    if(e&&typeof e.button==='number'&&e.button!==0)return;
    if(e&&e.preventDefault)e.preventDefault();
-   if(awaitingEnd){lastCell=cell;dragging=true;finish(true);}
+   if(awaitingEnd&&startCell){lastCell=cell;dragging=true;finish(true);}
    else{startCell=cell;lastCell=cell;dragging=true;preview();}
  }
  function enter(cell){if(dragging||awaitingEnd){lastCell=cell;preview();}}
@@ -145,6 +146,18 @@ button{border:0;border-radius:999px;background:#5b197d;color:#fff;font-weight:90
  };
  grid.ontouchend=function(e){finish();if(e.preventDefault)e.preventDefault();return false;};
  grid.ontouchcancel=function(){dragging=false;awaitingEnd=false;startCell=null;lastCell=null;paint();};
+
+  if(window.PointerEvent){
+    var pointerId=null;
+    function selectedCell(e){var el=document.elementFromPoint(e.clientX,e.clientY);return el&&el.classList.contains('word-cell')&&grid.contains(el)?el:null;}
+    grid.querySelectorAll('.'+'word-cell').forEach(function(cell){cell.onmousedown=null;cell.onmouseenter=null;});
+    grid.onmouseup=null;grid.ontouchstart=null;grid.ontouchmove=null;grid.ontouchend=null;grid.ontouchcancel=null;
+    grid.onpointerdown=function(e){if(e.isPrimary===false||pointerId!==null||e.button!==0)return;var cell=selectedCell(e);if(!cell)return;pointerId=e.pointerId;grid.setPointerCapture(pointerId);start(cell,e);if(window.GardenSound)GardenSound.play('click');e.preventDefault();};
+    grid.onpointermove=function(e){if(e.pointerId!==pointerId)return;var cell=selectedCell(e);if(cell){enter(cell);}e.preventDefault();};
+    grid.onpointerup=function(e){if(e.pointerId!==pointerId)return;var cell=selectedCell(e);if(cell&&dragging){lastCell=cell;}finish();pointerId=null;e.preventDefault();};
+    grid.onpointercancel=function(){pointerId=null;dragging=false;awaitingEnd=false;startCell=null;lastCell=null;paint();};
+    grid.onlostpointercapture=function(){if(pointerId!==null){pointerId=null;if(dragging){dragging=false;awaitingEnd=false;startCell=null;lastCell=null;paint();}}};
+  }
  document.getElementById('clearBtn').onclick=function(){
    found={};foundCells={};dragging=false;awaitingEnd=false;startCell=null;lastCell=null;
    paint();msg.innerHTML='';win.className='win';
