@@ -26,7 +26,7 @@ h1{margin:0 0 8px;font-size:30px}
 .note{font-size:13px;color:#684a74;margin-top:12px}
 @media(max-width:700px){.board{grid-template-columns:repeat(4,1fr);gap:6px} .gamebox{padding:12px} h1{font-size:23px}}
 </style>
-</head>
+<script src="game-sounds.js?v=20261028" defer></script></head>
 <body>
 <div class="wrap">
   <div class="gamebox">
@@ -107,6 +107,7 @@ h1{margin:0 0 8px;font-size:30px}
       coverCard(card);
       card.onclick=function(){
         if(locked || card.className.indexOf("matched")>=0 || card.getAttribute("data-revealed")==="true") return;
+        if(window.GardenSound)GardenSound.play("click");
         revealImage(card, info);
         if(!firstCard){ firstCard=card; return; }
         secondCard=card; locked=true;

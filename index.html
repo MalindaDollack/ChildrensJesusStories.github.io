@@ -443,7 +443,7 @@
   font-weight:800!important;
 }
 </style>
-</head>
+<script src="game-sounds.js?v=20261028" defer></script><style>@media(max-width:680px){.malinda-sudoku-board{width:min(100%,342px);height:auto;aspect-ratio:1;grid-template-columns:repeat(9,minmax(0,1fr));grid-auto-rows:1fr;box-sizing:border-box}.malinda-sudoku-cell{width:100%;height:100%;min-width:0}}</style></head>
 <body data-catalog-revision="20261017">
   <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
   <div class="worldwide-shipping-banner" style="padding:14px 18px;text-align:center;background:#fbf3ff;border-bottom:3px solid #ead5f5;line-height:1.4">
@@ -2130,7 +2130,7 @@ Malinda Dollack</p>
 <!-- Full-size, playable Sarah Matching Game directly beneath Malinda's Matching Game. -->
 <div class="sarah-matching-website-game" aria-label="Sarah the Baby Sheep Matching Game" style="width:100%;max-width:900px;margin:28px auto 18px;">
   <iframe id="sarahMatchingGameFrame"
-    src="sarah-matching-game.html"
+    src="sarah-matching-game.html?v=20261028-touch-sound"
     title="Sarah the Baby Sheep: JESUS LOVES YOU ! Matching Game — Play Here"
     loading="lazy"
     style="display:block;width:100%;height:2700px;border:0;background:#fff;"
@@ -2285,6 +2285,7 @@ Malinda Dollack</p>
         coverCard(card);
         card.onclick=function(){
           if(locked||card.className.indexOf("matched")>=0||card.getAttribute("data-revealed")==="true")return;
+          if(window.GardenSound)GardenSound.play("click");
           revealImage(card,animal);
           if(!firstCard){firstCard=card;return;}
           secondCard=card;locked=true;
@@ -2339,7 +2340,7 @@ Malinda Dollack</p>
 <!-- Sarah's full playable Sudoku is directly below Malinda's Sudoku. -->
 <div class="sarah-sudoku-website-game" aria-label="Sarah the Baby Sheep Sudoku Game" style="width:100%;max-width:900px;margin:28px auto 18px;">
   <iframe id="sarahSudokuGameFrame"
-    src="sarah-sudoku-game.html?v=20261025-white-flat-roofs"
+    src="sarah-sudoku-game.html?v=20261028-touch-sound"
     title="Sarah the Baby Sheep: My Shepherd, Jesus's Birth. The Christmas Story Sudoku Game — Play Here"
     loading="lazy"
     style="display:block;width:100%;height:1040px;border:0;background:#fff;"
@@ -2512,6 +2513,7 @@ Malinda Dollack</p>
               this.innerHTML="";
               this.className=this.className.replace(" wrong","");
               puzzle[rr][cc]=0;
+              if(window.GardenSound)GardenSound.play("click");
               check(false);
             }else if(selected){
               place(this,selected);
@@ -2543,6 +2545,7 @@ Malinda Dollack</p>
       t.onclick=function(){
         var j,all=tiles.getElementsByTagName("button");
         selected=parseInt(this.getAttribute("data-icon"),10);
+        if(window.GardenSound)GardenSound.play("click");
         for(j=0;j<all.length;j++){
           all[j].className="malinda-sudoku-tile"+(all[j]===this?" selected":"");
         }
@@ -2556,6 +2559,7 @@ Malinda Dollack</p>
     r=+cell.getAttribute("data-r");
     c=+cell.getAttribute("data-c");
     puzzle[r][c]=n;
+    if(window.GardenSound)GardenSound.play("drop");
     cell.setAttribute("data-value",n);
     cell.innerHTML=iconHTML(n);
     cell.className=cell.className.replace(" wrong","");
@@ -2631,7 +2635,7 @@ Malinda Dollack</p>
 </section>
 <!-- Full playable Sarah Find-a-Word, directly below Malinda Find-a-Word -->
 <div class="sarah-findword-website-game" aria-label="Sarah the Baby Sheep Find-a-Word Game" style="width:100%;max-width:900px;margin:28px auto 18px;">
-  <iframe id="sarahFindWordGameFrame" src="games/sarah-find-word-game.html?v=20261025-white-flat-roofs" title="Sarah the Baby Sheep Find-a-Word Game — Play Here" loading="lazy" style="display:block;width:100%;height:1050px;border:0;background:#fff;"></iframe>
+  <iframe id="sarahFindWordGameFrame" src="games/sarah-find-word-game.html?v=20261028-touch-sound" title="Sarah the Baby Sheep Find-a-Word Game — Play Here" loading="lazy" style="display:block;width:100%;height:1050px;border:0;background:#fff;"></iframe>
 </div>
 <script>
 (function () {
@@ -2676,8 +2680,8 @@ Malinda Dollack</p>
 </div>
 <section id="maze-games" style="max-width:940px;margin:30px auto;text-align:center;">
 <h2>Maze Games</h2>
-<iframe class="story-maze-frame" id="sarah-maze" src="games/sarah-maze-game.html" title="Help Jesus find Sarah Maze Game" loading="lazy" style="display:block;width:100%;height:1400px;border:3px solid #5b197d;border-radius:18px;background:#fff" allow="autoplay"></iframe>
-<iframe class="story-maze-frame" id="malinda-maze" src="games/malinda-maze-game.html" title="Malinda's Story Garden Maze Game" loading="lazy" style="display:block;width:100%;height:1400px;margin-top:28px;border:3px solid #5b197d;border-radius:18px;background:#fff" allow="autoplay"></iframe>
+<iframe class="story-maze-frame" id="sarah-maze" src="games/sarah-maze-game.html?v=20261028-touch-sound" title="Help Jesus find Sarah Maze Game" loading="lazy" style="display:block;width:100%;height:1400px;border:3px solid #5b197d;border-radius:18px;background:#fff" allow="autoplay"></iframe>
+<iframe class="story-maze-frame" id="malinda-maze" src="games/malinda-maze-game.html?v=20261028-touch-sound" title="Malinda's Story Garden Maze Game" loading="lazy" style="display:block;width:100%;height:1400px;margin-top:28px;border:3px solid #5b197d;border-radius:18px;background:#fff" allow="autoplay"></iframe>
 </section>
 <script>
 (function(){document.querySelectorAll('.story-maze-frame').forEach(function(frame){function fit(){try{var d=frame.contentDocument;var foot=d.querySelector('.footer');if(foot)frame.style.height=Math.ceil(foot.getBoundingClientRect().bottom+frame.contentWindow.scrollY+24)+'px'}catch(e){}}frame.addEventListener('load',function(){fit();if(window.ResizeObserver)new ResizeObserver(fit).observe(frame.contentDocument.body);setTimeout(fit,600)});window.addEventListener('resize',fit)})})();
@@ -2849,6 +2853,7 @@ Malinda Dollack</p>
     clearPreview();
     if(word&&!found[word]){
       found[word]=true;
+      if(window.GardenSound)GardenSound.play("swoosh");
       for(i=0;i<matchedCells.length;i++){foundCells[matchedCells[i][0]+","+matchedCells[i][1]]=true;}
       paintFound();
       if(idx>=0)document.getElementById("mw_word_"+idx).className="malinda-word done";
@@ -3417,6 +3422,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 </body>
 </html>
+
 
 
 
