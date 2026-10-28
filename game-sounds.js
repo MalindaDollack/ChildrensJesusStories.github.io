@@ -88,6 +88,7 @@
     var sections = document.querySelectorAll('.story-match-section,.malinda-sudoku-section,.malinda-wordsearch-section');
     if (sections.length) sections.forEach(function (s) { var slot = document.createElement('div'); (s.querySelector('h3') || s.firstElementChild).insertAdjacentElement('afterend', slot); mount(slot, !s.classList.contains('malinda-sudoku-section')); });
     else { var header = document.querySelector('header,h1'); if (header) { var slot = document.createElement('div'); header.insertAdjacentElement('afterend', slot); mount(slot, document.body.getAttribute('data-game-music')==='true'); } }
+    var play=document.createElement('script');play.src=new URL('game-play.js?v=20261028-scroll',scriptUrl).href;document.head.appendChild(play);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
