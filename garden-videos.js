@@ -9,10 +9,16 @@ if(typeof document==='undefined')return;
 var data=root.GARDEN_VIDEO_DATA||{readings:[]};
 function el(tag,text,cls){var e=document.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;return e;}
 function choices(item,parent,key){
- var links=el('div',null,'video-links'),screen=el('div',null,'video-screen');screen.id='video-screen-'+key;screen.hidden=true;
- if(item.video){var a=el('a','Video');a.href='#'+screen.id;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls',screen.id);a.onclick=function(e){e.preventDefault();if(!screen.firstChild){var v=el('video');v.controls=true;v.playsInline=true;v.preload='none';v.src=item.video;if(item.poster)v.poster=item.poster;v.setAttribute('aria-label',item.title);screen.appendChild(v);var direct=el('a','Open Video');direct.href=item.video;screen.appendChild(direct);}screen.hidden=!screen.hidden;a.setAttribute('aria-expanded',String(!screen.hidden));if(screen.hidden)screen.querySelector('video').pause();};links.appendChild(a);}else{var pending=el('span','Video — coming soon');pending.setAttribute('aria-disabled','true');links.appendChild(pending);}
+ var links=el('div',null,'video-links');
+ if(item.video){
+  var screen=el('div',null,'video-screen');screen.id='video-screen-'+key;
+  var v=el('video');v.controls=true;v.playsInline=true;v.preload='none';v.src=item.video;
+  if(item.poster)v.poster=item.poster;
+  v.setAttribute('aria-label',item.title);screen.appendChild(v);parent.appendChild(screen);
+  var a=el('a','Video');a.href=item.video;links.appendChild(a);
+ }else{var pending=el('span','Video — coming soon');pending.setAttribute('aria-disabled','true');links.appendChild(pending);}
  if(item.youtube){var yt=el('a','U-Tube');yt.href=item.youtube;yt.target='_blank';yt.rel='noopener';links.appendChild(yt);}else{var s=el('span','U-Tube — coming soon');s.setAttribute('aria-disabled','true');links.appendChild(s);}
- parent.appendChild(links);parent.appendChild(screen);
+ parent.appendChild(links);
 }
 var lastDay='';
 function render(){var selected=selectReadings(data.readings,new Date());if(selected.day===lastDay)return;lastDay=selected.day;
