@@ -20,11 +20,25 @@ function choices(item,parent,key){
  if(item.youtube){var yt=el('a','U-Tube');yt.href=item.youtube;yt.target='_blank';yt.rel='noopener';links.appendChild(yt);}else{var s=el('span','U-Tube — coming soon');s.setAttribute('aria-disabled','true');links.appendChild(s);}
  parent.appendChild(links);
 }
+// A file named today.mp4 in the website root takes priority over dated readings.
+// Use a fresh URL per page load so replacing the file does not show a cached video.
+var todayVideoUrl='today.mp4?v='+Date.now();
+var todayVideoAvailable=false;
 var lastDay='';
 function render(){var selected=selectReadings(data.readings,new Date());if(selected.day===lastDay)return;lastDay=selected.day;
+ if(todayVideoAvailable)selected.today={title:"Today’s Bible Reading",video:todayVideoUrl,youtube:null};
  var today=document.getElementById('today-reading');if(today){today.textContent='';var title=el('h3',selected.today?selected.today.title:'Today’s reading is coming soon.');today.appendChild(title);choices(selected.today||{},today,'today');}
  var archive=document.getElementById('past-readings');if(archive){archive.textContent='';selected.past.forEach(function(item,i){var card=el('article',null,'garden-video-card');card.appendChild(el('h2',item.title));choices(item,card,'past-'+i);archive.appendChild(card);});if(!selected.past.length)archive.appendChild(el('p','Past readings will appear here.'));}
 }
 var sarah=document.querySelector('[data-video-key="sarah-intro"]');if(sarah&&data.sarahIntro){sarah.textContent='';sarah.appendChild(el('h3',data.sarahIntro.title));var v=el('video');v.controls=true;v.playsInline=true;v.preload='none';v.src=data.sarahIntro.video;if(data.sarahIntro.poster)v.poster=data.sarahIntro.poster;v.setAttribute('aria-label',data.sarahIntro.title);sarah.appendChild(v);var links=el('div',null,'video-links');var a=el('a','Video');a.href=data.sarahIntro.video;links.appendChild(a);var yt=el('span','U-Tube — coming soon');yt.setAttribute('aria-disabled','true');links.appendChild(yt);sarah.appendChild(links);}
+// Check whether today.mp4 has been uploaded. If not, keep the existing reading.
+function checkTodayVideo(){
+ var xhr=new XMLHttpRequest();
+ xhr.open('HEAD',todayVideoUrl,true);
+ xhr.onload=function(){var found=xhr.status>=200&&xhr.status<300;if(found!==todayVideoAvailable){todayVideoAvailable=found;lastDay='';render();}};
+ xhr.onerror=function(){if(todayVideoAvailable){todayVideoAvailable=false;lastDay='';render();}};
+ xhr.send();
+}
+checkTodayVideo();
 render();setInterval(render,1000);document.addEventListener('visibilitychange',render);window.addEventListener('pageshow',render);
 })(typeof window!=='undefined'?window:globalThis);
