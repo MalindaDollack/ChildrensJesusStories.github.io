@@ -17,7 +17,7 @@ function choices(item,parent,key){
   v.setAttribute('aria-label',item.title);screen.appendChild(v);parent.appendChild(screen);
   var a=el('a','Video');a.href=item.video;links.appendChild(a);
  }else{var pending=el('span','Video — coming soon');pending.setAttribute('aria-disabled','true');links.appendChild(pending);}
- if(item.youtube){var yt=el('a','U-Tube');yt.href=item.youtube;yt.target='_blank';yt.rel='noopener';links.appendChild(yt);}else{var s=el('span','U-Tube — coming soon');s.setAttribute('aria-disabled','true');links.appendChild(s);}
+ if(item.youtube){var yt=el('a','U-Tube');yt.href=item.youtube;yt.target='_blank';yt.rel='noopener';links.appendChild(yt);}
  parent.appendChild(links);
 }
 // A file named today.mp4 in the website root takes priority over dated readings.
@@ -30,7 +30,7 @@ function render(){var selected=selectReadings(data.readings,new Date());if(selec
  var today=document.getElementById('today-reading');if(today){today.textContent='';var title=el('h3',selected.today?selected.today.title:'Today’s reading is coming soon.');today.appendChild(title);choices(selected.today||{},today,'today');}
  var archive=document.getElementById('past-readings');if(archive){archive.textContent='';selected.past.forEach(function(item,i){var card=el('article',null,'garden-video-card');card.appendChild(el('h2',item.title));choices(item,card,'past-'+i);archive.appendChild(card);});if(!selected.past.length)archive.appendChild(el('p','Past readings will appear here.'));}
 }
-var sarah=document.querySelector('[data-video-key="sarah-intro"]');if(sarah&&data.sarahIntro){sarah.textContent='';sarah.appendChild(el('h3',data.sarahIntro.title));var v=el('video');v.controls=true;v.playsInline=true;v.preload='none';v.src=data.sarahIntro.video;if(data.sarahIntro.poster)v.poster=data.sarahIntro.poster;v.setAttribute('aria-label',data.sarahIntro.title);sarah.appendChild(v);var links=el('div',null,'video-links');var a=el('a','Video');a.href=data.sarahIntro.video;links.appendChild(a);var yt=el('span','U-Tube — coming soon');yt.setAttribute('aria-disabled','true');links.appendChild(yt);sarah.appendChild(links);}
+var sarah=document.querySelector('[data-video-key="sarah-intro"]');if(sarah&&data.sarahIntro){sarah.textContent='';sarah.appendChild(el('h3',data.sarahIntro.title));var v=el('video');v.controls=true;v.playsInline=true;v.preload='none';v.src=data.sarahIntro.video;if(data.sarahIntro.poster)v.poster=data.sarahIntro.poster;v.setAttribute('aria-label',data.sarahIntro.title);sarah.appendChild(v);var links=el('div',null,'video-links');var a=el('a','Video');a.href=data.sarahIntro.video;links.appendChild(a);sarah.appendChild(links);}
 // Check whether today.mp4 has been uploaded. If not, keep the existing reading.
 function checkTodayVideo(){
  var xhr=new XMLHttpRequest();
