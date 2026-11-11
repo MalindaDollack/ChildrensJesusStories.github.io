@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!titleElement) return;
 
     var productTitle = (titleElement.textContent || '').replace(/\s+/g, ' ').trim();
-    if (/^SO\d+\b/i.test(productTitle) || card.id === 'store-PID1') return;
+    if (/^SO\d+\b/i.test(productTitle) || card.id === 'store-PID14') return;
 
     var codeMatch = productTitle.match(/^([A-Z0-9-]+)\s*(?:—|–|-)\s*/);
     if (!codeMatch) return;
