@@ -253,71 +253,57 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Shipping-specific catalog codes for the 13 regular physical products.
-// PID14 (Samaritan's Purse) deliberately keeps its single original code.
+// Shipping-specific product labels: full name only with LP, short codes for NT/WT.
 document.addEventListener('DOMContentLoaded', function () {
   for (var n = 1; n <= 13; n++) {
     var card = document.getElementById('store-PID' + n);
     if (!card) continue;
     var heading = card.querySelector('h3');
     if (!heading) continue;
-    var original = heading.textContent.replace(/\\s+/g, ' ').trim();
-    var name = original.replace(/^PID\\d+\\s*[-—–]\\s*/i, '').trim();
+    var name = heading.textContent.replace(/\s+/g, ' ').trim()
+      .replace(/^PID\d+(?:LP|NT|WT)?\s*[-—–]\s*/i, '').trim();
     if (!name) continue;
-    var options = [
-      {suffix:'LP',label:'Local Pick Up'},
-      {suffix:'NT',label:'No Tracking'},
-      {suffix:'WT',label:'With Tracking'}
-    ];
-    // Display all three choices and their full product names in the advertisement.
-    heading.textContent = options.map(function(o) {
-      return 'PID' + n + o.suffix + ' - ' + name;
-    }).join(' | ');
-    var details = card.querySelector('.store-details');
-    if (details) {
-      var description = details.querySelector('.isbn-title-description');
-      if (description && !description.querySelector('.shipping-product-codes')) {
-        var p = document.createElement('p');
+    heading.textContent = 'PID' + n + 'LP - ' + name + ' | PID' + n + 'NT | PID' + n + 'WT';
+    var description = card.querySelector('.isbn-title-description');
+    if (description) {
+      var p = description.querySelector('.shipping-product-codes');
+      if (!p) {
+        p = document.createElement('p');
         p.className = 'shipping-product-codes';
-        p.textContent = options.map(function(o) {
-          return 'PID' + n + o.suffix + ' - ' + name + ' (' + o.label + ')';
-        }).join(' | ');
         description.insertBefore(p, description.firstChild);
       }
+      p.textContent = 'PID' + n + 'LP - ' + name + ' (Local Pick Up) | PID' + n + 'NT (No Tracking) | PID' + n + 'WT (With Tracking)';
     }
-    // Each purchase option has a separate code in the subject and message.
-    var links = card.querySelectorAll('.store-order a');
-    Array.prototype.forEach.call(links, function(link, i) {
+    Array.prototype.forEach.call(card.querySelectorAll('.store-order a'), function (link, i) {
       var txt = (link.textContent || '').toLowerCase();
       var suffix = /no tracking/.test(txt) ? 'NT' :
-                   /with tracking|tracking|tracked|flat rate box/.test(txt) ? 'WT' :
-                   /local|pick.?up/.test(txt) ? 'LP' :
-                   (i < 3 ? options[i].suffix : null);
+        /with tracking|tracking|tracked|flat rate box/.test(txt) ? 'WT' :
+        /local|pick.?up/.test(txt) ? 'LP' :
+        (i === 0 ? 'LP' : i === 1 ? 'NT' : i === 2 ? 'WT' : null);
       if (!suffix) return;
       var code = 'PID' + n + suffix;
-      var fullName = code + ' - ' + name;
       var href = link.getAttribute('href') || '';
       if (/^mailto:/i.test(href)) {
         var mail = href.split('?')[0];
         var params = new URLSearchParams(href.split('?').slice(1).join('?').replace(/&amp;/g, '&'));
         var body = params.get('body') || '';
         body = body.replace(new RegExp('PID' + n + '(?![0-9A-Za-z])', 'g'), code);
-        if (!body.includes(fullName)) {
-          body = body.replace(/I would like to order:[^\\n]*/, 'I would like to order: ' + fullName);
-        }
-        params.set('subject', fullName);
+        body = body.replace(/I would like to order:[^\n]*/, 'I would like to order: ' + code + ' - ' + name);
+        params.set('subject', code);
         params.set('body', body);
         link.href = mail + '?' + params.toString();
       }
       link.setAttribute('data-shipping-product-code', code);
-      // Keep the original shipping label and price intact.
-      var strong = link.querySelector('strong');
-      if (strong && !link.querySelector('.shipping-code-label')) {
-        var label = document.createElement('span');
-        label.className = 'shipping-code-label';
-        label.textContent = ' ' + code + ' - ' + name + ' |';
-        strong.insertAdjacentElement('afterend', label);
+      var label = link.querySelector('.shipping-code-label');
+      if (!label) {
+        var strong = link.querySelector('strong');
+        if (strong) {
+          label = document.createElement('span');
+          label.className = 'shipping-code-label';
+          strong.insertAdjacentElement('afterend', label);
+        }
       }
+      if (label) label.textContent = ' ' + code + ' |';
     });
   }
 });
