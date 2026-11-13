@@ -204,6 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // shipping address; physical products and subscriptions include it.
   // The four SO service request links are intentionally left as service requests.
   store.querySelectorAll('.store-card .store-order a').forEach(function(link) {
+    // Square checkout links must never be rewritten as email orders.
+    if (!/^mailto:/i.test(link.getAttribute('href') || '')) return;
     var card = link.closest('.store-card');
     if (!card) return;
 
