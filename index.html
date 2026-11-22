@@ -471,15 +471,28 @@
 #store .joyful-product-description .joyful-signoff{font-weight:900;color:#a00078;font-size:1.12rem}
 #store .joyful-product-description a{overflow-wrap:anywhere}
 </style>
+  <style>
+    /* Full illustrated branding, retaining the exact wording on Malinda's original banner. */
+    .site-banner{background:linear-gradient(115deg,#a9e8fc 0%,#e6dafa 49%,#a9e8fc 100%);padding:12px 4%;text-align:center}
+    .site-banner img{display:block;width:100%;max-width:950px;height:auto;margin:0 auto;border-radius:14px;box-shadow:0 8px 26px rgba(66,33,111,.24)}
+    .site-nav{background:rgba(246,237,255,.98)}
+    .site-nav .brand-home{display:inline-flex;align-items:center;justify-content:center;min-width:46px;min-height:46px;font-size:32px;line-height:1;text-decoration:none}
+    .site-nav .brand-home:focus-visible{outline:3px solid #6d2392;outline-offset:3px;border-radius:10px}
+    @media(max-width:760px){
+      .site-banner{padding:7px}
+      .site-banner img{border-radius:9px}
+      .site-nav{min-height:68px}
+      .site-nav nav{top:100%;background:#f9f1ff}
+    }
+  </style>
 </head>
 <body data-catalog-revision="20261111-pid-renumber">
-  <div class="topline">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
-  <header>
-    <a class="brand" href="#home" aria-label="Malinda's Story Garden home">
-      <span class="brand-script">Malinda’s</span>
-      <strong>STORY GARDEN</strong>
-      <small>Faith-Filled Adventures for Little Hearts</small>
-    </a>
+  <div class="topline" id="page-top">💗 Bible Stories Come Alive! <span>Bright stories • Big blue eyes • God’s love</span></div>
+  <div class="site-banner">
+    <img src="story-garden-floral-banner.jpeg" alt="Malinda’s Story Garden — Faith-Filled Adventures for Little Hearts, surrounded by bright flowers" width="1536" height="864" fetchpriority="high">
+  </div>
+  <header class="site-nav">
+    <a class="brand brand-home" href="#page-top" aria-label="Malinda’s Story Garden — back to top">🌷</a>
     <button class="menu" aria-label="Toggle navigation" aria-expanded="false">☰</button>
     <nav aria-label="Main navigation">
       <a href="#home">Home</a><a href="#books">Books</a><a href="#store">Store</a><a href="#bookmarks">Bookmarks</a><a href="#about">About Malinda</a><a href="#community">Community</a><a href="#contact">Contact</a>
